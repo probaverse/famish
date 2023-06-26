@@ -13,8 +13,11 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
+    fitdistrplus,
     ismev,
+    lmom,
     mgcv,
     nlme,
+    smwrBase,
     stats
 RoxygenNote: 7.2.3

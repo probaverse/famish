@@ -14,12 +14,16 @@ library(distionary)
 fit_dst_gev <- function(x, method = c("mle", "lmom", "mom", "mge"),
                         diagnostics = FALSE, ...) {
   method <- match.arg(method)
-  if (method != "mle") {
-    stop("That method is not implemented yet.")
+  if (method == "mle") {
+    fit_ismev <- gev.fit(x, show = FALSE)
+    if (diagnostics) {
+      gev.diag(fit_ismev)
+    }
+    distionary::dst_gev(fit_ismev$mle[1], fit_ismev$mle[2], fit_ismev$mle[3])
   }
-  fit_ismev <- gev.fit(x, show = FALSE)
-  if (diagnostics) {
-    gev.diag(fit_ismev)
+  if (method == "lmom") {
+    params <- lmom::pelgev(lmom::samlmu(x))
+    distionary::dst_gev(params[[1]], params[[2]], -params[[3]])
   }
-  distionary::dst_gev(fit_ismev$mle[1], fit_ismev$mle[2], fit_ismev$mle[3])
+  stop("That method has not been implemented yet.")
 }
