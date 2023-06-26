@@ -1,0 +1,20 @@
+Package: distionaryfit
+Type: Package
+Title: Estimation of parametric distributions in distionary R package
+Version: 0.1.0
+Authors@R: c(
+    person("Vincenzo", "Coia", email = "vincenzo.coia@gmail.com", 
+           role = c("aut", "cre"))
+  )
+Description: Provides tools to estimate parametric distributions using
+    different methods, outputting a distionary distribution. Also
+    provides functions for evaluating a distribution's fit to data.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    ismev,
+    mgcv,
+    nlme,
+    stats
+RoxygenNote: 7.2.3
