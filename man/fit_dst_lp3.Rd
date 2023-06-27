@@ -4,7 +4,7 @@
 \alias{fit_dst_lp3}
 \title{Fit a Log Pearson Type III (LP3) Distribution}
 \usage{
-fit_dst_lp3(x, method = "mge")
+fit_dst_lp3(x, method = c("mge", "lmom"))
 }
 \arguments{
 \item{x}{Numeric vector from which to fit the distribution.}
