@@ -3,6 +3,7 @@
 #' @inheritParams fit_dst_norm
 #' @param diagnostics Logical; print out diagnostic plots of the fit?
 #' @return A distplyr distribution.
+#' @export
 fit_dst_gev <- function(x, method = c("mle", "lmom", "mom", "mge"),
                         diagnostics = FALSE, ...) {
   method <- match.arg(method)
