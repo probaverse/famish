@@ -17,7 +17,7 @@ fit_dst_gev <- function(x, method = c("mle", "lmom", "mom", "mge"),
   }
   if (method == "lmom") {
     params <- lmom::pelgev(lmom::samlmu(x))
-    distionary::dst_gev(params[[1]], params[[2]], -params[[3]])
+    return(distionary::dst_gev(params[[1]], params[[2]], -params[[3]]))
   }
   stop("That method has not been implemented yet.")
 }
