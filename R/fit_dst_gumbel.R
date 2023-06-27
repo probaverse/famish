@@ -28,12 +28,16 @@ dst_gumbel <- local({
 fit_dst_gumbel <- function(x, method = c("mle", "lmom", "mom", "mge"),
                            diagnostics = FALSE) {
   method <- match.arg(method)
-  if (method != "mle") {
-    stop("That method is not implemented yet.")
+  if (method == "mle") {
+    fit_ismev <- ismev::gum.fit(x, show = FALSE)
+    if (diagnostics) {
+      print(ismev::gum.diag(fit_ismev))
+    }
+    return(distionary::dst_gev(fit_ismev$mle[1], fit_ismev$mle[2], 0))
   }
-  fit_ismev <- ismev::gum.fit(x, show = FALSE)
-  if (diagnostics) {
-    print(ismev::gum.diag(fit_ismev))
+  if (method == "lmom") {
+    params <- lmom::pelgum(lmom::samlmu(x))
+    return(distionary::dst_gev(params[[1]], params[[2]], 0))
   }
-  distionary::dst_gumbel(fit_ismev$mle[1], fit_ismev$mle[2])
+  stop("That method is not implemented yet.")
 }
