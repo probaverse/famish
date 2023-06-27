@@ -24,7 +24,5 @@ method requires specification, like the composite quantile estimator.}
 A distplyr distribution.
 }
 \description{
-Fits a GEV distribution via maximum likelihood,
-with `ismev::gev.fit()`, and returns
-a distplyr distribution.
+Fit GEV distribution
 }
