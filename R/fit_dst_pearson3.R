@@ -31,29 +31,45 @@ rpearson3 <- function(n, mean, sd, skew) {
   smwrBase::rpearsonIII(n, mean = mean, sd = sd, skew = skew)
 }
 
+#' Pearson Type III distribution
+#'
+#' @inheritParams dpearson3
+#' @export
+dst_pearson3 <- function(mean, sd, skew) {
+  distionary::dst_parametric("pearson3", mean = mean, sd = sd, skew = skew,
+                             .variable = "continuous")
+}
+
 #' Fit a Pearson Type III Distribution
 #'
 #' @inheritParams fit_dst_norm
-fit_dst_pearson3 <- function(x, method = "mge") {
-  if (method != "mge") {
-    stop("That method is not implemented yet.")
+#' @export
+fit_dst_pearson3 <- function(x, method = c("mge", "lmom")) {
+  method <- match.arg(method)
+  if (method == "mge") {
+    mu <- mean(x)
+    sd <- stats::sd(x)
+    skew <- mean(((x - mu) / sd)^3)
+    fit <- suppressWarnings(try(fitdistrplus::fitdist(
+      x, distr = "pearson3",
+      start = list(mean = mu, sd = sd, skew = skew),
+      method = method
+    ), silent = TRUE))
+    if (inherits(fit, "try-error")) {
+      warning("The fitdist function threw an error. Returning NULL.")
+      return(NULL)
+    }
+    params <- fit$estimate
+    if (any(is.na(params))) {
+      warning("The fitdist function resulted in NA parameters. Returning NULL.")
+      return(NULL)
+    }
+    return(distionary::dst_parametric("pearson3",
+                                      !!!params, .variable = "continuous"))
   }
-  mu <- mean(x)
-  sd <- stats::sd(x)
-  skew <- mean(((x - mu) / sd)^3)
-  fit <- suppressWarnings(try(fitdistrplus::fitdist(
-    x, distr = "pearson3",
-    start = list(mean = mu, sd = sd, skew = skew),
-    method = method
-  ), silent = TRUE))
-  if (inherits(fit, "try-error")) {
-    warning("The fitdist function threw an error. Returning NULL.")
-    return(NULL)
+  if (method == "lmom") {
+    moments <- lmom::pelpe3(lmom::samlmu(x))
+    return(dst_pearson3(moments[[1]], moments[[2]], moments[[3]]))
   }
-  params <- fit$estimate
-  if (any(is.na(params))) {
-    warning("The fitdist function resulted in NA parameters. Returning NULL.")
-    return(NULL)
-  }
-  distionary::dst_parametric("pearson3", !!!params, .variable = "continuous")
+  stop("That method has not been implemented yet.")
 }

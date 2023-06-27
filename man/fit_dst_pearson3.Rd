@@ -4,7 +4,7 @@
 \alias{fit_dst_pearson3}
 \title{Fit a Pearson Type III Distribution}
 \usage{
-fit_dst_pearson3(x, method = "mge")
+fit_dst_pearson3(x, method = c("mge", "lmom"))
 }
 \arguments{
 \item{x}{Numeric vector from which to fit the distribution.}
