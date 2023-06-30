@@ -7,7 +7,7 @@
 #' @return A distplyr distribution.
 #' @export
 fit_dst_norm <- function(x, method = c("mle", "lmom", "mom", "mge")) {
-  method <- match.arg(method)
+  method <- rlang::arg_match(method)
   if (method == "mle") {
     distionary::dst_norm(mean(x), stats::var(x))
   } else {

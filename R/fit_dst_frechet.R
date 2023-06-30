@@ -29,7 +29,7 @@ dst_frechet <- local({
 #' @export
 fit_dst_frechet <- function (xdat, method = c("mle", "lmom", "mom", "mge"),
                              maxit = 10000) {
-  method <- match.arg(method)
+  method <- rlang::arg_match(method)
   if (method != "mle") {
     stop("That method is not implemented yet.")
   }

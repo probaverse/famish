@@ -45,7 +45,7 @@ dst_pearson3 <- function(mean, sd, skew) {
 #' @inheritParams fit_dst_norm
 #' @export
 fit_dst_pearson3 <- function(x, method = c("mge", "lmom")) {
-  method <- match.arg(method)
+  method <- rlang::arg_match(method)
   if (method == "mge") {
     mu <- mean(x)
     sd <- stats::sd(x)

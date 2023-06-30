@@ -27,7 +27,7 @@ dst_gumbel <- local({
 #' @export
 fit_dst_gumbel <- function(x, method = c("mle", "lmom", "mom", "mge"),
                            diagnostics = FALSE) {
-  method <- match.arg(method)
+  method <- rlang::arg_match(method)
   if (method == "mle") {
     fit_ismev <- ismev::gum.fit(x, show = FALSE)
     if (diagnostics) {
