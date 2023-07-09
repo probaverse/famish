@@ -2,12 +2,13 @@
 % Please edit documentation in R/fit_dst_gev.R
 \name{fit_dst_gev}
 \alias{fit_dst_gev}
-\title{Fit GEV distribution}
+\title{Fit GPD distribution}
 \usage{
 fit_dst_gev(
   x,
   method = c("mle", "lmom", "mom", "mge"),
   diagnostics = FALSE,
+  threshold,
   ...
 )
 }
@@ -19,10 +20,13 @@ future, this may be allowed to be a fitting function when the estimation
 method requires specification, like the composite quantile estimator.}
 
 \item{diagnostics}{Logical; print out diagnostic plots of the fit?}
+
+\item{threshold}{Single numeric indicating the left-endpoint of the
+distribution.}
 }
 \value{
 A distplyr distribution.
 }
 \description{
-Fit GEV distribution
+Fit GPD distribution
 }
