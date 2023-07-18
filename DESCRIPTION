@@ -24,3 +24,6 @@ Imports:
 RoxygenNote: 7.2.3
 Remotes: 
     vincenzocoia/distionary
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
