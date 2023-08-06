@@ -17,8 +17,10 @@ Imports:
     fitdistrplus,
     ismev,
     lmom,
+    MASS,
     mgcv,
     nlme,
+    pracma,
     smwrBase,
     stats
 RoxygenNote: 7.2.3
