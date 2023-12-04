@@ -15,7 +15,7 @@ fit_dst_gpd <- function(x, method = c("mle", "lmom", "mom", "mge"),
     }
     m <- min(x, na.rm = TRUE)
     if (threshold > m) {
-      stop(glue("There are data below the specified GPD threshold of ",
+      stop(glue::glue("There are data below the specified GPD threshold of ",
                 "{threshold}. Either set the threshold at {m} or below, ",
                 "or truncate the data below {threshold}."))
     }

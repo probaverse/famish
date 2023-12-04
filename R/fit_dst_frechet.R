@@ -35,7 +35,7 @@ fit_dst_frechet <- function (xdat, method = c("mle", "lmom", "mom", "mge"),
   }
   z <- list()
   z$trans <- FALSE
-  in2 <- sqrt(6 * var(xdat))/pi
+  in2 <- sqrt(6 * stats::var(xdat))/pi
   in1 <- mean(xdat) - 0.57722 * in2
   mumat <- rep(1, length(xdat))
   muinit <- in1
@@ -53,7 +53,7 @@ fit_dst_frechet <- function (xdat, method = c("mle", "lmom", "mom", "mge"),
       return(10^6)
     sum(log(sc)) + sum(y^(-1 / xi)) + sum(log(y) * (1 / xi + 1))
   }
-  x <- optim(init, gev.lik, hessian = TRUE, method = "Nelder-Mead",
+  x <- stats::optim(init, gev.lik, hessian = TRUE, method = "Nelder-Mead",
              control = list(maxit = maxit))
   z$conv <- x$convergence
   mu <- mumat * x$par[1]

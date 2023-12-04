@@ -21,7 +21,7 @@ qlpearson3 <- function(p, meanlog, sdlog, skew) {
 #' @export
 plpearson3 <- function(q, meanlog, sdlog, skew) {
   if (length(q) == 0) return(q)
-  if_else(
+  ifelse(
     q < 0, 0, smwrBase::plpearsonIII(q, meanlog = meanlog, sdlog = sdlog, skew = skew)
   )
 }
@@ -66,13 +66,11 @@ fit_dst_lp3 <- function(x, method = c("mge", "lmom")) {
       method = method
     ), silent = TRUE))
     if (inherits(fit, "try-error")) {
-      warning("The fitdist function threw an error. Returning NULL.")
-      return(NULL)
+      return(distionary::dst_null())
     }
     params <- fit$estimate
     if (any(is.na(params))) {
-      warning("The fitdist function resulted in NA parameters. Returning NULL.")
-      return(NULL)
+      return(distionary::dst_null())
     }
     return(dst_lp3(params[["mean"]], params[["sd"]], params[["skew"]]))
   }

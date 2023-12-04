@@ -16,5 +16,5 @@ fit_dst_lnorm <- function(x, method = c("mle", "lmom", "mom", "mge")) {
     return(NULL)
   }
   x <- log(x)
-  dst_lnorm(mean(x), var(x))
+  distionary::dst_lnorm(mean(x), stats::var(x))
 }

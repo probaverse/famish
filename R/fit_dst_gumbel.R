@@ -1,7 +1,3 @@
-library(ismev)
-library(rlang)
-library(distionary)
-
 #' Make dst_gumbel
 #' @param location,scale Parameters of the Frechet distribution;
 #' scale must be positive.

@@ -22,9 +22,9 @@ fit_dst <- function(x, name, method, ...) {
   fit_fun <- paste0("fit_dst_", name)
   # A hack to account for some fit_dst functions not allowing for ...
   if (!length(names(dots))) {
-    exec(fit_fun, x, method = method)
+    rlang::exec(fit_fun, x, method = method)
   } else if (names(dots) %in% names(formals(fit_fun))) {
-    exec(fit_fun, x, method = method, !!!dots)
+    rlang::exec(fit_fun, x, method = method, !!!dots)
   } else {
     stop("Not all dots are accepted downstream.")
   }

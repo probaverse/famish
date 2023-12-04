@@ -47,7 +47,7 @@ or `quantile` entry.
 }
 \examples{
 d1 <- distionary::dst_gev(0, 1, 1)
-qf <- distionary::enframe_quantile(d1, at = c(0.1, 0.5, 0.65),
+qf <- distionary::enframe_quantile(d1, at = c(0.1, 0.5, 0.65, 0.7, 0.8, 0.9),
                                    arg_name = "prob")
 
 ## Retrieve the GEV parameters
@@ -55,7 +55,9 @@ matching <- dst_from_quantiles(quantile, prob, data = qf, family = "gev")
 distionary::parameters(matching)
 
 ## Find the closest Log Pearson Type III distribution having these quantiles
-closest_lp3 <- dst_from_quantiles(quantile, prob, data = qf, family = "lp3")
+closest_lp3 <- dst_from_quantiles(
+  quantile, prob, data = qf, family = "pearson3"
+)
 distionary::parameters(closest_lp3)
 
 ## Elicit quantiles from expert judgement, and fit a Pearson Type III

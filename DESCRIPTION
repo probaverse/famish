@@ -15,14 +15,13 @@ LazyData: true
 Imports: 
     distionary,
     fitdistrplus,
+    glue,
     ismev,
     lmom,
-    MASS,
-    mgcv,
-    nlme,
-    pracma,
+    rlang,
     smwrBase,
-    stats
+    stats,
+    vctrs
 RoxygenNote: 7.2.3
 Remotes: 
     vincenzocoia/distionary

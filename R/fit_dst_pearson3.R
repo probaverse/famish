@@ -56,13 +56,11 @@ fit_dst_pearson3 <- function(x, method = c("mge", "lmom")) {
       method = method
     ), silent = TRUE))
     if (inherits(fit, "try-error")) {
-      warning("The fitdist function threw an error. Returning NULL.")
-      return(NULL)
+      return(distionary::dst_null())
     }
     params <- fit$estimate
     if (any(is.na(params))) {
-      warning("The fitdist function resulted in NA parameters. Returning NULL.")
-      return(NULL)
+      return(distionary::dst_null())
     }
     return(distionary::dst_parametric("pearson3",
                                       !!!params, .variable = "continuous"))
