@@ -62,6 +62,7 @@ dst_from_quantiles <- function(quantiles, probs, data, family, n = 1000,
   probs <- rlang::eval_tidy(probs, data = data)
   qp <- as.data.frame(vctrs::vec_recycle_common(quantiles = quantiles,
                                                 probs = probs))
+  if (nrow(qp) == 0) return(distionary::dst_null())
   there <- vctrs::vec_detect_complete(qp)
   qp <- qp[there, , drop = FALSE]
   qp <- qp[order(qp$probs), , drop = FALSE]

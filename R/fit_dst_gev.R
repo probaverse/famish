@@ -6,6 +6,7 @@
 #' @export
 fit_dst_gev <- function(x, method = c("mle", "lmom", "mom", "mge"),
                         diagnostics = FALSE, ...) {
+  if (length(x) == 0) return(distionary::dst_null())
   method <- rlang::arg_match(method)
   if (method == "mle") {
     fit_ismev <- ismev::gev.fit(x, show = FALSE)

@@ -46,6 +46,7 @@ dst_lp3 <- function(meanlog, sdlog, skew) {
 #' @inheritParams fit_dst_norm
 #' @export
 fit_dst_lp3 <- function(x, method = c("mge", "lmom")) {
+  if (length(x) == 0) return(distionary::dst_null())
   method <- rlang::arg_match(method)
   logx <- log(x)
   if (method == "mge") {

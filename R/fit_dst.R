@@ -15,6 +15,7 @@
 #' fit_dst(1:10, "norm", "mle")
 #' @export
 fit_dst <- function(x, name, method, ...) {
+  if (length(x) == 0) return(distionary::dst_null())
   dots <- rlang::list2(...)
   if (name == "empirical") {
     return(distionary::dst_empirical(x))

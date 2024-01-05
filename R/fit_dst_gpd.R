@@ -8,6 +8,7 @@
 #' @export
 fit_dst_gpd <- function(x, method = c("mle", "lmom", "mom", "mge"),
                         diagnostics = FALSE, threshold, ...) {
+  if (length(x) == 0) return(distionary::dst_null())
   method <- rlang::arg_match(method)
   if (method == "mle") {
     if (missing(threshold)) {

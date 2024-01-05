@@ -6,6 +6,7 @@ library(distionary)
 #' @return A distplyr distribution.
 #' @export
 fit_dst_lnorm <- function(x, method = c("mle", "lmom", "mom", "mge")) {
+  if (length(x) == 0) return(distionary::dst_null())
   method <- rlang::arg_match(method)
   if (method != "mle") {
     stop("That method is not implemented yet.")
