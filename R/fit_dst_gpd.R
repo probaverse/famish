@@ -20,7 +20,14 @@ fit_dst_gpd <- function(x, method = c("mle", "lmom", "mom", "mge"),
                 "{threshold}. Either set the threshold at {m} or below, ",
                 "or truncate the data below {threshold}."))
     }
-    fit_ismev <- ismev::gpd.fit(x, threshold = threshold, show = FALSE)
+    fit_ismev <- suppressWarnings(try(
+      ismev::gpd.fit(x, threshold = threshold, show = FALSE),
+      silent = TRUE
+    ))
+    if (inherits(fit_ismev, "try-error")) {
+      warning("Distribution failed to fit. Returning a NULL distribution.")
+      return(distionary::dst_null())
+    }
     if (diagnostics) {
       ismev::gpd.diag(fit_ismev)
     }

@@ -26,7 +26,14 @@ fit_dst_gumbel <- function(x, method = c("mle", "lmom", "mom", "mge"),
   if (length(x) == 0) return(distionary::dst_null())
   method <- rlang::arg_match(method)
   if (method == "mle") {
-    fit_ismev <- ismev::gum.fit(x, show = FALSE)
+    fit_ismev <- suppressWarnings(try(
+      ismev::gum.fit(x, show = FALSE),
+      silent = TRUE
+    ))
+    if (inherits(fit_ismev, "try-error")) {
+      warning("Distribution failed to fit. Returning a NULL distribution.")
+      return(distionary::dst_null())
+    }
     if (diagnostics) {
       print(ismev::gum.diag(fit_ismev))
     }

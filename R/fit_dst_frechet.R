@@ -66,7 +66,12 @@ fit_dst_frechet <- function (xdat, method = c("mle", "lmom", "mom", "mge"),
     z$data <- -log((1 + (xi * (xdat - mu)) / sc)^(-1 / xi))
   }
   z$mle <- x$par
-  z$cov <- solve(x$hessian)
+  invert <- try(solve(x$hessian), silent = TRUE)
+  if (inherits(invert, "try-error")) {
+    warning("Distribution failed to fit. Returning a NULL distribution.")
+    return(distionary::dst_null())
+  }
+  z$cov <- invert
   z$se <- sqrt(diag(z$cov))
   z$vals <- cbind(mu, sc, xi)
   distionary::dst_frechet(z$mle[1], z$mle[2], z$mle[3])

@@ -87,7 +87,14 @@ dst_from_quantiles <- function(quantiles, probs, data, family, n = 1000,
     dst_start <- rlang::exec(paste0("fit_dst_", family), quantiles)
     start <- distionary::parameters(dst_start)
   }
-  res <- fitdistrplus::fitdistcens(dat, family, start = start)
+  res <- suppressWarnings(try(
+    fitdistrplus::fitdistcens(dat, family, start = start),
+    silent = TRUE
+  ))
+  if (inherits(res, "try-error")) {
+    warning("Distribution failed to fit. Returning a NULL distribution.")
+    return(distionary::dst_null())
+  }
   params <- res$estimate
   if (family == "norm") {
     params[["variance"]] <- params[["sd"]]^2

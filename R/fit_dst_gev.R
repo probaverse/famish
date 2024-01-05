@@ -9,7 +9,14 @@ fit_dst_gev <- function(x, method = c("mle", "lmom", "mom", "mge"),
   if (length(x) == 0) return(distionary::dst_null())
   method <- rlang::arg_match(method)
   if (method == "mle") {
-    fit_ismev <- ismev::gev.fit(x, show = FALSE)
+    fit_ismev <- supressWarnings(try(
+      ismev::gev.fit(x, show = FALSE),
+      silent = TRUE
+    ))
+    if (inherits(fit_ismev, "try-error")) {
+      warning("Distribution failed to fit. Returning a NULL distribution.")
+      return(distionary::dst_null())
+    }
     if (diagnostics) {
       ismev::gev.diag(fit_ismev)
     }
