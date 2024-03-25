@@ -23,6 +23,8 @@ method requires specification, like the composite quantile estimator.}
 
 \item{threshold}{Single numeric indicating the left-endpoint of the
 distribution.}
+
+\item{...}{Unused; included here for extensibility.}
 }
 \value{
 A distplyr distribution.

@@ -6,6 +6,9 @@
 \usage{
 dst_lp3(meanlog, sdlog, skew)
 }
+\arguments{
+\item{meanlog, sdlog, skew}{Parameters.}
+}
 \description{
 Log Pearson Type III distribution
 }

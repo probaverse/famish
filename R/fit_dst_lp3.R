@@ -4,17 +4,18 @@
 #' @param x,q Vector of quantiles/magnitudes.
 #' @param n Number of observations to draw.
 #' @param p Vector of probabilities.
-#' @param mean,sd,skew Parameters
+#' @param meanlog,sdlog,skew Parameters.
 #' @rdname LP3
 #' @export
 dlpearson3 <- function(x, meanlog, sdlog, skew) {
-  smwrBase::dlpearsonIII(x, meanlog = meanlog, sdlog = sdlog, skew = skew)
+  retval <- dpearson3(log(x), meanlog, sdlog, skew)/x
+  return(ifelse(x == 0, 0, retval))
 }
 
 #' @rdname LP3
 #' @export
 qlpearson3 <- function(p, meanlog, sdlog, skew) {
-  smwrBase::qlpearsonIII(p, meanlog = meanlog, sdlog = sdlog, skew = skew)
+  exp(qpearson3(p, meanlog, sdlog, skew))
 }
 
 #' @rdname LP3
@@ -22,14 +23,14 @@ qlpearson3 <- function(p, meanlog, sdlog, skew) {
 plpearson3 <- function(q, meanlog, sdlog, skew) {
   if (length(q) == 0) return(q)
   ifelse(
-    q < 0, 0, smwrBase::plpearsonIII(q, meanlog = meanlog, sdlog = sdlog, skew = skew)
+    q < 0, 0, ppearson3(log(q), meanlog, sdlog, skew)
   )
 }
 
 #' @rdname LP3
 #' @export
 rlpearson3 <- function(n, meanlog, sdlog, skew) {
-  smwrBase::rlpearsonIII(n, meanlog = meanlog, sdlog = sdlog, skew = skew)
+  exp(rpearson3(n, meanlog, sdlog, skew))
 }
 
 #' Log Pearson Type III distribution

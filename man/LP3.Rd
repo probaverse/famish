@@ -18,11 +18,11 @@ rlpearson3(n, meanlog, sdlog, skew)
 \arguments{
 \item{x, q}{Vector of quantiles/magnitudes.}
 
+\item{meanlog, sdlog, skew}{Parameters.}
+
 \item{p}{Vector of probabilities.}
 
 \item{n}{Number of observations to draw.}
-
-\item{mean, sd, skew}{Parameters}
 }
 \description{
 p/d/q/r functions for the Log Pearson Type III distribution.

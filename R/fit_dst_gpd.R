@@ -4,6 +4,7 @@
 #' @param diagnostics Logical; print out diagnostic plots of the fit?
 #' @param threshold Single numeric indicating the left-endpoint of the
 #' distribution.
+#' @param ... Unused; included here for extensibility.
 #' @return A distplyr distribution.
 #' @export
 fit_dst_gpd <- function(x, method = c("mle", "lmom", "mom", "mge"),

@@ -1,4 +1,5 @@
 test_that("Distribution matching from quantiles works.", {
+  library(distionary)
   d1 <- distionary::dst_gev(0, 1, 1)
   qf <- distionary::enframe_quantile(d1, at = c(0.1, 0.3, 0.5, 0.65, 0.9),
                                      arg_name = "prob")

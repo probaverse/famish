@@ -27,3 +27,9 @@ rpearson3(n, mean, sd, skew)
 \description{
 p/d/q/r functions for the Pearson Type III distribution.
 }
+\author{
+For now, the function bodies are copied from the USGS smwrBase
+package because it's not available for newer R versions. This will
+be changed in the future, definitely before CRAN submission. (These
+functions will also be moved to somewhere else, like distionary).
+}

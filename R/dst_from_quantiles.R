@@ -29,6 +29,7 @@
 #' If `NA`s are found, they are removed, along with the corresponding `probs`
 #' or `quantile` entry.
 #' @examples
+#' library(distionary)
 #' d1 <- distionary::dst_gev(0, 1, 1)
 #' qf <- distionary::enframe_quantile(d1, at = c(0.1, 0.5, 0.65, 0.7, 0.8, 0.9),
 #'                                    arg_name = "prob")

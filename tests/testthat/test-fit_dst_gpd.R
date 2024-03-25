@@ -1,4 +1,5 @@
 test_that("GPD parameters are realistic.", {
+  library(distionary)
   d <- distionary::dst_gpd(3, 10, -2)
   set.seed(24)
   x <- distionary::realise(d, n = 1000)

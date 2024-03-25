@@ -22,6 +22,7 @@ dst_frechet <- local({
 #' Fit a Frechet (EV2) Distribution
 #'
 #' @inheritParams fit_dst_norm
+#' @param xdat Vector of data to fit the distribution to.
 #' @param maxit For the `optim()` function.
 #' @note I believe I took this code from the ismev package. If I end up
 #' publishing this package, I'll figure something out in terms of referencing/
@@ -74,5 +75,5 @@ fit_dst_frechet <- function (xdat, method = c("mle", "lmom", "mom", "mge"),
   z$cov <- invert
   z$se <- sqrt(diag(z$cov))
   z$vals <- cbind(mu, sc, xi)
-  distionary::dst_frechet(z$mle[1], z$mle[2], z$mle[3])
+  dst_frechet(z$mle[1], z$mle[2], z$mle[3])
 }

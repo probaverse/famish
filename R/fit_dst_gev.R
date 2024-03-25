@@ -2,10 +2,12 @@
 #'
 #' @inheritParams fit_dst_norm
 #' @param diagnostics Logical; print out diagnostic plots of the fit?
+#' @param ... Unused; included here for extensibility.
 #' @return A distplyr distribution.
 #' @export
 fit_dst_gev <- function(x, method = c("mle", "lmom", "mom", "mge"),
                         diagnostics = FALSE, ...) {
+  ellipsis::check_dots_empty()
   if (length(x) == 0) return(distionary::dst_null())
   method <- rlang::arg_match(method)
   if (method == "mle") {
