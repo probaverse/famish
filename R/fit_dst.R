@@ -23,9 +23,29 @@ fit_dst <- function(x, name, method, ...) {
   fit_fun <- paste0("fit_dst_", name)
   # A hack to account for some fit_dst functions not allowing for ...
   if (!length(names(dots))) {
-    rlang::exec(fit_fun, x, method = method)
+
+    tryfit <-suppressWarnings(try(
+      rlang::exec(fit_fun, x, method = method),
+      silent = TRUE
+    ))
+    if (inherits(tryfit, "try-error")) {
+      warning("Distribution failed to fit. Returning a NULL distribution.")
+      return(distionary::dst_null())
+    }
+    return(tryfit)
+
   } else if (names(dots) %in% names(formals(fit_fun))) {
-    rlang::exec(fit_fun, x, method = method, !!!dots)
+
+    tryfit <- suppressWarnings(try(
+      rlang::exec(fit_fun, x, method = method, !!!dots),
+      silent = TRUE
+    ))
+    if (inherits(tryfit, "try-error")) {
+      warning("Distribution failed to fit. Returning a NULL distribution.")
+      return(distionary::dst_null())
+    }
+    return(tryfit)
+
   } else {
     stop("Not all dots are accepted downstream.")
   }
