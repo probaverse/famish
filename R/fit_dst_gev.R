@@ -26,7 +26,14 @@ fit_dst_gev <- function(x, method = c("mle", "lmom", "mom", "mge"),
                                fit_ismev$mle[3]))
   }
   if (method == "lmom") {
-    params <- lmom::pelgev(lmom::samlmu(x))
+    params <- suppressWarnings(try(
+      lmom::pelgev(lmom::samlmu(x)),
+      silent = TRUE
+    ))
+    if (inherits(params, "try-error")) {
+      warning("Distribution failed to fit. Returning a NULL distribution.")
+      return(distionary::dst_null())
+    }
     xi <- -params[[3]]
     if (xi > 0.9) {
       warning("Data may be too heavy-tailed to rely on the method of moments ",
