@@ -15,3 +15,17 @@ test_that("Distribution matching from quantiles works.", {
   expect_equal(eval_quantile(fit, 1:3 / 4), judgement$quantile,
                tolerance = 1e-2)
 })
+
+test_that("For Battle River quantiles", {
+  RPs <- c(2, 5, 10, 20, 25, 50, 100, 200, 500)
+  flows <- c(32, 58, 81, 110, 120, 150, 200, 250, 340)
+  gev <- dst_from_quantiles(flows, 1 - 1 / RPs, family = "gev")
+  # Visual assessment
+  rpgrid <- exp(seq(log(2), log(500), length.out = 100))
+  quantiles <- eval_return(gev, at = rpgrid)
+  plot(log(RPs), log(flows))
+  lines(log(rpgrid), log(quantiles))
+  # Formal assessment
+  flows_hat <- eval_return(gev, at = RPs)
+  expect_equal(log(flows), log(flows_hat), tolerance = 0.01)
+})
