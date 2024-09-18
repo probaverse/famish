@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# famish <img src="man/figures/logo.png" align="right" height="120" alt="" />
+# famish <img src="man/figures/logo.png" align="right" height="134" alt="" />
 
 <!-- badges: start -->
 <!-- badges: end -->

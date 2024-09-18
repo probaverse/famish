@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# famish <img src="man/figures/logo.png" align="right" height="120" alt="" />
+# famish <img src="man/figures/logo.png" align="right" height="134" alt="" />
 
 <!-- badges: start -->
 <!-- badges: end -->
