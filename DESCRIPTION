@@ -1,13 +1,15 @@
-Package: distionaryfit
+Package: famish
 Type: Package
-Title: Estimation of parametric distributions in distionary R package
+Title: Refine a family of distributions to match observations
 Version: 0.1.0
 Authors@R: c(
     person("Vincenzo", "Coia", email = "vincenzo.coia@gmail.com", 
            role = c("aut", "cre"))
   )
-Description: Provides tools to estimate parametric distributions using
-    different methods, outputting a distionary distribution. Also
+Description: famish refines a family of distributions to match real-world data 
+    or specific characteristics, such as a given mean or dataset. From 
+    parameter estimation to maximum likelihood, famish offers tools for 
+    selecting the best-fitting distribution for your needs. famish also
     provides functions for evaluating a distribution's fit to data.
 License: MIT + file LICENSE
 Encoding: UTF-8
