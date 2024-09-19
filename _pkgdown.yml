@@ -1,4 +1,15 @@
 url: https://famish.netlify.app
 template:
   bootstrap: 5
+  includes:
+    in_header: |
+      <!-- Google tag (gtag.js) -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-MCVSE5T8BD"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+      
+        gtag('config', 'G-MCVSE5T8BD');
+      </script>
 
