@@ -7,6 +7,9 @@
 
 [![Codecov test
 coverage](https://codecov.io/gh/probaverse/famish/branch/main/graph/badge.svg)](https://app.codecov.io/gh/probaverse/famish?branch=main)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/famish)](https://CRAN.R-project.org/package=famish)
+[![R-CMD-check](https://github.com/probaverse/famish/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/probaverse/famish/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 <style>
@@ -35,6 +38,9 @@ best fit your needs.
 Currently, famish is a quick-and-dirty package slapped together
 as-needed to tackle project work. Expect major changes.
 </p>
+
+> ⚠️ **Currently, famish is a quick-and-dirty package slapped together
+> as-needed to tackle project work. Expect major changes.**
 
 ## Installation
 
