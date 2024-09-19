@@ -13,7 +13,7 @@
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Refine a family of distributions to match observations">
 <meta name="description" content='The goal of famish is to refine a **fam**ily of distributions to meet specific requirements, often derived from real data. This includes parameter estimation methods like maximum likelihood, as well as partial constraints such as mean matching. The name "famish" reflects the process of narrowing down a broad family of distributions to those that best fit your needs.'>
 <meta property="og:description" content='The goal of famish is to refine a **fam**ily of distributions to meet specific requirements, often derived from real data. This includes parameter estimation methods like maximum likelihood, as well as partial constraints such as mean matching. The name "famish" reflects the process of narrowing down a broad family of distributions to those that best fit your needs.'>
-<meta property="og:image" content="/logo.png">
+<meta property="og:image" content="https://famish.netlify.app/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -70,7 +70,7 @@ Currently, famish is a quick-and-dirty package slapped together as-needed to tac
 </h2>
 <p>Simple example:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">famish</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://probaverse.github.io/famish/" class="external-link">famish</a></span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/fit_dst_norm.html">fit_dst_norm</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; norm parametric dst</span></span>
