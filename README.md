@@ -30,6 +30,14 @@ constraints such as mean matching. The name “famish” reflects the
 process of narrowing down a broad family of distributions to those that
 best fit your needs.
 
+<p class="comment">
+<svg height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0zM12 15.75h.007v.008H12z"/>
+</svg>
+Currently, famish is a quick-and-dirty package slapped together
+as-needed to tackle project work. Expect major changes.
+</p>
+
 ## Installation
 
 You can install the development version of famish from
