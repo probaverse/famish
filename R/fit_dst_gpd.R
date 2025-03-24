@@ -8,18 +8,14 @@
 #' @return A distplyr distribution.
 #' @export
 fit_dst_gpd <- function(x, method = c("mle", "lmom", "mom", "mge"),
-                        diagnostics = FALSE, threshold, ...) {
+                        diagnostics = FALSE, ...) {
+  threshold <- 0
   if (length(x) == 0) return(distionary::dst_null())
   method <- rlang::arg_match(method)
   if (method == "mle") {
-    if (missing(threshold)) {
-      stop("`threshold` parameter is required when fitting via MLE.")
-    }
     m <- min(x, na.rm = TRUE)
     if (threshold > m) {
-      stop(glue::glue("There are data below the specified GPD threshold of ",
-                "{threshold}. Either set the threshold at {m} or below, ",
-                "or truncate the data below {threshold}."))
+      return(distionary::dst_null())
     }
     fit_ismev <- suppressWarnings(try(
       ismev::gpd.fit(x, threshold = threshold, show = FALSE),
@@ -32,20 +28,16 @@ fit_dst_gpd <- function(x, method = c("mle", "lmom", "mom", "mge"),
     if (diagnostics) {
       ismev::gpd.diag(fit_ismev)
     }
-    return(distionary::dst_gpd(threshold, fit_ismev$mle[1], fit_ismev$mle[2]))
+    return(distionary::dst_gpd(fit_ismev$mle[1], fit_ismev$mle[2]))
   }
   if (method == "lmom") {
-    if (!missing(threshold)) {
-      stop("Sorry, but the current implementation of l-moments requires the ",
-           "threshold to not be specified (it will be estimated).")
-    }
-    params <- lmom::pelgpa(lmom::samlmu(x))
+    params <- lmom::pelgpa(lmom::samlmu(x), bound = 0)
     xi <- -params[[3]]
     if (xi > 0.9) {
       warning("Data may be too heavy-tailed to rely on the method of moments ",
               "(the mean may not exist).")
     }
-    return(distionary::dst_gpd(params[[1]], params[[2]], xi))
+    return(distionary::dst_gpd(params[[2]], xi))
   }
   stop("That method has not been implemented yet.")
 }
