@@ -2,10 +2,9 @@
 #'
 #' @inheritParams fit_dst_norm
 #' @param diagnostics Logical; print out diagnostic plots of the fit?
-#' @param threshold Single numeric indicating the left-endpoint of the
-#' distribution.
 #' @param ... Unused; included here for extensibility.
-#' @return A distplyr distribution.
+#' @return A Generalized Pareto Distribution
+#' @details A threshold of zero is used for MLE, and is estimated in "lmom".
 #' @export
 fit_dst_gpd <- function(x, method = c("mle", "lmom", "mom", "mge"),
                         diagnostics = FALSE, ...) {
@@ -28,7 +27,7 @@ fit_dst_gpd <- function(x, method = c("mle", "lmom", "mom", "mge"),
     if (diagnostics) {
       ismev::gpd.diag(fit_ismev)
     }
-    return(distionary::dst_gpd(fit_ismev$mle[1], fit_ismev$mle[2]))
+    return(distionary::dst_gpd(location = threshold, scale = fit_ismev$mle[1], shape = fit_ismev$mle[2]))
   }
   if (method == "lmom") {
     params <- lmom::pelgpa(lmom::samlmu(x), bound = 0)
