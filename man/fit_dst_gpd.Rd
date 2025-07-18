@@ -8,7 +8,6 @@ fit_dst_gpd(
   x,
   method = c("mle", "lmom", "mom", "mge"),
   diagnostics = FALSE,
-  threshold,
   ...
 )
 }
@@ -21,14 +20,14 @@ method requires specification, like the composite quantile estimator.}
 
 \item{diagnostics}{Logical; print out diagnostic plots of the fit?}
 
-\item{threshold}{Single numeric indicating the left-endpoint of the
-distribution.}
-
 \item{...}{Unused; included here for extensibility.}
 }
 \value{
-A distplyr distribution.
+A Generalized Pareto Distribution
 }
 \description{
 Fit GPD distribution
+}
+\details{
+A threshold of zero is used for MLE, and is estimated in "lmom".
 }

@@ -25,7 +25,7 @@ Imports:
     rlang,
     stats,
     vctrs
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Remotes: 
     probaverse/distionary@v0.0.2
 Suggests: 
