@@ -25,10 +25,10 @@ Imports:
     rlang,
     stats,
     vctrs
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Remotes: 
     probaverse/distionary@v0.0.2
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-URL: https://probaverse.github.io/famish/
+URL: https://famish.probaverse.com/
