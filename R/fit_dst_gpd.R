@@ -6,8 +6,10 @@
 #' @return A Generalized Pareto Distribution
 #' @details A threshold of zero is used for MLE, and is estimated in "lmom".
 #' @export
-fit_dst_gpd <- function(x, method = c("mle", "lmom", "mom", "mge"),
-                        diagnostics = FALSE, ...) {
+fit_dst_gp <- function(x, 
+					   method = c("mle", "lmom", "mom", "mge"),
+					   diagnostics = FALSE,
+					   ...) {
   threshold <- 0
   if (length(x) == 0) return(distionary::dst_null())
   method <- rlang::arg_match(method)
@@ -27,7 +29,11 @@ fit_dst_gpd <- function(x, method = c("mle", "lmom", "mom", "mge"),
     if (diagnostics) {
       ismev::gpd.diag(fit_ismev)
     }
-    return(distionary::dst_gpd(location = threshold, scale = fit_ismev$mle[1], shape = fit_ismev$mle[2]))
+    return(distionary::dst_gp(
+      location = threshold, 
+      scale = fit_ismev$mle[1], 
+      shape = fit_ismev$mle[2])
+    )
   }
   if (method == "lmom") {
     params <- lmom::pelgpa(lmom::samlmu(x), bound = 0)
