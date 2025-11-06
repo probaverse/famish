@@ -4,7 +4,12 @@
 \alias{fit_dst_gumbel}
 \title{Fit Gumbel distribution}
 \usage{
-fit_dst_gumbel(x, method = c("mle", "lmom", "mom", "mge"), diagnostics = FALSE)
+fit_dst_gumbel(
+  x,
+  method = c("mle", "lmom", "mom", "mge"),
+  diagnostics = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{Numeric vector from which to fit the distribution.}

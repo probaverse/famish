@@ -2,15 +2,27 @@
 #'
 #' @inheritParams fit_dst_norm
 #' @param diagnostics Logical; print out diagnostic plots of the fit?
+#' @param threshold Numeric; threshold used for the exceedances when fitting
+#'   the GPD by maximum likelihood. Defaults to 0.
 #' @param ... Unused; included here for extensibility.
 #' @return A Generalized Pareto Distribution
 #' @details A threshold of zero is used for MLE, and is estimated in "lmom".
 #' @export
-fit_dst_gp <- function(x, 
-					   method = c("mle", "lmom", "mom", "mge"),
-					   diagnostics = FALSE,
-					   ...) {
-  threshold <- 0
+fit_dst_gpd <- function(x,
+                        method = c("mle", "lmom", "mom", "mge"),
+                        diagnostics = FALSE,
+                        threshold = 0,
+                        ...) {
+  fit_dst(family = "gpd", x = x, method = method,
+          diagnostics = diagnostics, threshold = threshold, ...)
+}
+
+.fit_dst_family_gpd <- function(x,
+                                method = c("mle", "lmom", "mom", "mge"),
+                                diagnostics = FALSE,
+                                threshold = 0,
+                                ...) {
+  ellipsis::check_dots_empty()
   if (length(x) == 0) return(distionary::dst_null())
   method <- rlang::arg_match(method)
   if (method == "mle") {
@@ -30,8 +42,8 @@ fit_dst_gp <- function(x,
       ismev::gpd.diag(fit_ismev)
     }
     return(distionary::dst_gp(
-      location = threshold, 
-      scale = fit_ismev$mle[1], 
+      location = threshold,
+      scale = fit_ismev$mle[1],
       shape = fit_ismev$mle[2])
     )
   }

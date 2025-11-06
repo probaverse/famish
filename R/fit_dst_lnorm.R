@@ -5,9 +5,13 @@ library(distionary)
 #' @inheritParams fit_dst_norm
 #' @return A distplyr distribution.
 #' @export
-fit_dst_lnorm <- function(x, method = c("mle", "lmom", "mom", "mge")) {
-  if (length(x) == 0) return(distionary::dst_null())
-  method <- rlang::arg_match(method)
+fit_dst_lnorm <- function(x, method = c("mle", "lmom", "mom", "mge"),
+                          ...) {
+  fit_dst(family = "lnorm", x = x, method = method, ...)
+}
+
+.fit_dst_family_lnorm <- function(x, method, ...) {
+  ellipsis::check_dots_empty()
   if (method != "mle") {
     stop("That method is not implemented yet.")
   }

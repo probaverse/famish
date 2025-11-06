@@ -127,7 +127,12 @@ dst_pearson3 <- function(mean, sd, skew) {
 #'
 #' @inheritParams fit_dst_norm
 #' @export
-fit_dst_pearson3 <- function(x, method = c("mge", "lmom")) {
+fit_dst_pearson3 <- function(x, method = c("mge", "lmom"), ...) {
+  fit_dst(family = "pearson3", x = x, method = method, ...)
+}
+
+.fit_dst_family_pearson3 <- function(x, method = c("mge", "lmom"), ...) {
+  ellipsis::check_dots_empty()
   if (length(x) == 0) return(distionary::dst_null())
   method <- rlang::arg_match(method)
   if (method == "mge") {

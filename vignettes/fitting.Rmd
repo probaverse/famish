@@ -1,0 +1,13 @@
+---
+title: "fitting"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{fitting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+- The use of the thin wrappers like `fit_dst_gev()` are also useful because they tell you what `methods` are available.
+- Failure cascade:
+  - First, missing data handling (`na_action`).
+  - Then, fitting failure handling (`on_unres`).

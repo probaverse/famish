@@ -5,24 +5,15 @@
 #' @param ... Unused; included here for extensibility.
 #' @return A distplyr distribution.
 #' @export
-fit_dst_gev <- function(x, 
-						method = c("mle", "lmom", "mom", "mge"),
-                        diagnostics = FALSE,
-						...) {
-  ellipsis::check_dots_empty()
-  if (length(x) == 0) {
-  	return(distionary::dst_null())
-  }
-  method <- rlang::arg_match(method)
+fit_dst_gev <- function(x,
+                        method = c("mle", "lmom", "mom", "mge")) {
+  method = rlang::arg_match(method)
+  fit_dst(family = "gev", x = x, method = method)
+}
+
+.fit_dst_family_gev <- function(x, method) {
   if (method == "mle") {
-    fit_ismev <- suppressWarnings(try(
-      ismev::gev.fit(x, show = FALSE),
-      silent = TRUE
-    ))
-    if (inherits(fit_ismev, "try-error")) {
-      warning("Distribution failed to fit. Returning a NULL distribution.")
-      return(distionary::dst_null())
-    }
+    fit_ismev <- ismev::gev.fit(x, show = FALSE)
     if (diagnostics) {
       ismev::gev.diag(fit_ismev)
     }
@@ -30,14 +21,7 @@ fit_dst_gev <- function(x,
                                fit_ismev$mle[3]))
   }
   if (method == "lmom") {
-    params <- suppressWarnings(try(
-      lmom::pelgev(lmom::samlmu(x)),
-      silent = TRUE
-    ))
-    if (inherits(params, "try-error")) {
-      warning("Distribution failed to fit. Returning a NULL distribution.")
-      return(distionary::dst_null())
-    }
+    params <- lmom::pelgev(lmom::samlmu(x))
     xi <- -params[[3]]
     if (xi > 0.9) {
       warning("Data may be too heavy-tailed to rely on the method of moments ",

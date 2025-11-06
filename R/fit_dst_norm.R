@@ -6,7 +6,13 @@
 #' method requires specification, like the composite quantile estimator.
 #' @return A distplyr distribution.
 #' @export
-fit_dst_norm <- function(x, method = c("mle", "lmom", "mom", "mge")) {
+fit_dst_norm <- function(x, method = c("mle", "lmom", "mom", "mge"), ...) {
+  fit_dst(family = "norm", x = x, method = method, ...)
+}
+
+.fit_dst_family_norm <- function(x, method = c("mle", "lmom", "mom", "mge"),
+                                 ...) {
+  ellipsis::check_dots_empty()
   if (length(x) == 0) return(distionary::dst_null())
   method <- rlang::arg_match(method)
   if (method == "mle") {

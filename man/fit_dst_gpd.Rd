@@ -8,6 +8,7 @@ fit_dst_gpd(
   x,
   method = c("mle", "lmom", "mom", "mge"),
   diagnostics = FALSE,
+  threshold = 0,
   ...
 )
 }
@@ -19,6 +20,9 @@ future, this may be allowed to be a fitting function when the estimation
 method requires specification, like the composite quantile estimator.}
 
 \item{diagnostics}{Logical; print out diagnostic plots of the fit?}
+
+\item{threshold}{Numeric; threshold used for the exceedances when fitting
+the GPD by maximum likelihood. Defaults to 0.}
 
 \item{...}{Unused; included here for extensibility.}
 }

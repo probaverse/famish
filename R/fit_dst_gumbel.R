@@ -22,7 +22,16 @@ dst_gumbel <- local({
 #' @return A distplyr distribution.
 #' @export
 fit_dst_gumbel <- function(x, method = c("mle", "lmom", "mom", "mge"),
-                           diagnostics = FALSE) {
+                           diagnostics = FALSE,
+                           ...) {
+  fit_dst(family = "gumbel", x = x, method = method,
+          diagnostics = diagnostics, ...)
+}
+
+.fit_dst_family_gumbel <- function(x, method = c("mle", "lmom", "mom", "mge"),
+                                   diagnostics = FALSE,
+                                   ...) {
+  ellipsis::check_dots_empty()
   if (length(x) == 0) return(distionary::dst_null())
   method <- rlang::arg_match(method)
   if (method == "mle") {
