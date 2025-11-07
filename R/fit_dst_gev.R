@@ -1,15 +1,3 @@
-#' Fit GEV distribution
-#'
-#' @inheritParams fit_dst_norm
-#' @param diagnostics Logical; print out diagnostic plots of the fit?
-#' @param ... Unused; included here for extensibility.
-#' @return A distplyr distribution.
-#' @export
-fit_dst_gev <- function(x,
-                        method = c("mle", "lmom", "mom", "mge")) {
-  method = rlang::arg_match(method)
-  fit_dst(family = "gev", x = x, method = method)
-}
 
 .fit_dst_family_gev <- function(x, method) {
   if (method == "mle") {

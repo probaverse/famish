@@ -4,7 +4,7 @@
 \alias{fit_dst_norm}
 \title{Fit a Normal Distribution}
 \usage{
-fit_dst_norm(x, method = c("mle", "lmom", "mom", "mge"), ...)
+fit_dst_norm(x, method = c("mle", "lmom", "mom", "mge"))
 }
 \arguments{
 \item{x}{Numeric vector from which to fit the distribution.}

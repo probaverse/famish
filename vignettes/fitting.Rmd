@@ -11,3 +11,16 @@ vignette: >
 - Failure cascade:
   - First, missing data handling (`na_action`).
   - Then, fitting failure handling (`on_unres`).
+- The behaviour of the lmom fitdistrplus ismev packages are kept when making their specific wrappers.
+  - Example: `stop` when fitting fails:
+    - "distribution not implemented" is the same as a distribution always failing to fit, and therefore a deliberate `stop()` command has been added for these cases.
+    - The case of incompatible parameters / L-moments also throws an error, although these will never be triggered from the user perspective because of the preliminary check that the data is compatible with some supports of the family.
+      - The manual ones are tested explicitly, though.
+  - Example: when parameters are valid, but results in the data not belonging to the distribution's support, the distribution is still returned. e.g., Uniform distribution.
+
+
+TO DO:
+
+- When lmom returns a valid distribution that does not encompass the data -- does this mean the check should only happen downstream? Or both up and downstream?
+- Should I keep Gumbel distribution option? Just fit with xi = 0.
+- What should I do about the need to fit LP3 by l-moments to its log? Probably make a new `method`, I think.

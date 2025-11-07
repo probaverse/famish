@@ -4,13 +4,7 @@
 \alias{fit_dst_gpd}
 \title{Fit GPD distribution}
 \usage{
-fit_dst_gpd(
-  x,
-  method = c("mle", "lmom", "mom", "mge"),
-  diagnostics = FALSE,
-  threshold = 0,
-  ...
-)
+fit_dst_gpd(x, method = c("mle", "lmom", "mom", "mge"))
 }
 \arguments{
 \item{x}{Numeric vector from which to fit the distribution.}
