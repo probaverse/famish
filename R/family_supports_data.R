@@ -2,25 +2,33 @@
 # the potential support of the given distribution family.
 # Returns TRUE if so, FALSE if not.
 # `x` is not allowed to contain NA.
-x_consistent_with_support <- function(x, family) {
+# See also `distribution_supports_data()` for a harder check based on a 
+# distribution rather than a broader distribution family.
+family_supports_data <- function(x, family) {
   checkmate::assert_numeric(x, any.missing = FALSE)
   checkmate::assert_character(family, len = 1)
   ## Bernoulli first: {0, 1}
-  if (family == "bernoulli") {
+  if (family == "bern") {
     if (any(!(x %in% c(0, 1)))) {
       return(FALSE)
+    } else {
+      return(TRUE)
     }
   }
   ## Beta next: [0, 1]
   if (family == "beta") {
     if (any(x < 0) || any(x > 1)) {
       return(FALSE)
+    } else {
+      return(TRUE)
     }
   }
   ## Degenerate next: {constant}
   if (family == "degenerate") {
     if (length(unique(x)) > 1) {
       return(FALSE)
+    } else {
+      return(TRUE)
     }
   }
   ## Integer-valued next: {0, 1, 2, ...}
@@ -28,6 +36,8 @@ x_consistent_with_support <- function(x, family) {
   if (family %in% integer_valued) {
     if (any(x != floor(x)) || any(x < 0)) {
       return(FALSE)
+    } else {
+      return(TRUE)
     }
   }
   ## Positive-valued continuous next: [0, Inf)
@@ -37,6 +47,8 @@ x_consistent_with_support <- function(x, family) {
   if (family %in% positive_valued) {
     if (any(x < 0)) {
       return(FALSE)
+    } else {
+      return(TRUE)
     }
   }
   ## Real-valued continuous next. Other distributions not listed here are
@@ -46,11 +58,11 @@ x_consistent_with_support <- function(x, family) {
     "cauchy", "gev", "norm", "pearson3", "t", "unif", "empirical", "finite", 
     "null"
   )
-  if (!family %in% real_valued) {
-    stop(
-      "Support checking not implemented for the ", family,
-      " family of distributions."
-    )
+  if (family %in% real_valued) {
+    return(TRUE)
   }
-  TRUE
+  stop(
+    "Checking data compatibility with the '", family, 
+    "' family of distributions is currently not available."
+  )
 }

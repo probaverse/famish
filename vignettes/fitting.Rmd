@@ -18,6 +18,20 @@ vignette: >
       - The manual ones are tested explicitly, though.
   - Example: when parameters are valid, but results in the data not belonging to the distribution's support, the distribution is still returned. e.g., Uniform distribution.
 
+- Testing:
+  - Same test for each method.
+  - Failures:
+    - Data that deliberately trips up the fitting process: e.g., incompatible moments; support issues (either before or after fitting).
+    - Method-distribution pairs that do not exist.
+    - FOR EACH: check the correct failure behaviour (error vs warning + null distribution).
+  - Check convergence to within a specified tolerance of the actual parameters. If tolerance is not reached, increase sample size, but only up to a point. Sometimes fitting fails because the algorithm fails (even after adding more data), but four seeds are used, and at least one is required to pass. Speed of convergence is not tolerated: manual tolerance level can be used in some cases where the parameter is difficult to estimate (like a high df in a Student t distribution).
+- Successfully resolving a distribution under four different datasets that were not taken from the distribution, as a stress test to ensure the fitting still resolves to a distribution.
+- Four different seeds ensures that convergence to within tolerance is less likely to be a fluke.
+- Checking that the parameter estimation is valid: that the estimates are close to the true parameters (generate more data if needed to get closer).
+- Most distributions in distionary are covered, except for hypergeometric.
+- To make make the fitting more hands-off, smart starting points for the parameters are used by moment matching where possible (and where starting values are needed by fitdistrplus).
+- The most flexible fitting package is fitdistrplus, and is fallen back on. Other wrapped packages include lmom (for l-moments based estimation) and ismev (for MLE estimation of the GEV and GP distributions).
+- Support for fitting a Gumbel distribution is also included as a GEV with shape parameter = 0. Family name is "gumbel".
 
 TO DO:
 

@@ -70,6 +70,11 @@ wrapper_lmom <- function(family, x) {
       args = list(bound = 0),
       param_map = \(p) list(p[[2]], -p[[3]])
     ),
+    gumbel = list(
+      name = "pelgum",
+      args = list(),
+      param_map = unname
+    ),
     lnorm = list(
       name = "pelln3",
       args = list(bound = 0),
@@ -98,8 +103,10 @@ wrapper_lmom <- function(family, x) {
   lmom_params <- rlang::exec(fam_lmom$name, sam, !!!fam_lmom$args)
   dst_params <- fam_lmom$param_map(lmom_params)
   dst_fun <- paste0("dst_", family)
-  rlang::exec(
-    dst_fun, !!!dst_params,
-    .env = as.environment("package:distionary")
-  )
+  if (family == "gumbel") {
+    dst_fun <- "dst_gev"
+    dst_params <- append(dst_params, shape = 0)
+  }
+  cll <- rlang::call2(dst_fun, !!!dst_params, .ns = "distionary")
+  exec(cll)
 }

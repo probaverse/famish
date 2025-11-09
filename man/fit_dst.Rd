@@ -7,10 +7,9 @@
 fit_dst(
   family,
   x,
-  method = c("mle", "lmom", "mme", "qme", "mge", "mse"),
+  method = c("mle", "mge", "mse", "lmom"),
   na_action = c("null", "drop", "fail"),
-  on_unres = c("null", "fail"),
-  ...
+  on_unres = c("null", "fail")
 )
 }
 \arguments{
