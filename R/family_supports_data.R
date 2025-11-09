@@ -56,7 +56,7 @@ family_supports_data <- function(x, family) {
   ## (Including Null distribution here because it doesn't care about x).
   real_valued <- c(
     "cauchy", "gev", "norm", "pearson3", "t", "unif", "empirical", "finite", 
-    "null"
+    "gumbel", "null"
   )
   if (family %in% real_valued) {
     return(TRUE)

@@ -64,6 +64,11 @@ test_that("convergence", {
       dst_gev(30, 3, 1),
       dst_gev(10, 1, 2)
     ),
+    gumbel = list(
+      dst_gev(-10, 5, 0),
+      dst_gev(10, 2, 0),
+      dst_gev(0, 3, 0)
+    ),
     geom = list(
       dst_geom(0.3),
       dst_geom(0.9)
@@ -98,11 +103,6 @@ test_that("convergence", {
     bern = list(
       dst_bern(0.2),
       dst_bern(0.9)
-    ),
-    gumbel = list(
-      dst_gev(-10, 5, 0),
-      dst_gev(10, 2, 0),
-      dst_gev(0, 3, 0)
     )
   )
   for (fam in names(test_distributions)) {
