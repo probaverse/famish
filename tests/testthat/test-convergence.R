@@ -6,10 +6,13 @@ test_that("convergence", {
   niter <- 20
   seeds <- 1:4
   ndraw <- 1000
+  all_methods <- available_methods()
   # Make a list of distributions to try fitting. If a special
   # tolerance is needed for a distribution, specify it as a list with
   # the distribution as the first element and the tolerance as
-  # the second element named "tolerance".
+  # the second element named "tolerance",
+  # the third (optional) element named "method" if you only want it for a
+  # specific method.
   test_distributions <- list(
     weibull = list(
       dst_weibull(5, 2),
@@ -56,13 +59,13 @@ test_that("convergence", {
       dst_gp(1, 0),
       dst_gp(2, 0.5),
       dst_gp(3, 1),
-      dst_gp(1, 2)
+      list(dst_gp(1, 2), tolerance = 7, method = "lmom") # moments don't exist
     ),
     gev = list(
       dst_gev(10, 5, 0),
       dst_gev(20, 2, 0.5),
       dst_gev(30, 3, 1),
-      dst_gev(10, 1, 2)
+      list(dst_gev(10, 1, 2), tolerance = 12, method = "lmom") # moments DNE
     ),
     gumbel = list(
       dst_gev(-10, 5, 0),
@@ -105,66 +108,89 @@ test_that("convergence", {
       dst_bern(0.9)
     )
   )
+  if (verbose) {
+    cat("Distributions not being tested found by `available_methods()`:\n")
+    missing_fams <- setdiff(names(all_methods), names(test_distributions))
+    cat("--> ", paste(missing_fams, collapse = ", "))
+    cat("\n\n")
+  }
+  
   for (fam in names(test_distributions)) {
     if (verbose) {
-      print(paste("--------", fam, "--------"))
+      cat("==============", fam, "===============\n")
     }
-    spec <- test_distributions[[fam]]
-    for (d in spec) {
-      if (!is_distribution(d)) {
-        dist_tol <- d[["tolerance"]]
-        d <- d[[1]]
-      } else {
-        dist_tol <- tol
-      }
-      actual <- unlist(parameters(d))
+    distributions <- test_distributions[[fam]]
+    methods <- all_methods[[fam]]
+    for (method in methods) {
       if (verbose) {
-        print(actual)
+        cat("Method: ", method, "\n")
       }
-      num_nulls <- 0
-      for (sd in seeds) {
-        set.seed(sd)
-        x <- numeric()
-        i <- 0
-        diff <- Inf
-        temp_diff <- numeric()
-        temp_para <- list()
-        while (diff > dist_tol && i < niter) {
-          i <- i + 1
-          x <- append(x, realise(d, n = ndraw))
-          fit <- suppressWarnings(fit_dst(fam, x, method = "mle"))
-          estim <- unlist(parameters(fit))
-          # Second `abs` in calculating diff handles NA cases (o.w. diff = -Inf)
-          diff <- suppressWarnings(abs(max(abs(actual - estim))))
-          temp_diff[i] <- diff
-          temp_para[[i]] <- estim
+      for (d in distributions) {
+        if (!is_distribution(d)) {
+          tol_method <- d[["method"]]
+          if (is.null(tol_method) || tol_method == method) {
+            dist_tol <- d[["tolerance"]]
+          } else {
+            dist_tol <- tol
+          }
+          d <- d[[1]]
+        } else {
+          dist_tol <- tol
+        }
+        if (verbose) {
+          cat("Tolerance: ", dist_tol, "\n")
+        }
+        actual <- unlist(parameters(d))
+        if (verbose) {
+          print(actual)
+        }
+        num_nulls <- 0
+        for (sd in seeds) {
+          set.seed(sd)
+          x <- numeric()
+          i <- 0
+          diff <- Inf
+          temp_diff <- numeric()
+          temp_para <- list()
+          while (diff > dist_tol && i < niter) {
+            i <- i + 1
+            x <- append(x, realise(d, n = ndraw))
+            fit <- suppressWarnings(fit_dst(fam, x, method = method))
+            estim <- unlist(parameters(fit))
+            # Second `abs` when calculating `diff` handles NA cases
+            # (otherwise, diff = -Inf)
+            diff <- suppressWarnings(abs(max(abs(actual - estim))))
+            temp_diff[i] <- diff
+            temp_para[[i]] <- estim
+            if (verbose) {
+              cat("|")
+            }
+          }
+          is_null <- pretty_name(fit) == "Null"
+          if (is_null) {
+            # Lack of convergence not allowed. If an issue, 
+            # (e.g., convergence not reached in time and the parameter is 
+            # "difficult" to estimate), change the tolerance. 
+            # This test is useful if, for example, there's a 
+            # left-endpoint parameter that jumps left and right of the
+            # data minimum, and possibly ends the loop to the right (with,
+            # for example, 0 likelihood).
+            expect_true(all(is.infinite(temp_diff)))
+          } else {
+            expect_lt(diff, dist_tol)
+          }
+          num_nulls <- num_nulls + is_null
           if (verbose) {
-            cat("|")
+            cat("\n")
           }
         }
         if (verbose) {
           cat("\n")
+          cat("Number of Null Distributions: ", num_nulls, "\n")
+          cat("- - - - - - - - - - - - - - - - - - - -\n")
         }
-        is_null <- pretty_name(fit) == "Null"
-        if (is_null) {
-          # Lack of convergence not allowed. If an issue, 
-          # (e.g., convergence not reached in time and the parameter is 
-          # "difficult" to estimate), change the tolerance. 
-          # This test is useful if, for example, there's a 
-          # left-endpoint parameter that jumps left and right of the
-          # data minimum, and possibly ends the loop to the right (with,
-          # for example, 0 likelihood).
-          expect_true(all(is.infinite(temp_diff)))
-        } else {
-          expect_lt(diff, dist_tol)
-        }
-        num_nulls <- num_nulls + is_null
+        expect_lt(num_nulls, 4)
       }
-      if (verbose) {
-        print(paste("Number of Null Distributions:", num_nulls))
-        cat("\n")
-      }
-      expect_lt(num_nulls, 4)
     }
   }
 })

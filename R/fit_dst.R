@@ -20,7 +20,7 @@
 #' @export
 fit_dst <- function(family,
                     x,
-                    method = c("mle", "mge", "mse", "lmom"),
+                    method = c("mle", "mge", "mme", "lmom", "lmom-log"),
                     na_action = c("null", "drop", "fail"),
                     on_unres = c("null", "fail")) {
   checkmate::assert_character(family, len = 1)
@@ -56,30 +56,48 @@ fit_dst <- function(family,
       distionary::dst_null()
     }
   }
-  ## -> Quick win: empty data means unresolved distribution.
-  if (length(x) == 0) {
-    return(unresolved())
+  
+  ## Warn if the method is not supported for the family.
+  supported <- supported_combination(family = family, method = method)
+  if (!supported) {
+    warning(
+      paste0(
+        "The method '", method, "' is not supported for the family '",
+        family, "'. Continuing the fitting attempt regardless."
+      )
+    )
   }
-  ## -> Quick win: The family may not be able to support the data.
-  consistent_support <- family_supports_data(x = x, family = family)
-  if (!consistent_support) {
-    return(unresolved())
-  }
-  ## END special failure handling (remainder occurs after fitting attempt).
   
   ## BEGIN special dispatching
+  if (length(x) == 0) { # Quick win
+    return(unresolved())
+  }
+  # consistent_support <- family_supports_data(x = x, family = family)
+  # if (!consistent_support) { # Quick win
+  #   return(unresolved())
+  # }
   if (family == "null") {
     return(distionary::dst_null())
   }
   if (family %in% c("empirical", "finite")) {
     return(distionary::dst_empirical(x))
   }
-  if (family == "degenerate") {
-    x <- unique(x)  # Already must be of length 1 due to support check.
-    return(distionary::dst_degenerate(x))
+  if (family == "degenerate" && method == "mle") {
+    x <- unique(x)
+    if (length(x) == 1) {
+      return(distionary::dst_degenerate(x))
+    } else {
+      return(unresolved())
+    }
   }
-  if (family %in% c("hyper", "binom")) {
-    warning("Fitting Hypergeometric and Binomial distributions is not supported yet.")
+  if (family %in% c("gp", "gev", "gumbel") && method == "mle") {
+    res <- try(wrapper_ismev(family, x = x), silent = TRUE)
+    if (inherits(res, "try-error")) {
+      return(unresolved())
+    }
+    return(res)
+  }
+  if (family == "cauchy" && method == "mme") {
     return(unresolved())
   }
   if (method == "lmom") {
@@ -89,12 +107,37 @@ fit_dst <- function(family,
     }
     return(res)
   }
-  if (method == "mle" && family %in% c("gp", "gev", "gumbel")) {
-    res <- try(wrapper_ismev(family, x = x), silent = TRUE)
-    if (inherits(res, "try-error")) {
-      return(unresolved())
+  if (method == "lmom-log") {
+    if (family == "lp3") {
+      res <- try(wrapper_lmom(family = "pearson3", x = log(x)), silent = TRUE)
+      if (inherits(res, "try-error")) {
+        return(unresolved())
+      }
+      theta <- distionary::parameters(res)
+      location <- theta[["location"]]
+      scale <- theta[["scale"]]
+      shape <- theta[["shape"]]
+      params <- list(
+        meanlog = location + scale * shape,
+        sdlog = scale * sqrt(shape),
+        skew = 2 / sqrt(shape)
+      )
+      return(distionary::dst_lp3(
+        meanlog = params[["meanlog"]],
+        sdlog = params[["sdlog"]],
+        skew = params[["skew"]]
+      ))
     }
-    return(res)
+    if (family == "lnorm") {
+      res <- try(wrapper_lmom(family = "norm", x = log(x)), silent = TRUE)
+      if (inherits(res, "try-error")) {
+        return(unresolved())
+      }
+      params <- distionary::parameters(res)
+      params <- list(meanlog = params[["mean"]], sdlog = params[["sd"]])
+      return(distionary::dst_lnorm(params[[1]], params[[2]]))
+    }
+    return(unresolved())
   }
   
   ## Fall back to fitdistrplus wrapping
@@ -109,9 +152,9 @@ fit_dst <- function(family,
   ## Last check that the distribution can accommodate the support
   ## (sometimes a distribution can be fit that results in a support that
   ##  cannot accommodate the data).
-  consistent_support2 <- distribution_supports_data(x = x, distribution = res)
-  if (!consistent_support2) {
-    return(unresolved())
-  }
+  # consistent_support2 <- distribution_supports_data(x = x, distribution = res)
+  # if (!consistent_support2) {
+  #   return(unresolved())
+  # }
   res
 }

@@ -70,12 +70,12 @@ wrapper_fitdistrplus <- function(family, x, method) {
     }
   )
   
-  fit <- fitdistrplus::fitdist(
+  fit <- suppressMessages(fitdistrplus::fitdist(
     data = x,
     distr = family,
     method = method,
     start = start
-  )
+  ))
   params <- fit$estimate
   pmap <- mappings[[family]]
   if (!is.null(pmap)) {

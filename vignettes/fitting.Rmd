@@ -7,6 +7,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+- Fit a distribution with smart defaults. Simple wrapper with little options available for now, but the package has big goals.
+
 - The use of the thin wrappers like `fit_dst_gev()` are also useful because they tell you what `methods` are available.
 - Failure cascade:
   - First, missing data handling (`na_action`).
@@ -17,6 +19,13 @@ vignette: >
     - The case of incompatible parameters / L-moments also throws an error, although these will never be triggered from the user perspective because of the preliminary check that the data is compatible with some supports of the family.
       - The manual ones are tested explicitly, though.
   - Example: when parameters are valid, but results in the data not belonging to the distribution's support, the distribution is still returned. e.g., Uniform distribution.
+
+- Warning happens when a distribution is not supported.
+
+- Why some combinations are not supported:
+  - "mse": the estimate does not appear to be consistent (i.e. does not converge to the true parameter as sample size increases) for many distributions, and is therefore excluded.
+  
+- Note to self: gumbel fit by mge is not included because didn't want to export p/d/q gumbel functions. When done in distionary, can add it back in.
 
 - Testing:
   - Same test for each method.
@@ -33,8 +42,9 @@ vignette: >
 - The most flexible fitting package is fitdistrplus, and is fallen back on. Other wrapped packages include lmom (for l-moments based estimation) and ismev (for MLE estimation of the GEV and GP distributions).
 - Support for fitting a Gumbel distribution is also included as a GEV with shape parameter = 0. Family name is "gumbel".
 
+- scoring functions (uscore, etc) are included so you can compare the fitted distribution with empirical scores.
+
 TO DO:
 
-- When lmom returns a valid distribution that does not encompass the data -- does this mean the check should only happen downstream? Or both up and downstream?
-- Should I keep Gumbel distribution option? Just fit with xi = 0.
+- Family wrappers: complete list and ensure proper methods are included.
 - What should I do about the need to fit LP3 by l-moments to its log? Probably make a new `method`, I think.

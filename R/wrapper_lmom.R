@@ -58,17 +58,17 @@ wrapper_lmom <- function(family, x) {
     gamma = list(
       name = "pelgam",
       args = list(),
-      param_map = unname
+      param_map = \(p) list(shape = p[["alpha"]], rate = 1 / p[["beta"]])
     ),
     gev = list(
       name = "pelgev",
       args = list(),
-      param_map = \(p) list(p[[1]], p[[2]], -p[[3]])
+      param_map = \(p) list(location = p[[1]], scale = p[[2]], shape = -p[[3]])
     ),
     gp = list(
       name = "pelgpa",
       args = list(bound = 0),
-      param_map = \(p) list(p[[2]], -p[[3]])
+      param_map = \(p) list(scale = p[[2]], shape = -p[[3]])
     ),
     gumbel = list(
       name = "pelgum",
@@ -78,7 +78,7 @@ wrapper_lmom <- function(family, x) {
     lnorm = list(
       name = "pelln3",
       args = list(bound = 0),
-      param_map = \(p) list(p[[2]], p[[3]])
+      param_map = \(p) list(meanlog = p[[2]], sdlog = p[[3]])
     ),
     norm = list(
       name = "pelnor",
@@ -88,25 +88,34 @@ wrapper_lmom <- function(family, x) {
     pearson3 = list(
       name = "pelpe3",
       args = list(),
-      param_map = unname
+      param_map = function(p) {
+        mu <- p[["mu"]]
+        sigma <- p[["sigma"]]
+        gamma <- p[["gamma"]]
+        shape <- 4 / gamma^2
+        scale <- sigma * abs(gamma) / 2
+        location <- mu - (2 * sigma) / gamma
+        list(location = location, scale = scale, shape = shape)
+      }
     ),
     weibull = list(
       name = "pelwei",
       args = list(bound = 0),
-      param_map = \(p) list(p[[2]], p[[3]])
+      param_map = \(p) list(shape = p[[3]], scale = p[[2]])
     )
   )
   fam_lmom <- mapping[[family]]
   if (is.null(fam_lmom)) {
     stop("Fitting by L-moments not implemented for family '", family, "'.")
   }
-  lmom_params <- rlang::exec(fam_lmom$name, sam, !!!fam_lmom$args)
+  lmom_call <- rlang::call2(fam_lmom$name, sam, !!!fam_lmom$args, .ns = "lmom")
+  lmom_params <- eval(lmom_call)
   dst_params <- fam_lmom$param_map(lmom_params)
   dst_fun <- paste0("dst_", family)
   if (family == "gumbel") {
     dst_fun <- "dst_gev"
-    dst_params <- append(dst_params, shape = 0)
+    dst_params <- append(dst_params, c(shape = 0))
   }
   cll <- rlang::call2(dst_fun, !!!dst_params, .ns = "distionary")
-  exec(cll)
+  eval(cll)
 }

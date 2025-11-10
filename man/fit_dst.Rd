@@ -7,7 +7,7 @@
 fit_dst(
   family,
   x,
-  method = c("mle", "mge", "mse", "lmom"),
+  method = c("mle", "mge", "mme", "lmom", "lmom-log"),
   na_action = c("null", "drop", "fail"),
   on_unres = c("null", "fail")
 )
