@@ -88,6 +88,11 @@ test_that("convergence", {
       dst_exp(3),
       dst_exp(9)
     ),
+    degenerate = list(
+      dst_degenerate(5),
+      dst_degenerate(-2),
+      dst_degenerate(0)
+    ),
     chisq = list(
       dst_chisq(3),
       dst_chisq(10)
@@ -108,12 +113,13 @@ test_that("convergence", {
       dst_bern(0.9)
     )
   )
+  missing_fams <- sort(setdiff(names(all_methods), names(test_distributions)))
   if (verbose) {
     cat("Distributions not being tested found by `available_methods()`:\n")
-    missing_fams <- setdiff(names(all_methods), names(test_distributions))
     cat("--> ", paste(missing_fams, collapse = ", "))
     cat("\n\n")
   }
+  expect_true(all(missing_fams == c("empirical", "finite", "null")))
   
   for (fam in names(test_distributions)) {
     if (verbose) {

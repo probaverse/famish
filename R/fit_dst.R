@@ -30,7 +30,7 @@ fit_dst <- function(family,
   on_unres <- rlang::arg_match(on_unres)
   
   ## START Failure handling
-  ## Step 1: missing data.
+  ## Step 1: Missing data.
   if (anyNA(x)) {
     if (na_action == "null") {
       return(distionary::dst_null())
@@ -41,8 +41,7 @@ fit_dst <- function(family,
     x <- x[!is.na(x)]
   }
   
-  ## Step 2: cannot resolve a single distribution.
-  ## -> Define unresolved behaviour.
+  ## Step 2: Cannot resolve a single distribution. Define unresolved behaviour.
   if (on_unres == "fail") {
     unresolved <- function() {
       stop("Failed to resolve a distribution.")
@@ -72,10 +71,6 @@ fit_dst <- function(family,
   if (length(x) == 0) { # Quick win
     return(unresolved())
   }
-  # consistent_support <- family_supports_data(x = x, family = family)
-  # if (!consistent_support) { # Quick win
-  #   return(unresolved())
-  # }
   if (family == "null") {
     return(distionary::dst_null())
   }
@@ -139,8 +134,18 @@ fit_dst <- function(family,
     }
     return(unresolved())
   }
-  
-  ## Fall back to fitdistrplus wrapping
+  if (method == "mle") {
+    ## Sometimes, fitdistrplus returns a distribution for MLE when the MLE
+    ## does not exist. This happens when no members of the distribution family
+    ## have a support that can accommodate the data.
+    ## Here, this failure is triggered before fitdistrplus is called to avoid
+    ## such issues.
+    consistent_support <- family_supports_data(x = x, family = family)
+    if (!is.null(consistent_support) && !consistent_support) {
+      return(unresolved())
+    }
+  }
+  ## Default to fitdistrplus wrapping
   res <- try(
     wrapper_fitdistrplus(family = family, x = x, method = method),
     silent = TRUE
@@ -148,13 +153,5 @@ fit_dst <- function(family,
   if (inherits(res, "try-error")) {
     return(unresolved())
   }
-  
-  ## Last check that the distribution can accommodate the support
-  ## (sometimes a distribution can be fit that results in a support that
-  ##  cannot accommodate the data).
-  # consistent_support2 <- distribution_supports_data(x = x, distribution = res)
-  # if (!consistent_support2) {
-  #   return(unresolved())
-  # }
   res
 }

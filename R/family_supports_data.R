@@ -4,6 +4,7 @@
 # `x` is not allowed to contain NA.
 # See also `distribution_supports_data()` for a harder check based on a 
 # distribution rather than a broader distribution family.
+# Returns NULL if the family is not recognized/supported.
 family_supports_data <- function(x, family) {
   checkmate::assert_numeric(x, any.missing = FALSE)
   checkmate::assert_character(family, len = 1)
@@ -61,8 +62,5 @@ family_supports_data <- function(x, family) {
   if (family %in% real_valued) {
     return(TRUE)
   }
-  stop(
-    "Checking data compatibility with the '", family, 
-    "' family of distributions is currently not available."
-  )
+  NULL
 }

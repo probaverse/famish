@@ -70,13 +70,16 @@ wrapper_fitdistrplus <- function(family, x, method) {
     }
   )
   
-  fit <- suppressMessages(fitdistrplus::fitdist(
+  fit <- fitdistrplus::fitdist(
     data = x,
     distr = family,
     method = method,
     start = start
-  ))
+  )
   params <- fit$estimate
+  if (anyNA(params)) {
+    stop("Fitting resulted in NA parameters, and therefore failed to fit.")
+  }
   pmap <- mappings[[family]]
   if (!is.null(pmap)) {
     params <- pmap(params)
