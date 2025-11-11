@@ -1,4 +1,4 @@
 # License
 
-    YEAR: 2023
-    COPYRIGHT HOLDER: distionaryfit authors
+    YEAR: 2025
+    COPYRIGHT HOLDER: famish authors
