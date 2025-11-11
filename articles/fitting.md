@@ -97,6 +97,4 @@
 
 TO DO:
 
-- Family wrappers: complete list and ensure proper methods are included.
-- What should I do about the need to fit LP3 by l-moments to its log?
-  Probably make a new `method`, I think.
+- ref for manual fitting methods
