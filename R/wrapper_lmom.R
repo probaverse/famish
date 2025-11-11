@@ -58,17 +58,23 @@ wrapper_lmom <- function(family, x) {
     gamma = list(
       name = "pelgam",
       args = list(),
-      param_map = \(p) list(shape = p[["alpha"]], rate = 1 / p[["beta"]])
+      param_map = function(p) {
+        list(shape = p[["alpha"]], rate = 1 / p[["beta"]])
+      }
     ),
     gev = list(
       name = "pelgev",
       args = list(),
-      param_map = \(p) list(location = p[[1]], scale = p[[2]], shape = -p[[3]])
+      param_map = function(p) {
+        list(location = p[[1]], scale = p[[2]], shape = -p[[3]])
+      }
     ),
     gp = list(
       name = "pelgpa",
       args = list(bound = 0),
-      param_map = \(p) list(scale = p[[2]], shape = -p[[3]])
+      param_map = function(p) {
+        list(scale = p[[2]], shape = -p[[3]])
+      }
     ),
     gumbel = list(
       name = "pelgum",
@@ -78,7 +84,9 @@ wrapper_lmom <- function(family, x) {
     lnorm = list(
       name = "pelln3",
       args = list(bound = 0),
-      param_map = \(p) list(meanlog = p[[2]], sdlog = p[[3]])
+      param_map = function(p) {
+        list(meanlog = p[[2]], sdlog = p[[3]])
+      }
     ),
     norm = list(
       name = "pelnor",
@@ -101,7 +109,9 @@ wrapper_lmom <- function(family, x) {
     weibull = list(
       name = "pelwei",
       args = list(bound = 0),
-      param_map = \(p) list(shape = p[[3]], scale = p[[2]])
+      param_map = function(p) {
+        list(shape = p[[3]], scale = p[[2]])
+      }
     )
   )
   fam_lmom <- mapping[[family]]

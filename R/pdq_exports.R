@@ -2,38 +2,16 @@
 # and log Pearson type III distribution parameterised by location, scale and
 # shape (copied, for now, from the distionary package), to make them
 # available to `fitdistrplus::fitdist()` when fitting that family.
-ppearson3 <- function(q,
-                      location,
-                      scale,
-                      shape,
-                      lower.tail = TRUE,
-                      log.p = FALSE) {
-  stats::pgamma(
-    q - location,
-    scale = scale,
-    shape = shape,
-    lower.tail = lower.tail,
-    log.p = log.p
-  )
+ppearson3 <- function(q, location, scale, shape) {
+  stats::pgamma(q - location, scale = scale, shape = shape)
 }
 
 dpearson3 <- function(x, location, scale, shape, log = FALSE) {
   stats::dgamma(x - location, scale = scale, shape = shape, log = log)
 }
 
-qpearson3 <- function(p,
-                      location,
-                      scale,
-                      shape,
-                      lower.tail = TRUE,
-                      log.p = FALSE) {
-  location + stats::qgamma(
-    p,
-    shape = shape,
-    scale = scale,
-    lower.tail = lower.tail,
-    log.p = log.p
-  )
+qpearson3 <- function(p, location, scale, shape) {
+  location + stats::qgamma(p, shape = shape, scale = scale)
 }
 
 plp3 <- function(q, meanlog, sdlog, skew) {
@@ -75,4 +53,11 @@ dgumbel <- function(x, location, scale) {
 
 qgumbel <- function(p, location, scale) {
   distionary::qgev(p, location, scale, shape = 0)
+}
+
+dgev <- function(q, location, scale, shape) {
+  if (scale <= 0) {
+    return(rep(0, length(q)))  # For likelihood calculation purposes.
+  }
+  distionary::dgev(q, location = location, scale = scale, shape = shape)
 }

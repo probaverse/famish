@@ -13,33 +13,83 @@ fit_dst(
 )
 }
 \arguments{
-\item{family}{Name of the distribution, like `"norm"` or `"gev"`.}
+\item{family}{Name of the target distribution family, such as `"norm"`,
+`"gev"`, `"pois"`, or any other entry recognised by
+\code{available_methods()}. Custom families supplied via additional
+`fit_dst_*()` helpers are also supported.}
 
-\item{x}{Numeric vector to fit the distribution to.}
+\item{x}{Numeric vector containing the observations to fit. Missing values
+are handled according to `na_action`.}
 
-\item{method}{Estimation method to use, like `"mle"` or `"lmom"`.
-For now, you'll have to look at the documentation of the specific fitting
-functions to see examples.}
+\item{method}{Estimation method to use. Valid choices include `"mle"`,
+`"mge"`, `"mme"`, `"lmom"`, and `"lmom-log"`. The default is to match
+against this set and use the first compatible option for the specified
+`family`.}
 
-\item{na_action}{How to resolve missing or invalid observations in `x`.
-One of `"null"`, `"drop"`, or `"fail"`.}
+\item{na_action}{Strategy for dealing with `NA` or otherwise invalid values
+in `x`. `"null"` returns `distionary::dst_null()`, `"drop"` silently removes
+missing observations before fitting, and `"fail"` aborts with an error.}
 
-\item{on_unres}{Behaviour when fitting does not resolve to a single
-distribution. One of `"null"` or `"fail"`.}
+\item{on_unres}{Behaviour when no distribution can be resolved for the
+supplied inputs. `"null"` (default) yields a `distionary::dst_null()`
+distribution with a warning, whereas `"fail"` propagates an error.}
 }
 \value{
-A probability distribution.
+A `distionary::distribution` object encapsulating the fitted model
+  and its parameters.
 }
 \description{
-Fits a probability distribution by calling a specific `fit_dst_*()`
-function. Still a quick-and-dirty implementation.
+Estimation of probability distributions available in the 'distionary'
+package. Wraps the 'lmom' package when fitting by L-moments, 
+the 'ismev' package when fitting the GP/GEV/Gumbel by MLE, and the
+'fitdistrplus' package for other combinations.
 }
+\details{
+The fitting workflow proceeds in the following order:
+\enumerate{
+  \item Input validation and missing-value handling governed by `na_action`.
+  \item A compatibility check via \code{supported_combination()} to warn
+    about unsupported `family` / `method` pairs.
+  \item Specialised dispatch for known fast paths, including empirical and
+    finite distributions, degenerate MLE fits, extreme-value families backed
+    by `ismev`, and L-moment workflows (including log-L-moment transforms).
+  \item A final fallback to \code{wrapper_fitdistrplus()} for general-purpose
+    maximum-likelihood or moment-based estimation.
+}
+If every attempt fails, the function either returns `dst_null()` or raises an
+error depending on `on_unres`.
+}
+\section{Supported combinations}{
+
+A full list of families and their compatible estimation methods is available
+via \code{available_methods()}. The helper respects bespoke wrappers
+contained in `fit_dst-family_wrappers.R` and will automatically pick them up
+when new families are registered.
+}
+
+\section{Missing data and unresolved fits}{
+
+When `na_action` is `"drop"`, the function operates on the subset of `x`
+without missing values. For empty inputs or combinations that cannot be
+resolved, `on_unres` determines whether a `distionary::dst_null()` object is
+returned or an error is thrown. This behaviour is particularly relevant for
+heavy-tailed families (e.g. `"cauchy"`) where certain methods are known to
+fail.
+}
+
 \examples{
 fit_dst("norm", x = 1:10, method = "mle")
 fit_dst("gev", x = c(1, 4, 3, NA, 5), method = "lmom", na_action = "drop")
 fit_dst("pois", x = c(1, 4, 3, NA, 5), na_action = "null")
 
-# If a distribution fails to fit, `on_unres` is "null" by default, returning
-# a Null distribution.
-fit_dst("cauchy", x = 1:10, method = "lmom")  # Cauchy moments don't exist.
+# Force an error when an unresolved fit would otherwise return a Null dst.
+try(fit_dst("cauchy", x = 1:10, method = "lmom", on_unres = "fail"))
+
+# Inspect the methods supported for a given family.
+available_methods()[["gev"]]
+}
+\seealso{
+\code{available_methods()}, \code{supported_combination()},
+  `fit_dst_*()` helpers, \code{distionary::dst_null()},
+  \code{distionary::dst_empirical()}
 }
