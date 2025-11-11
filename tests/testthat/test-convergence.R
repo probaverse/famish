@@ -123,7 +123,7 @@ test_that("Estimated parameters converge to true parameters.", {
   
   for (fam in names(test_distributions)) {
     if (verbose) {
-      cat("==============", fam, "===============\n")
+      cat("====================", fam, "=====================\n")
     }
     distributions <- test_distributions[[fam]]
     methods <- all_methods[[fam]]
@@ -191,7 +191,7 @@ test_that("Estimated parameters converge to true parameters.", {
         if (verbose) {
           cat("\n")
           cat("Number of Null Distributions: ", num_nulls, "\n")
-          cat("- - - - - - - - - - - - - - - - - - - -\n")
+          cat("- - - - - - - - - - - - - - - - -\n")
         }
         expect_lt(num_nulls, 4)
       }

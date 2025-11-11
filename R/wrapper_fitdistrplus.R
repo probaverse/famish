@@ -17,6 +17,8 @@ wrapper_fitdistrplus <- function(family, x, method) {
   }
   ## ------- Starting values -------
   start <- NULL
+  lower <- -Inf
+  upper <- Inf
   if (family == "t") {
     v <- stats::var(x)
     start <- 2 * v / (v - 1)
@@ -24,6 +26,7 @@ wrapper_fitdistrplus <- function(family, x, method) {
       start <- 100
     }
     start <- list(df = start)
+    lower <- 0
   }
   if (family == "pearson3") {
     mu <- mean(x)
@@ -36,6 +39,7 @@ wrapper_fitdistrplus <- function(family, x, method) {
       location <- min(x) - 1e-10
     }
     start <- list(location = location, scale = scale, shape = shape)
+    lower <- c(-Inf, 0, 0)
   }
   if (family == "lp3") {
     logx <- log(x)
@@ -43,6 +47,7 @@ wrapper_fitdistrplus <- function(family, x, method) {
     sd <- stats::sd(logx)
     skew <- mean(((logx - mu) / sd)^3)
     start <- list(meanlog = mu, sdlog = sd, skew = skew)
+    lower <- c(-Inf, 0, 0)
   }
   if (family == "f") {
     mu <- mean(x)
@@ -56,10 +61,12 @@ wrapper_fitdistrplus <- function(family, x, method) {
       d1 <- 100
     }
     start <- list(df1 = d1, df2 = d2)
+    lower <- c(0, 0)
   }
   if (family == "chisq") {
     mu <- mean(x)
     start <- list(df = mu)
+    lower <- 0
   }
   if (family %in% c("gev", "gp", "gumbel")) {
     prefit <- wrapper_ismev(family = family, x = x)
@@ -81,7 +88,8 @@ wrapper_fitdistrplus <- function(family, x, method) {
     data = x,
     distr = family,
     method = method,
-    start = start
+    start = start,
+    lower = lower
   ))
   params <- fit$estimate
   if (anyNA(params)) {
