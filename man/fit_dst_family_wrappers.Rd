@@ -80,19 +80,19 @@ fit_dst_weibull(x, method = c("mle", "mge", "lmom"), ...)
 \item{x}{Numeric vector of observations to fit.}
 
 \item{method}{Estimation method to use. Available options depend on the
-distribution family and are enforced via `rlang::arg_match()`.}
+distribution family and are enforced via \code{rlang::arg_match()}.}
 
-\item{...}{Additional arguments passed on to `fit_dst()`.}
+\item{...}{Additional arguments passed on to \code{fit_dst()}.}
 }
 \value{
 A distribution object made by the 'distionary' package.
 }
 \description{
-Convenience wrappers around `fit_dst()` for each distribution family
+Convenience wrappers around \code{fit_dst()} for each distribution family
 supported by the package.
 }
 \details{
-Each helper simply forwards to `fit_dst()` with the associated `family`
+Each helper simply forwards to \code{fit_dst()} with the associated \code{family}
 value indicated by the function suffix.
 
 Some families do not have a unique fitting method where it is not applicable.
@@ -113,5 +113,5 @@ fit_dst_lnorm(x, method = "lmom", na_action = "drop")
 fit_dst_lnorm(x, method = "lmom-log", na_action = "drop")
 }
 \seealso{
-[fit_dst()]
+\code{\link[=fit_dst]{fit_dst()}}
 }

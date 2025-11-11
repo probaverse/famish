@@ -6,68 +6,105 @@
 #' 'fitdistrplus' package for other combinations.
 #'
 #' @param family Name of the target distribution family, such as `"norm"`,
-#'   `"gev"`, `"pois"`, or any other entry recognised by
-#'   \code{available_methods()}. Custom families supplied via additional
-#'   `fit_dst_*()` helpers are also supported.
-#' @param x Numeric vector containing the observations to fit. Missing values
-#'   are handled according to `na_action`.
+#'   `"gev"`, `"pois"`. See details. Character vector of length 1.
+#' @param x Numeric vector containing the observations to fit.
 #' @param method Estimation method to use. Valid choices include `"mle"`,
-#'   `"mge"`, `"mme"`, `"lmom"`, and `"lmom-log"`. The default is to match
-#'   against this set and use the first compatible option for the specified
-#'   `family`.
-#' @param na_action Strategy for dealing with `NA` or otherwise invalid values
-#'   in `x`. `"null"` returns `distionary::dst_null()`, `"drop"` silently removes
-#'   missing observations before fitting, and `"fail"` aborts with an error.
+#'   `"mge"`, `"mme"`, `"lmom"`, and `"lmom-log"`. The default is `"mle"`.
+#' @param na_action Strategy for dealing with `NA` values in `x`.
+#'   `"null"` returns a Null distribution (`distionary::dst_null()`);
+#'   `"drop"` silently removes missing observations before fitting; and 
+#'   `"fail"` aborts with an error.
 #' @param on_unres Behaviour when no distribution can be resolved for the
-#'   supplied inputs. `"null"` (default) yields a `distionary::dst_null()`
-#'   distribution with a warning, whereas `"fail"` propagates an error.
+#'   supplied inputs. `"null"` (default) yields a Null distribution
+#'   (`distionary::dst_null()`) distribution with a warning,
+#'   whereas `"fail"` propagates an error.
 #'
 #' @details
-#' The fitting workflow proceeds in the following order:
-#' \enumerate{
-#'   \item Input validation and missing-value handling governed by `na_action`.
-#'   \item A compatibility check via \code{supported_combination()} to warn
-#'     about unsupported `family` / `method` pairs.
-#'   \item Specialised dispatch for known fast paths, including empirical and
-#'     finite distributions, degenerate MLE fits, extreme-value families backed
-#'     by `ismev`, and L-moment workflows (including log-L-moment transforms).
-#'   \item A final fallback to \code{wrapper_fitdistrplus()} for general-purpose
-#'     maximum-likelihood or moment-based estimation.
-#' }
-#' If every attempt fails, the function either returns `dst_null()` or raises an
-#' error depending on `on_unres`.
-#'
-#' @section Supported combinations:
+#' The `fit_dst()` function is currently a lightweight fitting wrapper,
+#' with pre-specified behaviour for certain `family` / `method` combinations.
 #' A full list of families and their compatible estimation methods is available
-#' via \code{available_methods()}. The helper respects bespoke wrappers
-#' contained in `fit_dst-family_wrappers.R` and will automatically pick them up
-#' when new families are registered.
+#' via specific family wrappers, such as `fit_dst_norm()`, `fit_dst_pois()`,
+#' etc.
+#' 
+#' Here is how fitting is implemented.
+#' 
+#' \itemize{
+#'   \item For `method = "lmom"` and distribution families 'gamma', 'gev', 'gp',
+#'     'gumbel', 'lnorm', 'norm', 'pearson3', and 'weibull', 
+#'     the 'lmom' package is wrapped by first calling
+#'     `lmom::samlmu()` on the data vector `x` to calculate the L-moments, 
+#'     then the relevant `lmom::pel*()` function is called to estimate 
+#'     parameters.
+#'   \item For `method = "lmom"` and distribution families
+#'     'exp', 'pois', 'bern', 'geom', 'chisq', and 'unif', the method of 
+#'     L-moments is manually implemented. All of these families except 'unif'
+#'     have a single parameter for which only the mean is needed (and thus is
+#'     equivalent to the 'mme' method). The 'unif' family has minimum and
+#'     maximum parameter values calculated as `l1 - 3 * l2` and  `l1 + 3 * l2`, 
+#'     where `l1` and `l2` are the first and second L-moments.
+#'   \item For `method = "lmom-log"`, only the 'lnorm' and 'lp3' families are
+#'     supported, otherwise no distribution will be resolved. The method fits
+#'     the distributions via the 'lmom' method on the log scale. That is,
+#'     'norm' and 'pearson3' distributions are fit on the log of
+#'     the data, for which the respective 'lnorm' or 'lp3' distribution is
+#'     obtained.
+#'   \item For `method = "mle"` and distribution families 'gev', 'gp', or 
+#'     'gumbel', the 'ismev' package is used to fit the distribution by maximum
+#'     likelihood estimation. This is done by invoking the functions
+#'     `ismev::gev.fit()`, `ismev::gpd.fit()` (with `threshold = 0`),
+#'     and `ismev::gum.fit()` (respectively).
+#'   \item For `method = "mle"` and distribution family 'bern' and 'degenerate', 
+#'     the MLE is calculated manually. For 'bern', the parameter 
+#'     is estimated as the mean of the 0-1 data; for 'degenerate', the
+#'     unique data value.
+#'   \item For families 'empirical' and 'finite', the empirical distribution
+#'     is fit to the supplied data.
+#'   \item For the 'null' family, a Null distribution is returned.
+#'   \item For any other combination of `family` and `method`, the
+#'     `fitdistrplus::fitdist()` function is called by inserting the data `x`, 
+#'     the `family` name, and the `method`. Some distributions require 
+#'     starting values for the parameters. For the families 't', 'pearson3', 
+#'     'f', and 'chisq', this is done by moment matching ('mme'), and for 'lp3',
+#'     through its log. For 'gev', 'gp', and 'gumbel', the MLE is used as
+#'     starting values (through `method = "mle"`).
+#' }
+#' 
+#' To understand what the distribution families are, see the documentation
+#' in the 'distionary' package through the `dst_*()` functions. 
+#' For example, the 'lp3' family can be found at `?distionary::dst_lp3()`.
+#' Note that the Gumbel distribution is not available yet in 'distionary',
+#' but is simply the 'gev' family with `shape = 0`.
+#' 
+#' To understand the estimation methods, see the 'lmom' package for the
+#' `"lmom"` method. For the `"lmom-log"` method, it is the same as `"lmom"`, but
+#' via the log of the data and the corresponding log-transformed distributions.
+#' For all others, see the 'fitdistrplus' package documentation.
+#' 
+#' ## Handling of missing or unresolvable data
+#' 
+#' When `na_action = "drop"`, the function operates on the subset of `x`
+#' without missing values (via `x <- x[!is.na(x)]`). This takes priority over
+#' behaviour indicated in `on_unres`.
+#' 
+#' If fitting fails, a Null distribution is output if `on_unres = "null"` (the
+#' default), or an error is thrown if `on_unres = "fail"`. Fitting can fail
+#' due to not having enough data, not being able to isolate a single
+#' distribution, or various other reasons that would typically otherwise
+#' result in an error or `NA` parameters in the wrapped fitting method.
 #'
-#' @section Missing data and unresolved fits:
-#' When `na_action` is `"drop"`, the function operates on the subset of `x`
-#' without missing values. For empty inputs or combinations that cannot be
-#' resolved, `on_unres` determines whether a `distionary::dst_null()` object is
-#' returned or an error is thrown. This behaviour is particularly relevant for
-#' heavy-tailed families (e.g. `"cauchy"`) where certain methods are known to
-#' fail.
+#' @return A distribution object of class "dst" encapsulating the fitted
+#' distribution.
 #'
-#' @return A `distionary::distribution` object encapsulating the fitted model
-#'   and its parameters.
-#'
-#' @seealso \code{available_methods()}, \code{supported_combination()},
-#'   `fit_dst_*()` helpers, \code{distionary::dst_null()},
-#'   \code{distionary::dst_empirical()}
+#' @seealso `fit_dst_*()` helpers such as [`fit_dst_norm()`].
 #'
 #' @examples
 #' fit_dst("norm", x = 1:10, method = "mle")
 #' fit_dst("gev", x = c(1, 4, 3, NA, 5), method = "lmom", na_action = "drop")
 #' fit_dst("pois", x = c(1, 4, 3, NA, 5), na_action = "null")
-#'
-#' # Force an error when an unresolved fit would otherwise return a Null dst.
-#' try(fit_dst("cauchy", x = 1:10, method = "lmom", on_unres = "fail"))
-#'
-#' # Inspect the methods supported for a given family.
-#' available_methods()[["gev"]]
+#' 
+#' # "lnorm" with "lmom-log" shares parameters with "norm" fit by "lmom".
+#' fit_dst("lnorm", x = 1:10, method = "lmom-log")
+#' fit_dst("norm", x = log(1:10), method = "lmom")
 #' @export
 fit_dst <- function(family,
                     x,
@@ -181,7 +218,10 @@ fit_dst <- function(family,
       }
       params <- distionary::parameters(res)
       params <- list(meanlog = params[["mean"]], sdlog = params[["sd"]])
-      return(distionary::dst_lnorm(params[[1]], params[[2]]))
+      return(distionary::dst_lnorm(
+        meanlog = params[["meanlog"]],
+        sdlog = params[["sdlog"]]
+      ))
     }
     return(unresolved())
   }

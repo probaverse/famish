@@ -20,30 +20,31 @@ Can be a single numeric, or could be named after one of the
 proponents behind a choice of the numeric: "Weibull", "Beard",
 "Gringorten", or "Hazen".}
 
-\item{na.rm}{Logical indicating whether `NA` and `NaN` values should be
+\item{na.rm}{Logical indicating whether \code{NA} and \code{NaN} values should be
 removed from the output.}
 }
 \value{
 Vector of uniform scores.
 }
 \description{
-Converts a numeric vector to its rank-based scores. For `uscore()`
+Converts a numeric vector to its rank-based scores. For \code{uscore()}
 (uniform scores), values become roughly equally spaced between 0 and 1,
-keeping their order. `nscore()` calculates normal scores by
+keeping their order. \code{nscore()} calculates normal scores by
 spacing the uniform scores along a standard
-normal distribution; `rpscore()` calculates empirical return periods
-by spacing the uniform scores `u` by `1 / (1 - u)`.
+normal distribution; \code{rpscore()} calculates empirical return periods
+by spacing the uniform scores \code{u} by \code{1 / (1 - u)}.
 }
 \details{
-Uniform scores are calculated by `(rank+a)/(n+1+2*a)`,
-where `rank` is the ranked `x` values, and `a` is the positional
-adjustment `pos`. Alternatively, could be named after an individual
-associated with a choice of `a`:
-
-- Weibull (1939) proposed `a = 0`.
-- Beard (1943) proposed `a = -0.31`.
-- Gringorten (1963) proposed `a = -0.44`.
-- Hazen (1914) proposed `a = -0.5`.
+Uniform scores are calculated by \code{(rank+a)/(n+1+2*a)},
+where \code{rank} is the ranked \code{x} values, and \code{a} is the positional
+adjustment \code{pos}. Alternatively, could be named after an individual
+associated with a choice of \code{a}:
+\itemize{
+\item Weibull (1939) proposed \code{a = 0}.
+\item Beard (1943) proposed \code{a = -0.31}.
+\item Gringorten (1963) proposed \code{a = -0.44}.
+\item Hazen (1914) proposed \code{a = -0.5}.
+}
 }
 \examples{
 x <- c(0.3, 0.56, NA, 0.1, -12)
@@ -55,5 +56,5 @@ rpscore(x)
 }
 \author{
 Thanks to Dr. Harry Joe for providing a starting framework for
-the `uscore()` function.
+the \code{uscore()} function.
 }

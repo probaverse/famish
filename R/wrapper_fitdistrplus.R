@@ -5,6 +5,17 @@ wrapper_fitdistrplus <- function(family, x, method) {
   checkmate::assert_character(family, len = 1)
   checkmate::assert_numeric(x, any.missing = FALSE)
   checkmate::assert_character(method, len = 1)
+  ## ------- Special cases -------
+  if (family == "bern" && method == "mle") {
+    # The MLE of Bernoulli is just the mean of the 0-1 data.
+    if (!all(unique(x) %in% c(0, 1))) {
+      stop(
+        "Data for Bernoulli distribution must consist only of 0 and 1 values."
+      )
+    }
+    return(distionary::dst_bern(mean(x)))
+  }
+  ## ------- Starting values -------
   start <- NULL
   if (family == "t") {
     v <- stats::var(x)
@@ -50,10 +61,6 @@ wrapper_fitdistrplus <- function(family, x, method) {
     mu <- mean(x)
     start <- list(df = mu)
   }
-  if (family == "bern") {
-    # The MLE of Bernoulli is just the mean of the 0-1 data.
-    return(distionary::dst_bern(mean(x)))
-  }
   if (family %in% c("gev", "gp", "gumbel")) {
     prefit <- wrapper_ismev(family = family, x = x)
     start <- distionary::parameters(prefit)
@@ -61,7 +68,8 @@ wrapper_fitdistrplus <- function(family, x, method) {
       start[["shape"]] <- NULL
     }
   }
-  # Mapping between fitdistrplus and distionary
+  # ------- Wrapper -------
+  ## Mappings to distionary parameters
   mappings <- list(
     nbinom = function(p) {
       size <- p[["size"]]
@@ -69,7 +77,6 @@ wrapper_fitdistrplus <- function(family, x, method) {
       c(size = size, prob = size / (size + mu))
     }
   )
-  
   fit <- suppressWarnings(fitdistrplus::fitdist(
     data = x,
     distr = family,
