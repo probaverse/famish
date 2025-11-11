@@ -1,7 +1,7 @@
 Package: famish
 Type: Package
 Title: Refine a family of distributions to match observations
-Version: 0.1.0.9000
+Version: 0.1.1
 Authors@R: c(
     person("Vincenzo", "Coia", email = "vincenzo.coia@gmail.com", 
            role = c("aut", "cre"))
