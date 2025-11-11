@@ -92,24 +92,30 @@ applicable. These are the 'finite' ones (including 'degenerate' and
 ``` r
 # Calls can be quite simple.
 fit_dst_norm(1:10)
-#> Warning: Failed to resolve a distribution. Returning a Null distribution.
-#> NULL distribution
+#> Normal distribution (continuous) 
+#> --Parameters--
+#>     mean       sd 
+#> 5.500000 2.872281 
 fit_dst_gumbel(2:6)
-#> Warning: Failed to resolve a distribution. Returning a Null distribution.
-#> NULL distribution
+#> Generalised Extreme Value distribution (continuous) 
+#> --Parameters--
+#> location    scale    shape 
+#> 3.296709 1.266557 0.000000 
 
 # Still have access to the functionality available through `fit_dst()`
 x <- c(1, 4, 3, NA, 5)
 fit_dst_lnorm(x, method = "lmom", na_action = "null")
-#> NULL distribution
+#> Null distribution (NA) 
 fit_dst_lnorm(x, method = "lmom", na_action = "drop")
-#> Warning: Failed to resolve a distribution. Returning a Null distribution.
-#> NULL distribution
+#> Log Normal distribution (continuous) 
+#> --Parameters--
+#>   meanlog     sdlog 
+#> 0.9931290 0.6091404 
 
 # Fitting by l-moments on the log-scale not the same as original scale.
 fit_dst_lnorm(x, method = "lmom-log", na_action = "drop")
-#> [1] "lnorm"      "parametric" "dst"       
-#> 
-#>  name :
-#> [1] "lnorm"
+#> Log Normal distribution (continuous) 
+#> --Parameters--
+#>   meanlog     sdlog 
+#> 1.0235861 0.7556555 
 ```

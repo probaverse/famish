@@ -50,17 +50,21 @@ A probability distribution.
 ``` r
 fit_dst("norm", x = 1:10, method = "mle")
 #> Loading required namespace: testthat
-#> Warning: Failed to resolve a distribution. Returning a Null distribution.
-#> NULL distribution
+#> Normal distribution (continuous) 
+#> --Parameters--
+#>     mean       sd 
+#> 5.500000 2.872281 
 fit_dst("gev", x = c(1, 4, 3, NA, 5), method = "lmom", na_action = "drop")
-#> Warning: Failed to resolve a distribution. Returning a Null distribution.
-#> NULL distribution
+#> Generalised Extreme Value distribution (continuous) 
+#> --Parameters--
+#>   location      scale      shape 
+#>  3.0145621  2.1806961 -0.7498928 
 fit_dst("pois", x = c(1, 4, 3, NA, 5), na_action = "null")
-#> NULL distribution
+#> Null distribution (NA) 
 
 # If a distribution fails to fit, `on_unres` is "null" by default, returning
 # a Null distribution.
 fit_dst("cauchy", x = 1:10, method = "lmom")  # Cauchy moments don't exist.
 #> Warning: Failed to resolve a distribution. Returning a Null distribution.
-#> NULL distribution
+#> Null distribution (NA) 
 ```
