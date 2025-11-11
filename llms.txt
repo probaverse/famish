@@ -1,0 +1,121 @@
+# famish
+
+The goal of famish is to refine a **fam**ily of distributions to meet
+specific requirements, often derived from real data. This includes
+parameter estimation methods like maximum likelihood, as well as partial
+constraints such as mean matching. The name “famish” reflects the
+process of narrowing down a broad family of distributions to those that
+best fit your needs.
+
+![](data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGQ9Ik0xMiA5djMuNzVtLTkuMzAzIDMuMzc2Yy0uODY2IDEuNS4yMTcgMy4zNzQgMS45NDggMy4zNzRoMTQuNzFjMS43MyAwIDIuODEzLTEuODc0IDEuOTQ4LTMuMzc0TDEzLjk0OSAzLjM3OGMtLjg2Ni0xLjUtMy4wMzItMS41LTMuODk4IDB6TTEyIDE1Ljc1aC4wMDd2LjAwOEgxMnoiIC8+PC9zdmc+)
+Currently, famish is a quick-and-dirty package slapped together
+as-needed to tackle project work. Expect major changes.
+
+## Installation
+
+You can install the development version of famish from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("probaverse/famish")
+```
+
+## Example
+
+Simple example:
+
+``` r
+library(famish)
+x <- stats::rnorm(30)
+fit_dst_norm(x)
+#> norm parametric dst
+#> 
+#>  name :
+#> [1] "norm"
+```
+
+More realistic example (under development):
+
+Experts have judged the probability of failure (PoF) of an engineered
+structure to be 5%, and are 90% certain that the PoF falls between 1%
+and 10%. What distribution should be fit to the PoF?
+
+1.  Since PoF must be between 0 and 1, we may start with the Beta family
+    of distributions.
+
+``` r
+# fam <- dst_beta()
+```
+
+2.  We for sure want the expected value to be 5%, so we restrict the
+    family to only those Beta distributions with a mean of 5%:
+
+``` r
+# fam2 <- restrict(fam, ...)
+```
+
+3.  Finally narrow the family down to the distribution whose 5th and
+    95th percentiles are close to 1% and 10%, respectively:
+
+``` r
+# resolve(fam2, ...)
+```
+
+Together in a pipe:
+
+``` r
+# dst_beta() |> 
+#   restrict(...) |>
+#   resolve(...)
+```
+
+# Package index
+
+## All functions
+
+- [`dlpearson3()`](https://famish.netlify.app/reference/LP3.md)
+  [`qlpearson3()`](https://famish.netlify.app/reference/LP3.md)
+  [`plpearson3()`](https://famish.netlify.app/reference/LP3.md)
+  [`rlpearson3()`](https://famish.netlify.app/reference/LP3.md) : LP3
+  distribution quantities
+- [`dst_frechet()`](https://famish.netlify.app/reference/dst_frechet.md)
+  : Frechet distribution
+- [`dst_from_quantiles()`](https://famish.netlify.app/reference/dst_from_quantiles.md)
+  : Select a Distribution from Quantiles
+- [`dst_gumbel()`](https://famish.netlify.app/reference/dst_gumbel.md) :
+  Make dst_gumbel
+- [`dst_lp3()`](https://famish.netlify.app/reference/dst_lp3.md) : Log
+  Pearson Type III distribution
+- [`dst_pearson3()`](https://famish.netlify.app/reference/dst_pearson3.md)
+  : Pearson Type III distribution
+- [`fit_dst()`](https://famish.netlify.app/reference/fit_dst.md) : Fit a
+  distribution
+- [`fit_dst_frechet()`](https://famish.netlify.app/reference/fit_dst_frechet.md)
+  : Fit a Frechet (EV2) Distribution
+- [`fit_dst_gev()`](https://famish.netlify.app/reference/fit_dst_gev.md)
+  : Fit GEV distribution
+- [`fit_dst_gpd()`](https://famish.netlify.app/reference/fit_dst_gpd.md)
+  : Fit GPD distribution
+- [`fit_dst_gumbel()`](https://famish.netlify.app/reference/fit_dst_gumbel.md)
+  : Fit Gumbel distribution
+- [`fit_dst_lnorm()`](https://famish.netlify.app/reference/fit_dst_lnorm.md)
+  : Fit a Log-Normal Distribution
+- [`fit_dst_lp3()`](https://famish.netlify.app/reference/fit_dst_lp3.md)
+  : Fit a Log Pearson Type III (LP3) Distribution
+- [`fit_dst_norm()`](https://famish.netlify.app/reference/fit_dst_norm.md)
+  : Fit a Normal Distribution
+- [`fit_dst_pearson3()`](https://famish.netlify.app/reference/fit_dst_pearson3.md)
+  : Fit a Pearson Type III Distribution
+- [`dpearson3()`](https://famish.netlify.app/reference/pearson3.md)
+  [`qpearson3()`](https://famish.netlify.app/reference/pearson3.md)
+  [`ppearson3()`](https://famish.netlify.app/reference/pearson3.md)
+  [`rpearson3()`](https://famish.netlify.app/reference/pearson3.md) :
+  Pearson Type III distribution quantities
+- [`qqpoints()`](https://famish.netlify.app/reference/qqpoints.md) : QQ
+  plot pairs
+- [`quantile_score()`](https://famish.netlify.app/reference/quantile_score.md)
+  : Quantile score function
+- [`stick_function()`](https://famish.netlify.app/reference/stick_function.md)
+  : Quantile loss function
+
