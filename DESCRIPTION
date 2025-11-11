@@ -1,7 +1,7 @@
 Package: famish
 Type: Package
 Title: Refine a family of distributions to match observations
-Version: 0.1.1
+Version: 0.1.1.9000
 Authors@R: c(
     person("Vincenzo", "Coia", email = "vincenzo.coia@gmail.com", 
            role = c("aut", "cre"))
@@ -14,21 +14,22 @@ Description: The goal of famish is to refine a **fam**ily of distributions
     that best fit your needs.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Imports: 
+    checkmate,
     distionary,
-    ellipsis,
     fitdistrplus,
-    glue,
     ismev,
     lmom,
     rlang,
     stats,
     vctrs
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Remotes: 
     probaverse/distionary@v0.0.2
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-URL: https://probaverse.github.io/famish/
+URL: https://famish.probaverse.com/
+VignetteBuilder: knitr

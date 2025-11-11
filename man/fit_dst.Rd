@@ -4,19 +4,28 @@
 \alias{fit_dst}
 \title{Fit a distribution}
 \usage{
-fit_dst(x, name, method, ...)
+fit_dst(
+  family,
+  x,
+  method = c("mle", "mge", "mme", "lmom", "lmom-log"),
+  na_action = c("null", "drop", "fail"),
+  on_unres = c("null", "fail")
+)
 }
 \arguments{
+\item{family}{Name of the distribution, like `"norm"` or `"gev"`.}
+
 \item{x}{Numeric vector to fit the distribution to.}
 
-\item{name}{Name of the distribution, like `"norm"` or `"gev"`.}
-
 \item{method}{Estimation method to use, like `"mle"` or `"lmom"`.
-For now, you'll have to look at the documentation
-of the specific fitting functions to see examples.}
+For now, you'll have to look at the documentation of the specific fitting
+functions to see examples.}
 
-\item{...}{Other arguments to pass to the specific `fit_dst_*()`
-function.}
+\item{na_action}{How to resolve missing or invalid observations in `x`.
+One of `"null"`, `"drop"`, or `"fail"`.}
+
+\item{on_unres}{Behaviour when fitting does not resolve to a single
+distribution. One of `"null"` or `"fail"`.}
 }
 \value{
 A probability distribution.
@@ -26,5 +35,11 @@ Fits a probability distribution by calling a specific `fit_dst_*()`
 function. Still a quick-and-dirty implementation.
 }
 \examples{
-fit_dst(1:10, "norm", "mle")
+fit_dst("norm", x = 1:10, method = "mle")
+fit_dst("gev", x = c(1, 4, 3, NA, 5), method = "lmom", na_action = "drop")
+fit_dst("pois", x = c(1, 4, 3, NA, 5), na_action = "null")
+
+# If a distribution fails to fit, `on_unres` is "null" by default, returning
+# a Null distribution.
+fit_dst("cauchy", x = 1:10, method = "lmom")  # Cauchy moments don't exist.
 }
