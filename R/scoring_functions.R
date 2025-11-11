@@ -43,7 +43,7 @@ uscore <- function(x, pos = "Hazen", na.rm = FALSE) {
       poslow,
       weibull = 0,
       beard = -0.31,
-      gringorten = 0.44,
+      gringorten = -0.44,
       hazen = -0.5
     )
     if (is.null(a)) {

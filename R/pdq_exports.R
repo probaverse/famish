@@ -61,3 +61,10 @@ dgev <- function(q, location, scale, shape) {
   }
   distionary::dgev(q, location = location, scale = scale, shape = shape)
 }
+
+pgev <- function(q, location, scale, shape) {
+  if (scale <= 0) {
+    return(rep(NaN, length(q)))  # For MGE calculation purposes.
+  }
+  distionary::dgev(q, location = location, scale = scale, shape = shape)
+}
