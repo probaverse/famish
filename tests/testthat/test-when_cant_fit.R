@@ -9,17 +9,34 @@ test_that("Behaviour during known failures is expected", {
   )
   for (fam in test_families) {
     for (method in intersect(available[[fam]], c("mle", "mme", "lmom"))) {
-      expect_equal(fit_dst(fam, x, method = method), dnull)
-      expect_error(fit_dst(fam, x, method = method, on_unres = "fail"))
+      expect_equal(
+        suppressWarnings(fit_dst(fam, x, method = method)),
+        dnull
+      )
+      expect_error(
+        suppressWarnings(fit_dst(fam, x, method = method, on_unres = "fail"))
+      )
     }
   }
 })
 
 test_that("Cauchy by moments never fits", {
   # (Because its moments do not exist)
-  expect_error(fit_dst("cauchy", -10:10, method = "mme", on_unres = "fail"))
-  expect_error(fit_dst("cauchy", -10:10, method = "lmom", on_unres = "fail"))
+  expect_error(suppressWarnings(
+    fit_dst("cauchy", -10:10, method = "mme", on_unres = "fail")
+  ))
+  expect_error(suppressWarnings(
+    fit_dst("cauchy", -10:10, method = "lmom", on_unres = "fail")
+  ))
   dnull <- distionary::dst_null()
-  expect_equal(fit_dst("cauchy", -10:10, method = "mme"), dnull)
-  expect_equal(fit_dst("cauchy", -10:10, method = "lmom"), dnull)
+  expect_warning(fit_dst("cauchy", -10:10, method = "mme"))
+  expect_warning(fit_dst("cauchy", -10:10, method = "lmom"))
+  expect_equal(
+    suppressWarnings(fit_dst("cauchy", -10:10, method = "mme")),
+    dnull
+  )
+  expect_equal(
+    suppressWarnings(fit_dst("cauchy", -10:10, method = "lmom")),
+    dnull
+  )
 })

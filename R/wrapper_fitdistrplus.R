@@ -70,12 +70,12 @@ wrapper_fitdistrplus <- function(family, x, method) {
     }
   )
   
-  fit <- fitdistrplus::fitdist(
+  fit <- suppressWarnings(fitdistrplus::fitdist(
     data = x,
     distr = family,
     method = method,
     start = start
-  )
+  ))
   params <- fit$estimate
   if (anyNA(params)) {
     stop("Fitting resulted in NA parameters, and therefore failed to fit.")
@@ -86,7 +86,7 @@ wrapper_fitdistrplus <- function(family, x, method) {
   }
   if (family == "gumbel") {
     family <- "gev"
-    params <- append(params, shape = 0)
+    params <- append(params, c(shape = 0))
   }
   dst_fun <- paste0("dst_", family)
   cll <- rlang::call2(dst_fun, !!!params, .ns = "distionary")

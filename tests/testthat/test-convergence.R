@@ -1,7 +1,7 @@
 library(distionary)
 
-test_that("convergence", {
-  verbose <- FALSE
+test_that("Estimated parameters converge to true parameters.", {
+  verbose <- TRUE
   tol <- 0.5
   niter <- 20
   seeds <- 1:4
@@ -128,9 +128,6 @@ test_that("convergence", {
     distributions <- test_distributions[[fam]]
     methods <- all_methods[[fam]]
     for (method in methods) {
-      if (verbose) {
-        cat("Method: ", method, "\n")
-      }
       for (d in distributions) {
         if (!is_distribution(d)) {
           tol_method <- d[["method"]]
@@ -144,6 +141,7 @@ test_that("convergence", {
           dist_tol <- tol
         }
         if (verbose) {
+          cat("Method: ", method, "\n")
           cat("Tolerance: ", dist_tol, "\n")
         }
         actual <- unlist(parameters(d))

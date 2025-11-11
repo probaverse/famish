@@ -14,13 +14,10 @@ Description: The goal of famish is to refine a **fam**ily of distributions
     that best fit your needs.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Imports: 
     checkmate,
     distionary,
-    ellipsis,
     fitdistrplus,
-    glue,
     ismev,
     lmom,
     rlang,

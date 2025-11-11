@@ -12,11 +12,15 @@
 #' One of `"null"`, `"drop"`, or `"fail"`.
 #' @param on_unres Behaviour when fitting does not resolve to a single
 #' distribution. One of `"null"` or `"fail"`.
-#' @param ... Other arguments to pass to the specific `fit_dst_*()`
-#' function.
 #' @return A probability distribution.
 #' @examples
-#' fit_dst("norm", 1:10, "mle")
+#' fit_dst("norm", x = 1:10, method = "mle")
+#' fit_dst("gev", x = c(1, 4, 3, NA, 5), method = "lmom", na_action = "drop")
+#' fit_dst("pois", x = c(1, 4, 3, NA, 5), na_action = "null")
+#' 
+#' # If a distribution fails to fit, `on_unres` is "null" by default, returning
+#' # a Null distribution.
+#' fit_dst("cauchy", x = 1:10, method = "lmom")  # Cauchy moments don't exist.
 #' @export
 fit_dst <- function(family,
                     x,
@@ -68,11 +72,11 @@ fit_dst <- function(family,
   }
   
   ## BEGIN special dispatching
-  if (length(x) == 0) { # Quick win
-    return(unresolved())
-  }
   if (family == "null") {
     return(distionary::dst_null())
+  }
+  if (length(x) == 0) { # Quick win
+    return(unresolved())
   }
   if (family %in% c("empirical", "finite")) {
     return(distionary::dst_empirical(x))

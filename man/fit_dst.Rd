@@ -26,9 +26,6 @@ One of `"null"`, `"drop"`, or `"fail"`.}
 
 \item{on_unres}{Behaviour when fitting does not resolve to a single
 distribution. One of `"null"` or `"fail"`.}
-
-\item{...}{Other arguments to pass to the specific `fit_dst_*()`
-function.}
 }
 \value{
 A probability distribution.
@@ -38,5 +35,11 @@ Fits a probability distribution by calling a specific `fit_dst_*()`
 function. Still a quick-and-dirty implementation.
 }
 \examples{
-fit_dst("norm", 1:10, "mle")
+fit_dst("norm", x = 1:10, method = "mle")
+fit_dst("gev", x = c(1, 4, 3, NA, 5), method = "lmom", na_action = "drop")
+fit_dst("pois", x = c(1, 4, 3, NA, 5), na_action = "null")
+
+# If a distribution fails to fit, `on_unres` is "null" by default, returning
+# a Null distribution.
+fit_dst("cauchy", x = 1:10, method = "lmom")  # Cauchy moments don't exist.
 }
