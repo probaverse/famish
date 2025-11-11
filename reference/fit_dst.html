@@ -69,79 +69,110 @@ the 'ismev' package when fitting the GP/GEV/Gumbel by MLE, and the
 
 
 <dl><dt id="arg-family">family<a class="anchor" aria-label="anchor" href="#arg-family"></a></dt>
-<dd><p>Name of the target distribution family, such as `"norm"`,
-`"gev"`, `"pois"`, or any other entry recognised by
-<code>available_methods()</code>. Custom families supplied via additional
-`fit_dst_*()` helpers are also supported.</p></dd>
+<dd><p>Name of the target distribution family, such as <code>"norm"</code>,
+<code>"gev"</code>, <code>"pois"</code>. See details. Character vector of length 1.</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>Numeric vector containing the observations to fit. Missing values
-are handled according to `na_action`.</p></dd>
+<dd><p>Numeric vector containing the observations to fit.</p></dd>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
-<dd><p>Estimation method to use. Valid choices include `"mle"`,
-`"mge"`, `"mme"`, `"lmom"`, and `"lmom-log"`. The default is to match
-against this set and use the first compatible option for the specified
-`family`.</p></dd>
+<dd><p>Estimation method to use. Valid choices include <code>"mle"</code>,
+<code>"mge"</code>, <code>"mme"</code>, <code>"lmom"</code>, and <code>"lmom-log"</code>. The default is <code>"mle"</code>.</p></dd>
 
 
 <dt id="arg-na-action">na_action<a class="anchor" aria-label="anchor" href="#arg-na-action"></a></dt>
-<dd><p>Strategy for dealing with `NA` or otherwise invalid values
-in `x`. `"null"` returns `distionary::dst_null()`, `"drop"` silently removes
-missing observations before fitting, and `"fail"` aborts with an error.</p></dd>
+<dd><p>Strategy for dealing with <code>NA</code> values in <code>x</code>.
+<code>"null"</code> returns a Null distribution (<code><a href="https://distionary.probaverse.com/reference/dst_null.html" class="external-link">distionary::dst_null()</a></code>);
+<code>"drop"</code> silently removes missing observations before fitting; and
+<code>"fail"</code> aborts with an error.</p></dd>
 
 
 <dt id="arg-on-unres">on_unres<a class="anchor" aria-label="anchor" href="#arg-on-unres"></a></dt>
 <dd><p>Behaviour when no distribution can be resolved for the
-supplied inputs. `"null"` (default) yields a `distionary::dst_null()`
-distribution with a warning, whereas `"fail"` propagates an error.</p></dd>
+supplied inputs. <code>"null"</code> (default) yields a Null distribution
+(<code><a href="https://distionary.probaverse.com/reference/dst_null.html" class="external-link">distionary::dst_null()</a></code>) distribution with a warning,
+whereas <code>"fail"</code> propagates an error.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A `distionary::distribution` object encapsulating the fitted model
-  and its parameters.</p>
+    <p>A distribution object of class "dst" encapsulating the fitted
+distribution.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The fitting workflow proceeds in the following order:</p><ol><li><p>Input validation and missing-value handling governed by `na_action`.</p></li>
-<li><p>A compatibility check via <code>supported_combination()</code> to warn
-    about unsupported `family` / `method` pairs.</p></li>
-<li><p>Specialised dispatch for known fast paths, including empirical and
-    finite distributions, degenerate MLE fits, extreme-value families backed
-    by `ismev`, and L-moment workflows (including log-L-moment transforms).</p></li>
-<li><p>A final fallback to <code>wrapper_fitdistrplus()</code> for general-purpose
-    maximum-likelihood or moment-based estimation.</p></li>
-</ol><p>If every attempt fails, the function either returns `dst_null()` or raises an
-error depending on `on_unres`.</p>
-    </div>
-    <div class="section level2">
-    <h2 id="supported-combinations">Supported combinations<a class="anchor" aria-label="anchor" href="#supported-combinations"></a></h2>
+    <p>The <code>fit_dst()</code> function is currently a lightweight fitting wrapper,
+with pre-specified behaviour for certain <code>family</code> / <code>method</code> combinations.
+A full list of families and their compatible estimation methods is available
+via specific family wrappers, such as <code><a href="fit_dst_family_wrappers.html">fit_dst_norm()</a></code>, <code><a href="fit_dst_family_wrappers.html">fit_dst_pois()</a></code>,
+etc.</p>
+<p>Here is how fitting is implemented.</p>
+<ul><li><p>For <code>method = "lmom"</code> and distribution families 'gamma', 'gev', 'gp',
+'gumbel', 'lnorm', 'norm', 'pearson3', and 'weibull',
+the 'lmom' package is wrapped by first calling
+<code><a href="https://rdrr.io/pkg/lmom/man/samlmu.html" class="external-link">lmom::samlmu()</a></code> on the data vector <code>x</code> to calculate the L-moments,
+then the relevant <code>lmom::pel*()</code> function is called to estimate
+parameters.</p></li>
+<li><p>For <code>method = "lmom"</code> and distribution families
+'exp', 'pois', 'bern', 'geom', 'chisq', and 'unif', the method of
+L-moments is manually implemented. All of these families except 'unif'
+have a single parameter for which only the mean is needed (and thus is
+equivalent to the 'mme' method). The 'unif' family has minimum and
+maximum parameter values calculated as <code>l1 - 3 * l2</code> and  <code>l1 + 3 * l2</code>,
+where <code>l1</code> and <code>l2</code> are the first and second L-moments.</p></li>
+<li><p>For <code>method = "lmom-log"</code>, only the 'lnorm' and 'lp3' families are
+supported, otherwise no distribution will be resolved. The method fits
+the distributions via the 'lmom' method on the log scale. That is,
+'norm' and 'pearson3' distributions are fit on the log of
+the data, for which the respective 'lnorm' or 'lp3' distribution is
+obtained.</p></li>
+<li><p>For <code>method = "mle"</code> and distribution families 'gev', 'gp', or
+'gumbel', the 'ismev' package is used to fit the distribution by maximum
+likelihood estimation. This is done by invoking the functions
+<code><a href="https://rdrr.io/pkg/ismev/man/gev.fit.html" class="external-link">ismev::gev.fit()</a></code>, <code><a href="https://rdrr.io/pkg/ismev/man/gpd.fit.html" class="external-link">ismev::gpd.fit()</a></code> (with <code>threshold = 0</code>),
+and <code><a href="https://rdrr.io/pkg/ismev/man/gum.fit.html" class="external-link">ismev::gum.fit()</a></code> (respectively).</p></li>
+<li><p>For <code>method = "mle"</code> and distribution family 'bern' and 'degenerate',
+the MLE is calculated manually. For 'bern', the parameter
+is estimated as the mean of the 0-1 data; for 'degenerate', the
+unique data value.</p></li>
+<li><p>For families 'empirical' and 'finite', the empirical distribution
+is fit to the supplied data.</p></li>
+<li><p>For the 'null' family, a Null distribution is returned.</p></li>
+<li><p>For any other combination of <code>family</code> and <code>method</code>, the
+<code><a href="https://lbbe-software.github.io/fitdistrplus/reference/fitdist.html" class="external-link">fitdistrplus::fitdist()</a></code> function is called by inserting the data <code>x</code>,
+the <code>family</code> name, and the <code>method</code>. Some distributions require
+starting values for the parameters. For the families 't', 'pearson3',
+'f', and 'chisq', this is done by moment matching ('mme'), and for 'lp3',
+through its log. For 'gev', 'gp', and 'gumbel', the MLE is used as
+starting values (through <code>method = "mle"</code>).</p></li>
+</ul><p>To understand what the distribution families are, see the documentation
+in the 'distionary' package through the <code>dst_*()</code> functions.
+For example, the 'lp3' family can be found at <code>?distionary::dst_lp3()</code>.
+Note that the Gumbel distribution is not available yet in 'distionary',
+but is simply the 'gev' family with <code>shape = 0</code>.</p>
+<p>To understand the estimation methods, see the 'lmom' package for the
+<code>"lmom"</code> method. For the <code>"lmom-log"</code> method, it is the same as <code>"lmom"</code>, but
+via the log of the data and the corresponding log-transformed distributions.
+For all others, see the 'fitdistrplus' package documentation.</p><div class="section">
+<h3 id="handling-of-missing-or-unresolvable-data">Handling of missing or unresolvable data<a class="anchor" aria-label="anchor" href="#handling-of-missing-or-unresolvable-data"></a></h3>
 
 
-<p>A full list of families and their compatible estimation methods is available
-via <code>available_methods()</code>. The helper respects bespoke wrappers
-contained in `fit_dst-family_wrappers.R` and will automatically pick them up
-when new families are registered.</p>
-    </div>
-    <div class="section level2">
-    <h2 id="missing-data-and-unresolved-fits">Missing data and unresolved fits<a class="anchor" aria-label="anchor" href="#missing-data-and-unresolved-fits"></a></h2>
+<p>When <code>na_action = "drop"</code>, the function operates on the subset of <code>x</code>
+without missing values (via <code>x &lt;- x[!is.na(x)]</code>). This takes priority over
+behaviour indicated in <code>on_unres</code>.</p>
+<p>If fitting fails, a Null distribution is output if <code>on_unres = "null"</code> (the
+default), or an error is thrown if <code>on_unres = "fail"</code>. Fitting can fail
+due to not having enough data, not being able to isolate a single
+distribution, or various other reasons that would typically otherwise
+result in an error or <code>NA</code> parameters in the wrapped fitting method.</p>
+</div>
 
-
-<p>When `na_action` is `"drop"`, the function operates on the subset of `x`
-without missing values. For empty inputs or combinations that cannot be
-resolved, `on_unres` determines whether a `distionary::dst_null()` object is
-returned or an error is thrown. This behaviour is particularly relevant for
-heavy-tailed families (e.g. `"cauchy"`) where certain methods are known to
-fail.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code>available_methods()</code>, <code>supported_combination()</code>,
-  `fit_dst_*()` helpers, <code><a href="https://distionary.probaverse.com/reference/dst_null.html" class="external-link">distionary::dst_null()</a></code>,
-  <code><a href="https://distionary.probaverse.com/reference/dst_empirical.html" class="external-link">distionary::dst_empirical()</a></code></p></div>
+    <div class="dont-index"><p><code>fit_dst_*()</code> helpers such as <code><a href="fit_dst_family_wrappers.html">fit_dst_norm()</a></code>.</p></div>
     </div>
 
     <div class="section level2">
@@ -160,13 +191,17 @@ fail.</p>
 <span class="r-in"><span><span class="fu">fit_dst</span><span class="op">(</span><span class="st">"pois"</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="cn">NA</span>, <span class="fl">5</span><span class="op">)</span>, na_action <span class="op">=</span> <span class="st">"null"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Null distribution (NA) </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Force an error when an unresolved fit would otherwise return a Null dst.</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">fit_dst</span><span class="op">(</span><span class="st">"cauchy"</span>, x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, method <span class="op">=</span> <span class="st">"lmom"</span>, on_unres <span class="op">=</span> <span class="st">"fail"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in unresolved() : Failed to resolve a distribution.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Inspect the methods supported for a given family.</span></span></span>
-<span class="r-in"><span><span class="fu">available_methods</span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"gev"</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in available_methods():</span> could not find function "available_methods"</span>
+<span class="r-in"><span><span class="co"># "lnorm" with "lmom-log" shares parameters with "norm" fit by "lmom".</span></span></span>
+<span class="r-in"><span><span class="fu">fit_dst</span><span class="op">(</span><span class="st">"lnorm"</span>, x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, method <span class="op">=</span> <span class="st">"lmom-log"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Log Normal distribution (continuous) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> --Parameters--</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   meanlog     sdlog </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.5104413 0.7487066 </span>
+<span class="r-in"><span><span class="fu">fit_dst</span><span class="op">(</span><span class="st">"norm"</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"lmom"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Normal distribution (continuous) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> --Parameters--</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      mean        sd </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.5104413 0.7487066 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

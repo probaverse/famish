@@ -1,7 +1,8 @@
 # Fit Distributions by Family
 
-Convenience wrappers around \`fit_dst()\` for each distribution family
-supported by the package.
+Convenience wrappers around
+[`fit_dst()`](https://famish.netlify.app/reference/fit_dst.md) for each
+distribution family supported by the package.
 
 ## Usage
 
@@ -64,11 +65,13 @@ fit_dst_weibull(x, method = c("mle", "mge", "lmom"), ...)
 - method:
 
   Estimation method to use. Available options depend on the distribution
-  family and are enforced via \`rlang::arg_match()\`.
+  family and are enforced via
+  [`rlang::arg_match()`](https://rlang.r-lib.org/reference/arg_match.html).
 
 - ...:
 
-  Additional arguments passed on to \`fit_dst()\`.
+  Additional arguments passed on to
+  [`fit_dst()`](https://famish.netlify.app/reference/fit_dst.md).
 
 ## Value
 
@@ -76,8 +79,9 @@ A distribution object made by the 'distionary' package.
 
 ## Details
 
-Each helper simply forwards to \`fit_dst()\` with the associated
-\`family\` value indicated by the function suffix.
+Each helper simply forwards to
+[`fit_dst()`](https://famish.netlify.app/reference/fit_dst.md) with the
+associated `family` value indicated by the function suffix.
 
 Some families do not have a unique fitting method where it is not
 applicable. These are the 'finite' ones (including 'degenerate' and
@@ -85,7 +89,7 @@ applicable. These are the 'finite' ones (including 'degenerate' and
 
 ## See also
 
-\[fit_dst()\]
+[`fit_dst()`](https://famish.netlify.app/reference/fit_dst.md)
 
 ## Examples
 

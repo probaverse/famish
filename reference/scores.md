@@ -1,11 +1,11 @@
 # Rank-based Scores
 
-Converts a numeric vector to its rank-based scores. For \`uscore()\`
+Converts a numeric vector to its rank-based scores. For `uscore()`
 (uniform scores), values become roughly equally spaced between 0 and 1,
-keeping their order. \`nscore()\` calculates normal scores by spacing
-the uniform scores along a standard normal distribution; \`rpscore()\`
-calculates empirical return periods by spacing the uniform scores \`u\`
-by \`1 / (1 - u)\`.
+keeping their order. `nscore()` calculates normal scores by spacing the
+uniform scores along a standard normal distribution; `rpscore()`
+calculates empirical return periods by spacing the uniform scores `u` by
+`1 / (1 - u)`.
 
 ## Usage
 
@@ -31,7 +31,7 @@ rpscore(x, pos = "Hazen", na.rm = FALSE)
 
 - na.rm:
 
-  Logical indicating whether \`NA\` and \`NaN\` values should be removed
+  Logical indicating whether `NA` and `NaN` values should be removed
   from the output.
 
 ## Value
@@ -40,19 +40,23 @@ Vector of uniform scores.
 
 ## Details
 
-Uniform scores are calculated by \`(rank+a)/(n+1+2\*a)\`, where \`rank\`
-is the ranked \`x\` values, and \`a\` is the positional adjustment
-\`pos\`. Alternatively, could be named after an individual associated
-with a choice of \`a\`:
+Uniform scores are calculated by `(rank+a)/(n+1+2*a)`, where `rank` is
+the ranked `x` values, and `a` is the positional adjustment `pos`.
+Alternatively, could be named after an individual associated with a
+choice of `a`:
 
-\- Weibull (1939) proposed \`a = 0\`. - Beard (1943) proposed \`a =
--0.31\`. - Gringorten (1963) proposed \`a = -0.44\`. - Hazen (1914)
-proposed \`a = -0.5\`.
+- Weibull (1939) proposed `a = 0`.
+
+- Beard (1943) proposed `a = -0.31`.
+
+- Gringorten (1963) proposed `a = -0.44`.
+
+- Hazen (1914) proposed `a = -0.5`.
 
 ## Author
 
 Thanks to Dr. Harry Joe for providing a starting framework for the
-\`uscore()\` function.
+`uscore()` function.
 
 ## Examples
 
