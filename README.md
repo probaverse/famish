@@ -18,9 +18,9 @@ font-style: italic;
 
 [![Codecov test
 coverage](https://codecov.io/gh/probaverse/famish/branch/main/graph/badge.svg)](https://app.codecov.io/gh/probaverse/famish?branch=main)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/famish)](https://CRAN.R-project.org/package=famish)
 [![R-CMD-check](https://github.com/probaverse/famish/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/probaverse/famish/actions/workflows/R-CMD-check.yaml)
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
 The goal of `famish` is to refine a **fam**ily of distributions to match
@@ -176,6 +176,8 @@ package version 0.2.0, <https://github.com/probaverse/famish>,
 
 ## Code of Conduct
 
-Please note that the `famish` project is released with a [Code of
-Conduct](https://distplyr.probaverse.com/CODE_OF_CONDUCT.html). By
-contributing to this project, you agree to abide by its terms.
+## Code of Conduct
+
+Please note that the famish project is released with a [Code of
+Conduct](CODE_OF_CONDUCT.html). By contributing to this project, you
+agree to abide by its terms.

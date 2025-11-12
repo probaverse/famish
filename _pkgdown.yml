@@ -13,3 +13,20 @@ template:
         gtag('config', 'G-MCVSE5T8BD');
       </script>
 
+reference:
+- title: Distribution Fitting
+- subtitle: Main Function
+  contents:
+  - fit_dst
+- subtitle: Distribution Wrappers
+  contents:
+  - starts_with("fit_dst_")
+- title: Diagnostics
+- subtitle: Empirical Rank Statistics
+  contents:
+  - uscore
+  - nscore
+  - rpscore
+- subtitle: Scoring Metrics
+  contents:
+  - quantile_score

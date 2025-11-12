@@ -41,10 +41,6 @@ quantile_score <- function(x, xhat, tau) {
   stick_function(z[[1]] - z[[2]], z[[3]])
 }
 
-#' Quantile loss function
-#'
-#' @param x Vector of values to evaluate the loss function at.
-#' @param tau Vector of non-exceedance probabilities.
 stick_function <- function(x, tau) {
   (tau - (x < 0)) * x
 }
