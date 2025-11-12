@@ -30,7 +30,7 @@
   [`fit_dst_weibull()`](https://famish.netlify.app/reference/fit_dst_family_wrappers.md)
   : Fit Distributions by Family
 - [`quantile_score()`](https://famish.netlify.app/reference/quantile_score.md)
-  : Quantile score function
+  : Quantile score (pinball loss)
 - [`uscore()`](https://famish.netlify.app/reference/scores.md)
   [`nscore()`](https://famish.netlify.app/reference/scores.md)
   [`rpscore()`](https://famish.netlify.app/reference/scores.md) :
