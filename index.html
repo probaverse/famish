@@ -104,153 +104,35 @@
 <p>Additional features will be added as development continues. We appreciate your patience and welcome contributions! Please see the <a href="CONTRIBUTING.html">contributing guide</a> to get started.</p>
 </div>
 <div class="section level2">
-<h2 id="example-fitting-distributions-to-streamflow-data">Example: Fitting Distributions to Streamflow Data<a class="anchor" aria-label="anchor" href="#example-fitting-distributions-to-streamflow-data"></a>
+<h2 id="example-quick-streamflow-fit">Example: Quick Streamflow Fit<a class="anchor" aria-label="anchor" href="#example-quick-streamflow-fit"></a>
 </h2>
-<p>In practice, you will most likely just load the whole probaverse with <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library(probaverse)</a></code>; but in this minimal example, we’ll only load <code>famish</code>, and the core probaverse package, <code>distionary</code>.</p>
+<p>For a complete walkthrough, including comparisons between multiple fitted families and tail-focused diagnostics, see the <a href="articles/fitting.html">fitting vignette</a>. The snippet below shows the minimal workflow.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://distionary.probaverse.com/" class="external-link">distionary</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://famish.probaverse.com/" class="external-link">famish</a></span><span class="op">)</span></span></code></pre></div>
-<p>To demonstrate, suppose we have 12 years of streamflow data for a small stream, whose annual maxima (in cubic meters per second) are as follows:</p>
+<p>Sample dataset: annual streamflow maxima (cms) for 12 years.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4.0</span>, <span class="fl">2.7</span>, <span class="fl">3.5</span>, <span class="fl">3.2</span>, <span class="fl">7.1</span>, <span class="fl">3.1</span>, <span class="fl">2.5</span>, <span class="fl">5.0</span>, <span class="fl">2.3</span>, <span class="fl">4.5</span>, <span class="fl">3.0</span>, <span class="fl">3.8</span><span class="op">)</span></span></code></pre></div>
-<p>A common practice in hydrology is to fit a distribution to these data, and to calculate upper quantiles.</p>
-<p>Using the <code><a href="reference/fit_dst_family_wrappers.html">fit_dst_gev()</a></code> function, fit a Generalised Extreme Value (GEV) distribution, keeping the default fitting method (maximum likelihood).</p>
+<p>Fit a Generalised Extreme Value distribution via maximum likelihood.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Fit a GEV distribution using the default fitting method.</span></span>
-<span><span class="va">gev</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_dst_family_wrappers.html">fit_dst_gev</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_dst_family_wrappers.html">fit_dst_gev</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required namespace: testthat</span></span>
-<span><span class="co"># Inspect:</span></span>
-<span><span class="va">gev</span></span>
+<span><span class="va">d</span></span>
 <span><span class="co">#&gt; Generalised Extreme Value distribution (continuous) </span></span>
 <span><span class="co">#&gt; --Parameters--</span></span>
 <span><span class="co">#&gt;  location     scale     shape </span></span>
 <span><span class="co">#&gt; 3.0658476 0.7426435 0.2699160</span></span></code></pre></div>
-<p>The fitted distribution is from the <code>distionary</code> package, which is the core of the probaverse suite of packages. In fact, almost all distribution families provided by <code>distionary</code> can be fit by <code>famish</code>; to be sure, note that the <code>fit_dst_*()</code> wrappers are the definitive source indicating which families and methods are supported.</p>
-<p>Next, try fitting a Log Pearson Type III (LP3) distribution using the method of L-moments, but on the log scale. This time, we’ll demonstrate the use of the main <code><a href="reference/fit_dst.html">fit_dst()</a></code> function instead of the <code><a href="reference/fit_dst_family_wrappers.html">fit_dst_lp3()</a></code> wrapper.</p>
+<p>Distributions are objects understood by the <code>distionary</code> package, so you can use all the familiar methods to inspect and work with them. For example, calculate its mean:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Fit a Log Pearson Type III distribution using "lmom-log" method.</span></span>
-<span><span class="va">lp3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_dst.html">fit_dst</a></span><span class="op">(</span><span class="st">"lp3"</span>, <span class="va">x</span>, method <span class="op">=</span> <span class="st">"lmom-log"</span><span class="op">)</span></span>
-<span><span class="co"># Inspect:</span></span>
-<span><span class="va">lp3</span></span>
-<span><span class="co">#&gt; Log Pearson Type III distribution (continuous) </span></span>
-<span><span class="co">#&gt; --Parameters--</span></span>
-<span><span class="co">#&gt;   meanlog     sdlog      skew </span></span>
-<span><span class="co">#&gt; 1.2652738 0.3382651 1.0430967</span></span></code></pre></div>
-<p>As a first pass at inspecting how well the models fit the data, we can compare density plots to a data histogram.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 3.761526</span></span></code></pre></div>
+<p>The <code><a href="reference/fit_dst.html">fit_dst()</a></code> function is the main fitting function in <code>famish</code>. Here is an example, this time fitting a Normal distribution by L-moments.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Plot a histogram of the data.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">x</span>, freq <span class="op">=</span> <span class="cn">FALSE</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span>, main <span class="op">=</span> <span class="cn">NULL</span>, xlab <span class="op">=</span> <span class="st">"Flow (cms)"</span><span class="op">)</span></span>
-<span><span class="co"># Overlay the fitted densities.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">gev</span>, <span class="st">"density"</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, n <span class="op">=</span> <span class="fl">400</span>, lty <span class="op">=</span> <span class="fl">2</span>, lwd <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"blue4"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lp3</span>, <span class="st">"density"</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, n <span class="op">=</span> <span class="fl">400</span>, lty <span class="op">=</span> <span class="fl">3</span>, lwd <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"orange4"</span><span class="op">)</span></span>
-<span><span class="co"># Create a legend.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span></span>
-<span>  <span class="st">"topright"</span>,</span>
-<span>  legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Data histogram"</span>, <span class="st">"Fitted GEV density"</span>, <span class="st">"Fitted LP3 density"</span><span class="op">)</span>,</span>
-<span>  fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gray"</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
-<span>  lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>  lwd <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  border <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
-<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">"blue4"</span>, <span class="st">"orange4"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
-<p>Upper quantiles are useful for estimating the magnitude of rare events. These can be calculated using the <code><a href="https://distionary.probaverse.com/reference/return.html" class="external-link">distionary::enframe_return()</a></code> function. In this case, we’ll calculate the 2-, 5-, 10-, 20-, 50-, 100- and 200-year return levels for each fitted distribution.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Calculate return levels for each model.</span></span>
-<span><span class="va">quantiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://distionary.probaverse.com/reference/return.html" class="external-link">enframe_return</a></span><span class="op">(</span></span>
-<span>  <span class="va">gev</span>, <span class="va">lp3</span>,</span>
-<span>  at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span>,</span>
-<span>  arg_name <span class="op">=</span> <span class="st">"return_period"</span>,</span>
-<span>  fn_prefix <span class="op">=</span> <span class="st">"flow"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co"># Inspect:</span></span>
-<span><span class="va">quantiles</span></span>
-<span><span class="co">#&gt; # A tibble: 7 × 3</span></span>
-<span><span class="co">#&gt;   return_period flow_gev flow_lp3</span></span>
-<span><span class="co">#&gt;           &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1             2     3.35     3.35</span></span>
-<span><span class="co">#&gt; 2             5     4.44     4.57</span></span>
-<span><span class="co">#&gt; 3            10     5.37     5.58</span></span>
-<span><span class="co">#&gt; 4            20     6.45     6.70</span></span>
-<span><span class="co">#&gt; 5            50     8.20     8.43</span></span>
-<span><span class="co">#&gt; 6           100     9.84     9.95</span></span>
-<span><span class="co">#&gt; 7           200    11.8     11.7</span></span></code></pre></div>
-<p>We can also calculate empirical return periods associated with the observed data with the <code><a href="reference/scores.html">rpscore()</a></code> function. In this case, use the Weibull plotting position, and compare the empirical return periods to the data.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Calculate empirical return periods.</span></span>
-<span><span class="va">x_return_periods</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/scores.html">rpscore</a></span><span class="op">(</span><span class="va">x</span>, pos <span class="op">=</span> <span class="st">"Weibull"</span><span class="op">)</span></span>
-<span><span class="co"># Inspect in a data frame along with the data.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  return_period <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">x_return_periods</span><span class="op">)</span>,</span>
-<span>  flow_empirical <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt;    return_period flow_empirical</span></span>
-<span><span class="co">#&gt; 1       1.083333            2.3</span></span>
-<span><span class="co">#&gt; 2       1.181818            2.5</span></span>
-<span><span class="co">#&gt; 3       1.300000            2.7</span></span>
-<span><span class="co">#&gt; 4       1.444444            3.0</span></span>
-<span><span class="co">#&gt; 5       1.625000            3.1</span></span>
-<span><span class="co">#&gt; 6       1.857143            3.2</span></span>
-<span><span class="co">#&gt; 7       2.166667            3.5</span></span>
-<span><span class="co">#&gt; 8       2.600000            3.8</span></span>
-<span><span class="co">#&gt; 9       3.250000            4.0</span></span>
-<span><span class="co">#&gt; 10      4.333333            4.5</span></span>
-<span><span class="co">#&gt; 11      6.500000            5.0</span></span>
-<span><span class="co">#&gt; 12     13.000000            7.1</span></span></code></pre></div>
-<p>These three sets of return levels can be plotted together to visually assess the fit of the two distributions’ upper tails, as an alternative to the histogram view.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Plot the empirical frequency-magnitude plot.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
-<span>  <span class="va">x_return_periods</span>, <span class="va">x</span>, </span>
-<span>  <span class="co"># log = "x",</span></span>
-<span>  xlab <span class="op">=</span> <span class="st">"Return period (years)"</span>,</span>
-<span>  ylab <span class="op">=</span> <span class="st">"Flow (cms)"</span>,</span>
-<span>  pch <span class="op">=</span> <span class="fl">16</span>, col <span class="op">=</span> <span class="st">"black"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co"># Plot the fitted distributions' frequency-magnitude plots.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span></span>
-<span>  <span class="va">quantiles</span><span class="op">$</span><span class="va">return_period</span>, <span class="va">quantiles</span><span class="op">$</span><span class="va">flow_gev</span>,</span>
-<span>  col <span class="op">=</span> <span class="st">"blue4"</span>,</span>
-<span>  lty <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  lwd <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span></span>
-<span>  <span class="va">quantiles</span><span class="op">$</span><span class="va">return_period</span>, <span class="va">quantiles</span><span class="op">$</span><span class="va">flow_lp3</span>,</span>
-<span>  col <span class="op">=</span> <span class="st">"orange4"</span>,</span>
-<span>  lty <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  lwd <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co"># Add a legend</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span></span>
-<span>  <span class="st">"topleft"</span>,</span>
-<span>  legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"Empirical"</span>,</span>
-<span>    <span class="st">"Fitted GEV"</span>,</span>
-<span>    <span class="st">"Fitted LP3"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"blue4"</span>, <span class="st">"orange4"</span><span class="op">)</span>,</span>
-<span>  pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">16</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
-<span>  lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
-<span>  lwd <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
-<p>The ‘famish’ package also provides support for calculating the quantile score. Now calculate the mean quantile score for the 100-year event, recalling that the quantile level (non-exceedance probability of the event) is <code>tau = 1 - 1 / return_period</code>.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## First get the 100-year quantiles for each model.</span></span>
-<span><span class="va">gev_100y</span> <span class="op">&lt;-</span> <span class="va">quantiles</span><span class="op">$</span><span class="va">flow_gev</span><span class="op">[</span><span class="va">quantiles</span><span class="op">$</span><span class="va">return_period</span> <span class="op">==</span> <span class="fl">100</span><span class="op">]</span></span>
-<span><span class="va">lp3_100y</span> <span class="op">&lt;-</span> <span class="va">quantiles</span><span class="op">$</span><span class="va">flow_lp3</span><span class="op">[</span><span class="va">quantiles</span><span class="op">$</span><span class="va">return_period</span> <span class="op">==</span> <span class="fl">100</span><span class="op">]</span></span>
-<span><span class="co">## Calculate the mean quantile score for the 100-year event, GEV model.</span></span>
-<span><span class="va">qs_gev</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/quantile_score.html">quantile_score</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">gev_100y</span>, tau <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span></span>
-<span><span class="co">## Inspect</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">qs_gev</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.06112929</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Calculate the mean quantile score for the 100-year event, LP3 model.</span></span>
-<span><span class="va">qs_lp3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/quantile_score.html">quantile_score</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">lp3_100y</span>, tau <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span></span>
-<span><span class="co">## Inspect</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">qs_lp3</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.06220155</span></span></code></pre></div>
-<p>Lower quantile scores suggest a better fit, meaning that the GEV may be better. For a mroe robust decision based on the quantile score, consider using bootstrap to estimate the uncertainty associated with this measurement.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fit_dst.html">fit_dst</a></span><span class="op">(</span><span class="st">"norm"</span>, x <span class="op">=</span> <span class="va">x</span>, method <span class="op">=</span> <span class="st">"lmom"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Normal distribution (continuous) </span></span>
+<span><span class="co">#&gt; --Parameters--</span></span>
+<span><span class="co">#&gt;     mean       sd </span></span>
+<span><span class="co">#&gt; 3.725000 1.279658</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="correctness-and-reliability">Correctness and Reliability<a class="anchor" aria-label="anchor" href="#correctness-and-reliability"></a>
