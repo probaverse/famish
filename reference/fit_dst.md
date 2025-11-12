@@ -78,7 +78,7 @@ Here is how fitting is implemented.
   parameter for which only the mean is needed (and thus is equivalent to
   the 'mme' method). The 'unif' family has minimum and maximum parameter
   values calculated as `l1 - 3 * l2` and `l1 + 3 * l2`, where `l1` and
-  `l2` are the first and second L-moments.
+  `l2` are the first and second L-moments (see Hosking, 1990, Table 1).
 
 - For `method = "lmom-log"`, only the 'lnorm' and 'lp3' families are
   supported, otherwise no distribution will be resolved. The method fits
@@ -98,6 +98,9 @@ Here is how fitting is implemented.
 - For `method = "mle"` and distribution family 'bern' and 'degenerate',
   the MLE is calculated manually. For 'bern', the parameter is estimated
   as the mean of the 0-1 data; for 'degenerate', the unique data value.
+
+- For `method = "mme"` and `"lmom"`, the 'cauchy' family fails to fit
+  because Cauchy distributions have no finite moments (Feller, 1971).
 
 - For families 'empirical' and 'finite', the empirical distribution is
   fit to the supplied data.
@@ -137,6 +140,16 @@ fail due to not having enough data, not being able to isolate a single
 distribution, or various other reasons that would typically otherwise
 result in an error or `NA` parameters in the wrapped fitting method.
 
+## References
+
+Hosking, J. R. M. (1990). L-moments: Analysis and estimation of
+distributions using linear combinations of order statistics. *Journal of
+the Royal Statistical Society: Series B (Methodological)*, 52(1),
+105–124.
+
+Feller, W. (1971). *An Introduction to Probability Theory and Its
+Applications* (Vol. 2, 2nd ed.). Wiley.
+
 ## See also
 
 `fit_dst_*()` helpers such as
@@ -146,7 +159,6 @@ result in an error or `NA` parameters in the wrapped fitting method.
 
 ``` r
 fit_dst("norm", x = 1:10, method = "mle")
-#> Loading required namespace: testthat
 #> Normal distribution (continuous) 
 #> --Parameters--
 #>     mean       sd 

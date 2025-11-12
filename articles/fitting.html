@@ -6,6 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>fitting • famish</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -69,49 +74,73 @@
 
     
     
+<p>It helps to understand the difference between a distribution and a
+distribution <em>family</em> for the use of <code>famish</code>: the
+<em>family</em> is simply a set of distributions, not just one
+distribution. When you hear about “the Normal distribution”, for
+example, usually it’s actually referring to the entire <em>family</em>
+of Normal distributions, each having their own mean and variance. Once
+you’ve identified the specific mean and variance, you’ve identified a
+specific <em>distribution</em> within that family.</p>
+<p>Usually we call a family of distributions one that can be index by
+one or more numeric parameters. For the Normal family, it can be indexed
+by the mean and standard deviation. For the Beta family, it’s often
+indexed by two shape parameters,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\alpha &gt; 0</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\beta &gt; 0</annotation></semantics></math>.
+Don’t get confused: just because the Beta family is not (usually)
+indexed by the mean and standard deviation, doesn’t mean that the mean
+and standard deviation don’t exist: they can still be calculated, it’s
+just that the family is more usefully indexed by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>.
+The Normal family is more usefully indexed by the mean and standard
+deviation.</p>
+<p>With that understanding, the goal of <code>famish</code>, then, is to
+take a family and reduce it to those families that are compatible with
+the data provided – whether the data be a usual recorded dataset, or
+elicited expert judgement in the form of quantiles or another reference
+distribution. There are two approaches:</p>
 <ul>
-<li><p>Fit a distribution with smart defaults. Simple wrapper with
-little options available for now, but the package has big
-goals.</p></li>
-<li><p>The use of the thin wrappers like <code><a href="../reference/fit_dst_family_wrappers.html">fit_dst_gev()</a></code> are
-also useful because they tell you what <code>methods</code> are
-available.</p></li>
 <li>
-<p>Failure cascade:</p>
-<ul>
-<li>First, missing data handling (<code>na_action</code>).</li>
-<li>Then, fitting failure handling (<code>on_unres</code>).</li>
-</ul>
-</li>
+<strong>Fitting</strong> (or <strong>estimation</strong>) narrows
+the family down to a single distribution, and is achieved in
+<code>famish</code> by functions prefixed by <code>dst_</code>.</li>
 <li>
-<p>The behaviour of the lmom fitdistrplus ismev packages are kept
-when making their specific wrappers.</p>
-<ul>
-<li>Example: <code>stop</code> when fitting fails:
-<ul>
-<li>“distribution not implemented” is the same as a distribution always
-failing to fit, and therefore a deliberate <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> command
-has been added for these cases.</li>
-<li>The case of incompatible parameters / L-moments also throws an
-error, although these will never be triggered from the user perspective
-because of the preliminary check that the data is compatible with some
-supports of the family.
-<ul>
-<li>The manual ones are tested explicitly, though.</li>
+<strong>Refining</strong> narrows the family down to a smaller
+family of distributions based on provided criteria. This functionality
+is not yet available in <code>famish</code>.</li>
 </ul>
-</li>
-</ul>
-</li>
-<li>Example: when parameters are valid, but results in the data not
-belonging to the distribution’s support, the distribution is still
-returned. e.g., Uniform distribution.</li>
-</ul>
-</li>
-<li><p>When calling fitdistrplus::fitdist(), defaults are used except
-where specified here otherwise (I think just <code>start</code> values).
-There are no options to change other arguments at the moment; if you
-need that level of control, for now you can call fitdistrplus directly
-and then make a distionary distribution from the parameters.</p></li>
+<p>Distribution <em>fitting</em> is more strict because it requires
+exactly one distribution. You can specify what to do if it fails to do
+so with <code>on_unres</code> – either throw an error or return a Null
+distribution (default). Fitting can fail as a result of an error in the
+fitting process (e.g., trying to fit an Exponential distribution to
+negative data), or because the infrastructure is not in place (e.g.,
+currently no support is available for fitting Binomial or Hypergeometric
+distributions).</p>
+<p><code>famish</code> right now is a thin wrapper with smart defaults.
+A future version will allow for user control about the fitting
+procedure.</p>
+<p>The use of the thin wrappers like <code><a href="../reference/fit_dst_family_wrappers.html">fit_dst_gev()</a></code> are also
+useful because they tell you what <code>methods</code> are available.
+<strong>definitive source!</strong></p>
+<ul>
+<li><p>How it works: wrappers are made around each package, and are
+dispatched by <code><a href="../reference/fit_dst.html">fit_dst()</a></code>. These wrappers keep the behaviour
+of the wrapped packages: throw an error. The
+<code>fitdistrplus::fit_dist()</code> function is similar to the
+<code><a href="../reference/fit_dst.html">famish::fit_dst()</a></code> function, except returns a probaverse
+distribution. It is therefore fallen back on if <code>ismev</code> and
+<code>lmom</code> are not called.</p></li>
+<li><p>When calling fitdistrplus::fitdist(), default arguments are used
+except where specified here otherwise (I think just <code>start</code>
+values). There are no options to change other arguments at the moment;
+if you need that level of control, for now you can call fitdistrplus
+directly and then make a distionary distribution from the
+parameters.</p></li>
 <li><p>Warning happens when a distribution is not supported.</p></li>
 <li>
 <p>Why some combinations are not supported:</p>
@@ -121,57 +150,37 @@ converge to the true parameter as sample size increases) for many
 distributions, and is therefore excluded.</li>
 </ul>
 </li>
-<li><p>Note to self: gumbel fit by mge is not included because didn’t
-want to export p/d/q gumbel functions. When done in distionary, can add
-it back in.</p></li>
 <li>
 <p>Testing:</p>
 <ul>
-<li>Same test for each method.</li>
 <li>Failures:
 <ul>
-<li>Data that deliberately trips up the fitting process: e.g.,
-incompatible moments; support issues (either before or after
-fitting).</li>
-<li>Method-distribution pairs that do not exist.</li>
-<li>FOR EACH: check the correct failure behaviour (error vs warning +
-null distribution).</li>
+<li>Data that deliberately trips up the fitting process are checked.
+e.g., incompatible moments; support issues (either before or after
+fitting). Method-distribution pairs that do not exist.</li>
 </ul>
 </li>
 <li>Check convergence to within a specified tolerance of the actual
 parameters. If tolerance is not reached, increase sample size, but only
 up to a point. Sometimes fitting fails because the algorithm fails (even
-after adding more data), but four seeds are used, and at least one is
-required to pass. Speed of convergence is not tolerated: manual
-tolerance level can be used in some cases where the parameter is
-difficult to estimate (like a high df in a Student t distribution).</li>
+after adding more data), but four seeds are used, as a stress test to
+ensure the fitting still resolves to a distribution, and at least one is
+required to pass. Four different seeds ensures that convergence to
+within tolerance is less likely to be a fluke.
+<ul>
+<li>Checked multiple distributions under each supported method.</li>
 </ul>
 </li>
-<li><p>Successfully resolving a distribution under four different
-datasets that were not taken from the distribution, as a stress test to
-ensure the fitting still resolves to a distribution.</p></li>
-<li><p>Four different seeds ensures that convergence to within tolerance
-is less likely to be a fluke.</p></li>
-<li><p>Checking that the parameter estimation is valid: that the
-estimates are close to the true parameters (generate more data if needed
-to get closer).</p></li>
+</ul>
+</li>
 <li><p>Most distributions in distionary are covered, except for
-hypergeometric.</p></li>
-<li><p>To make make the fitting more hands-off, smart starting points
-for the parameters are used by moment matching where possible (and where
-starting values are needed by fitdistrplus).</p></li>
+Hypergeometric and Binomial.</p></li>
 <li><p>The most flexible fitting package is fitdistrplus, and is fallen
 back on. Other wrapped packages include lmom (for l-moments based
 estimation) and ismev (for MLE estimation of the GEV and GP
 distributions).</p></li>
-<li><p>Support for fitting a Gumbel distribution is also included as a
-GEV with shape parameter = 0. Family name is “gumbel”.</p></li>
 <li><p>scoring functions (uscore, etc) are included so you can compare
 the fitted distribution with empirical scores.</p></li>
-</ul>
-<p>TO DO:</p>
-<ul>
-<li>ref for manual fitting methods</li>
 </ul></main>
 </div>
 

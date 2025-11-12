@@ -5,14 +5,19 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Refine a family of distributions to match observations • famish</title>
+<title>Flexibly Tune Probability Distributions • famish</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" sizes="any" href="favicon.ico">
+<link rel="manifest" href="site.webmanifest">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Refine a family of distributions to match observations">
-<meta name="description" content='The goal of famish is to refine a **fam**ily of distributions to meet specific requirements, often derived from real data. This includes parameter estimation methods like maximum likelihood, as well as partial constraints such as mean matching. The name "famish" reflects the process of narrowing down a broad family of distributions to those that best fit your needs.'>
-<meta property="og:description" content='The goal of famish is to refine a **fam**ily of distributions to meet specific requirements, often derived from real data. This includes parameter estimation methods like maximum likelihood, as well as partial constraints such as mean matching. The name "famish" reflects the process of narrowing down a broad family of distributions to those that best fit your needs.'>
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Flexibly Tune Probability Distributions">
+<meta name="description" content="Delivers the estimation layer for the probaverse suite of R packages by connecting fitting routines with probaverse distribution objects. Supports multiple estimation methods, such as maximum likelihood and L-moments, and produces distribution objects ready for downstream manipulation and diagnostics-based evaluation.">
+<meta property="og:description" content="Delivers the estimation layer for the probaverse suite of R packages by connecting fitting routines with probaverse distribution objects. Supports multiple estimation methods, such as maximum likelihood and L-moments, and produces distribution objects ready for downstream manipulation and diagnostics-based evaluation.">
 <meta property="og:image" content="https://famish.netlify.app/logo.png">
 <!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-MCVSE5T8BD"></script><script>
   window.dataLayer = window.dataLayer || [];
@@ -65,11 +70,20 @@
 </div>
 <!-- badges: start -->
 
-<p>The goal of famish is to refine a <strong>fam</strong>ily of distributions to meet specific requirements, often derived from real data. This includes parameter estimation methods like maximum likelihood, as well as partial constraints such as mean matching. The name “famish” reflects the process of narrowing down a broad family of distributions to those that best fit your needs.</p>
-<p class="comment">
-<svg height="24" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0zM12 15.75h.007v.008H12z"></path></svg>
-Currently, famish is a quick-and-dirty package slapped together as-needed to tackle project work. Expect major changes.
-</p>
+<p>The goal of <code>famish</code> is to refine a <strong>fam</strong>ily of distributions to match a provided dataset. In most use cases, this means fitting a distribution to data, and this is the current version functionality of <code>famish</code>. Importantly, <code>famish</code> grounds the broader <a href="https://probaverse.com/" class="external-link">probaverse suite</a> of packages to real data.</p>
+<p>This young version of <code>famish</code> currently works mostly by wrapping existing fitting functions from other packages, particularly <code>fitdistrplus</code>, <code>ismev</code> and <code>lmom</code>. The main function is <code><a href="reference/fit_dst.html">fit_dst()</a></code>, which fits a specified distribution family to data using a specified fitting method. Thin wrappers for specific distribution families are also provided, such as <code><a href="reference/fit_dst_family_wrappers.html">fit_dst_gev()</a></code> for the Generalised Extreme Value distribution.</p>
+<p>The name “famish” reflects the process of narrowing down a broad family of distributions to those that best fit your needs.</p>
+<div class="section level2">
+<h2 id="statement-of-need">Statement of Need<a class="anchor" aria-label="anchor" href="#statement-of-need"></a>
+</h2>
+<p>Many software routines allow for the estimation of probability distributions, but there is a need to connect those estimates to the downstream operations needed for advanced statistical models. The probaverse supplies that higher-level infrastructure, and <code>famish</code> is the bridge that grounds probaverse-built models in real datasets or expert judgment.</p>
+</div>
+<div class="section level2">
+<h2 id="target-audience">Target Audience<a class="anchor" aria-label="anchor" href="#target-audience"></a>
+</h2>
+<p><code>famish</code> supports the probaverse user base – anyone who works with probability distributions, including data scientists, analysts, researchers, and students. It serves users who need flexible fitting workflows and clear diagnostics for how well a distribution matches observed data.</p>
+<p>It is particularly useful for risk-focused domains – hydrology, economics, actuarial science, credit risk, and similar fields – where tail behaviour and extremes determine decisions and advanced probabilistic models rely on dependable estimation tools.</p>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -79,39 +93,195 @@ Currently, famish is a quick-and-dirty package slapped together as-needed to tac
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"probaverse/famish"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="future-goals">Future Goals<a class="anchor" aria-label="anchor" href="#future-goals"></a>
 </h2>
-<p>Simple example:</p>
+<p>While the current version of <code>famish</code> is limited in scope, it has big long-term goals, especially as the broader probaverse expands to allow for the easier creation of distribution families. Some bigger goals for <code>famish</code> include:</p>
+<ul>
+<li>Fitting cascades, such as first refining a family to have a specified mean (e.g., as estimated by regression), and then estimating the remaining parameters.</li>
+<li>Fitting a distribution to best match a supplied table of quantiles, or another reference distribution.</li>
+<li>Providing modern estimation methods that are more appropriate for estimation of risk and hazard analysis.</li>
+</ul>
+<p>Additional features will be added as development continues. We appreciate your patience and welcome contributions! Please see the <a href="CONTRIBUTING.html">contributing guide</a> to get started.</p>
+</div>
+<div class="section level2">
+<h2 id="example-fitting-distributions-to-streamflow-data">Example: Fitting Distributions to Streamflow Data<a class="anchor" aria-label="anchor" href="#example-fitting-distributions-to-streamflow-data"></a>
+</h2>
+<p>In practice, you will most likely just load the whole probaverse with <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library(probaverse)</a></code>; but in this minimal example, we’ll only load <code>famish</code>, and the core probaverse package, <code>distionary</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://famish.probaverse.com/" class="external-link">famish</a></span><span class="op">)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/fit_dst_family_wrappers.html">fit_dst_norm</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">#&gt; norm parametric dst</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;  name :</span></span>
-<span><span class="co">#&gt; [1] "norm"</span></span></code></pre></div>
-<p>More realistic example (under development):</p>
-<p>Experts have judged the probability of failure (PoF) of an engineered structure to be 5%, and are 90% certain that the PoF falls between 1% and 10%. What distribution should be fit to the PoF?</p>
-<ol style="list-style-type: decimal">
-<li>Since PoF must be between 0 and 1, we may start with the Beta family of distributions.</li>
-</ol>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://distionary.probaverse.com/" class="external-link">distionary</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://famish.probaverse.com/" class="external-link">famish</a></span><span class="op">)</span></span></code></pre></div>
+<p>To demonstrate, suppose we have 12 years of streamflow data for a small stream, whose annual maxima (in cubic meters per second) are as follows:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># fam &lt;- dst_beta()</span></span></code></pre></div>
-<ol start="2" style="list-style-type: decimal">
-<li>We for sure want the expected value to be 5%, so we restrict the family to only those Beta distributions with a mean of 5%:</li>
-</ol>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4.0</span>, <span class="fl">2.7</span>, <span class="fl">3.5</span>, <span class="fl">3.2</span>, <span class="fl">7.1</span>, <span class="fl">3.1</span>, <span class="fl">2.5</span>, <span class="fl">5.0</span>, <span class="fl">2.3</span>, <span class="fl">4.5</span>, <span class="fl">3.0</span>, <span class="fl">3.8</span><span class="op">)</span></span></code></pre></div>
+<p>A common practice in hydrology is to fit a distribution to these data, and to calculate upper quantiles.</p>
+<p>Using the <code><a href="reference/fit_dst_family_wrappers.html">fit_dst_gev()</a></code> function, fit a Generalised Extreme Value (GEV) distribution, keeping the default fitting method (maximum likelihood).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># fam2 &lt;- restrict(fam, ...)</span></span></code></pre></div>
-<ol start="3" style="list-style-type: decimal">
-<li>Finally narrow the family down to the distribution whose 5th and 95th percentiles are close to 1% and 10%, respectively:</li>
-</ol>
+<code class="sourceCode R"><span><span class="co"># Fit a GEV distribution using the default fitting method.</span></span>
+<span><span class="va">gev</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_dst_family_wrappers.html">fit_dst_gev</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required namespace: testthat</span></span>
+<span><span class="co"># Inspect:</span></span>
+<span><span class="va">gev</span></span>
+<span><span class="co">#&gt; Generalised Extreme Value distribution (continuous) </span></span>
+<span><span class="co">#&gt; --Parameters--</span></span>
+<span><span class="co">#&gt;  location     scale     shape </span></span>
+<span><span class="co">#&gt; 3.0658476 0.7426435 0.2699160</span></span></code></pre></div>
+<p>The fitted distribution is from the <code>distionary</code> package, which is the core of the probaverse suite of packages. In fact, almost all distribution families provided by <code>distionary</code> can be fit by <code>famish</code>; to be sure, note that the <code>fit_dst_*()</code> wrappers are the definitive source indicating which families and methods are supported.</p>
+<p>Next, try fitting a Log Pearson Type III (LP3) distribution using the method of L-moments, but on the log scale. This time, we’ll demonstrate the use of the main <code><a href="reference/fit_dst.html">fit_dst()</a></code> function instead of the <code><a href="reference/fit_dst_family_wrappers.html">fit_dst_lp3()</a></code> wrapper.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># resolve(fam2, ...)</span></span></code></pre></div>
-<p>Together in a pipe:</p>
+<code class="sourceCode R"><span><span class="co"># Fit a Log Pearson Type III distribution using "lmom-log" method.</span></span>
+<span><span class="va">lp3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_dst.html">fit_dst</a></span><span class="op">(</span><span class="st">"lp3"</span>, <span class="va">x</span>, method <span class="op">=</span> <span class="st">"lmom-log"</span><span class="op">)</span></span>
+<span><span class="co"># Inspect:</span></span>
+<span><span class="va">lp3</span></span>
+<span><span class="co">#&gt; Log Pearson Type III distribution (continuous) </span></span>
+<span><span class="co">#&gt; --Parameters--</span></span>
+<span><span class="co">#&gt;   meanlog     sdlog      skew </span></span>
+<span><span class="co">#&gt; 1.2652738 0.3382651 1.0430967</span></span></code></pre></div>
+<p>As a first pass at inspecting how well the models fit the data, we can compare density plots to a data histogram.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># dst_beta() |&gt; </span></span>
-<span><span class="co">#   restrict(...) |&gt;</span></span>
-<span><span class="co">#   resolve(...)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Plot a histogram of the data.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">x</span>, freq <span class="op">=</span> <span class="cn">FALSE</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span>, main <span class="op">=</span> <span class="cn">NULL</span>, xlab <span class="op">=</span> <span class="st">"Flow (cms)"</span><span class="op">)</span></span>
+<span><span class="co"># Overlay the fitted densities.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">gev</span>, <span class="st">"density"</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, n <span class="op">=</span> <span class="fl">400</span>, lty <span class="op">=</span> <span class="fl">2</span>, lwd <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"blue4"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lp3</span>, <span class="st">"density"</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, n <span class="op">=</span> <span class="fl">400</span>, lty <span class="op">=</span> <span class="fl">3</span>, lwd <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"orange4"</span><span class="op">)</span></span>
+<span><span class="co"># Create a legend.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span></span>
+<span>  <span class="st">"topright"</span>,</span>
+<span>  legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Data histogram"</span>, <span class="st">"Fitted GEV density"</span>, <span class="st">"Fitted LP3 density"</span><span class="op">)</span>,</span>
+<span>  fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gray"</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>  lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  border <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">"blue4"</span>, <span class="st">"orange4"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
+<p>Upper quantiles are useful for estimating the magnitude of rare events. These can be calculated using the <code><a href="https://distionary.probaverse.com/reference/return.html" class="external-link">distionary::enframe_return()</a></code> function. In this case, we’ll calculate the 2-, 5-, 10-, 20-, 50-, 100- and 200-year return levels for each fitted distribution.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Calculate return levels for each model.</span></span>
+<span><span class="va">quantiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://distionary.probaverse.com/reference/return.html" class="external-link">enframe_return</a></span><span class="op">(</span></span>
+<span>  <span class="va">gev</span>, <span class="va">lp3</span>,</span>
+<span>  at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">200</span><span class="op">)</span>,</span>
+<span>  arg_name <span class="op">=</span> <span class="st">"return_period"</span>,</span>
+<span>  fn_prefix <span class="op">=</span> <span class="st">"flow"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co"># Inspect:</span></span>
+<span><span class="va">quantiles</span></span>
+<span><span class="co">#&gt; # A tibble: 7 × 3</span></span>
+<span><span class="co">#&gt;   return_period flow_gev flow_lp3</span></span>
+<span><span class="co">#&gt;           &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1             2     3.35     3.35</span></span>
+<span><span class="co">#&gt; 2             5     4.44     4.57</span></span>
+<span><span class="co">#&gt; 3            10     5.37     5.58</span></span>
+<span><span class="co">#&gt; 4            20     6.45     6.70</span></span>
+<span><span class="co">#&gt; 5            50     8.20     8.43</span></span>
+<span><span class="co">#&gt; 6           100     9.84     9.95</span></span>
+<span><span class="co">#&gt; 7           200    11.8     11.7</span></span></code></pre></div>
+<p>We can also calculate empirical return periods associated with the observed data with the <code><a href="reference/scores.html">rpscore()</a></code> function. In this case, use the Weibull plotting position, and compare the empirical return periods to the data.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Calculate empirical return periods.</span></span>
+<span><span class="va">x_return_periods</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/scores.html">rpscore</a></span><span class="op">(</span><span class="va">x</span>, pos <span class="op">=</span> <span class="st">"Weibull"</span><span class="op">)</span></span>
+<span><span class="co"># Inspect in a data frame along with the data.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  return_period <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">x_return_periods</span><span class="op">)</span>,</span>
+<span>  flow_empirical <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;    return_period flow_empirical</span></span>
+<span><span class="co">#&gt; 1       1.083333            2.3</span></span>
+<span><span class="co">#&gt; 2       1.181818            2.5</span></span>
+<span><span class="co">#&gt; 3       1.300000            2.7</span></span>
+<span><span class="co">#&gt; 4       1.444444            3.0</span></span>
+<span><span class="co">#&gt; 5       1.625000            3.1</span></span>
+<span><span class="co">#&gt; 6       1.857143            3.2</span></span>
+<span><span class="co">#&gt; 7       2.166667            3.5</span></span>
+<span><span class="co">#&gt; 8       2.600000            3.8</span></span>
+<span><span class="co">#&gt; 9       3.250000            4.0</span></span>
+<span><span class="co">#&gt; 10      4.333333            4.5</span></span>
+<span><span class="co">#&gt; 11      6.500000            5.0</span></span>
+<span><span class="co">#&gt; 12     13.000000            7.1</span></span></code></pre></div>
+<p>These three sets of return levels can be plotted together to visually assess the fit of the two distributions’ upper tails, as an alternative to the histogram view.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Plot the empirical frequency-magnitude plot.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">x_return_periods</span>, <span class="va">x</span>, </span>
+<span>  <span class="co"># log = "x",</span></span>
+<span>  xlab <span class="op">=</span> <span class="st">"Return period (years)"</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">"Flow (cms)"</span>,</span>
+<span>  pch <span class="op">=</span> <span class="fl">16</span>, col <span class="op">=</span> <span class="st">"black"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co"># Plot the fitted distributions' frequency-magnitude plots.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span></span>
+<span>  <span class="va">quantiles</span><span class="op">$</span><span class="va">return_period</span>, <span class="va">quantiles</span><span class="op">$</span><span class="va">flow_gev</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">"blue4"</span>,</span>
+<span>  lty <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  lwd <span class="op">=</span> <span class="fl">2</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span></span>
+<span>  <span class="va">quantiles</span><span class="op">$</span><span class="va">return_period</span>, <span class="va">quantiles</span><span class="op">$</span><span class="va">flow_lp3</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">"orange4"</span>,</span>
+<span>  lty <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  lwd <span class="op">=</span> <span class="fl">2</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co"># Add a legend</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span></span>
+<span>  <span class="st">"topleft"</span>,</span>
+<span>  legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"Empirical"</span>,</span>
+<span>    <span class="st">"Fitted GEV"</span>,</span>
+<span>    <span class="st">"Fitted LP3"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"blue4"</span>, <span class="st">"orange4"</span><span class="op">)</span>,</span>
+<span>  pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">16</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>  lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  lwd <span class="op">=</span> <span class="fl">2</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
+<p>The ‘famish’ package also provides support for calculating the quantile score. Now calculate the mean quantile score for the 100-year event, recalling that the quantile level (non-exceedance probability of the event) is <code>tau = 1 - 1 / return_period</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## First get the 100-year quantiles for each model.</span></span>
+<span><span class="va">gev_100y</span> <span class="op">&lt;-</span> <span class="va">quantiles</span><span class="op">$</span><span class="va">flow_gev</span><span class="op">[</span><span class="va">quantiles</span><span class="op">$</span><span class="va">return_period</span> <span class="op">==</span> <span class="fl">100</span><span class="op">]</span></span>
+<span><span class="va">lp3_100y</span> <span class="op">&lt;-</span> <span class="va">quantiles</span><span class="op">$</span><span class="va">flow_lp3</span><span class="op">[</span><span class="va">quantiles</span><span class="op">$</span><span class="va">return_period</span> <span class="op">==</span> <span class="fl">100</span><span class="op">]</span></span>
+<span><span class="co">## Calculate the mean quantile score for the 100-year event, GEV model.</span></span>
+<span><span class="va">qs_gev</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/quantile_score.html">quantile_score</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">gev_100y</span>, tau <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="co">## Inspect</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">qs_gev</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.06112929</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Calculate the mean quantile score for the 100-year event, LP3 model.</span></span>
+<span><span class="va">qs_lp3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/quantile_score.html">quantile_score</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">lp3_100y</span>, tau <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="co">## Inspect</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">qs_lp3</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.06220155</span></span></code></pre></div>
+<p>Lower quantile scores suggest a better fit, meaning that the GEV may be better. For a mroe robust decision based on the quantile score, consider using bootstrap to estimate the uncertainty associated with this measurement.</p>
+</div>
+<div class="section level2">
+<h2 id="correctness-and-reliability">Correctness and Reliability<a class="anchor" aria-label="anchor" href="#correctness-and-reliability"></a>
+</h2>
+<p>For those combinations of distribution families and fitting methods indicated by the functions <code>fit_dst_*()</code>, rigorous testing has been conducted to ensure that the estimation methods are consistent – that is, the estimated distribution parameters converge to the true parameter values as more data are drawn from the distribution being estimated.</p>
+</div>
+<div class="section level2">
+<h2 id="famish-in-the-context-of-other-packages">
+<code>famish</code> in the Context of Other Packages<a class="anchor" aria-label="anchor" href="#famish-in-the-context-of-other-packages"></a>
+</h2>
+<p><code>famish</code> is unique as it is a bridge from existing fitting routines to the probaverse suite of packages.</p>
+<ul>
+<li>Packages <code>lmom</code>, <code>ismev</code>, and <code>fitdistrplus</code> are all useful for fitting distribution parameters (and are in fact wrapped by <code>famish</code>), but remain low-level.</li>
+<li>Packages like <code>distributions3</code> and <code>distributional</code> turn distributions in objects, but lack estimation capabilities.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="acknowledgements">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
+</h2>
+<p>The creation of <code>famish</code> would not have been possible without the support of BGC Engineering Inc., the Politecnico di Milano, and the European Space Agency.</p>
+</div>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<p>To cite package <code>famish</code> in publications use:</p>
+<p>Coia V (2025). <em>famish: Flexibly Tune Probability Distributions</em>. R package version 0.2.0, <a href="https://github.com/probaverse/famish" class="external-link uri">https://github.com/probaverse/famish</a>, <a href="https://famish.probaverse.com/" class="external-link uri">https://famish.probaverse.com/</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+</h2>
+<p>Please note that the <code>famish</code> project is released with a <a href="https://distplyr.probaverse.com/CODE_OF_CONDUCT.html" class="external-link">Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
@@ -133,7 +303,7 @@ Currently, famish is a quick-and-dirty package slapped together as-needed to tac
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Vincenzo Coia <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Vincenzo Coia <br><small class="roles"> Author, maintainer, copyright holder </small>   </li>
 </ul>
 </div>
 
