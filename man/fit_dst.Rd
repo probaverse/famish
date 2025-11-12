@@ -63,7 +63,8 @@ L-moments is manually implemented. All of these families except 'unif'
 have a single parameter for which only the mean is needed (and thus is
 equivalent to the 'mme' method). The 'unif' family has minimum and
 maximum parameter values calculated as \code{l1 - 3 * l2} and  \code{l1 + 3 * l2},
-where \code{l1} and \code{l2} are the first and second L-moments.
+where \code{l1} and \code{l2} are the first and second L-moments
+(see Hosking, 1990, Table 1).
 \item For \code{method = "lmom-log"}, only the 'lnorm' and 'lp3' families are
 supported, otherwise no distribution will be resolved. The method fits
 the distributions via the 'lmom' method on the log scale. That is,
@@ -79,6 +80,8 @@ and \code{ismev::gum.fit()} (respectively).
 the MLE is calculated manually. For 'bern', the parameter
 is estimated as the mean of the 0-1 data; for 'degenerate', the
 unique data value.
+\item For \code{method = "mme"} and \code{"lmom"}, the 'cauchy' family fails to fit
+because Cauchy distributions have no finite moments (Feller, 1971).
 \item For families 'empirical' and 'finite', the empirical distribution
 is fit to the supplied data.
 \item For the 'null' family, a Null distribution is returned.
@@ -122,6 +125,14 @@ fit_dst("pois", x = c(1, 4, 3, NA, 5), na_action = "null")
 # "lnorm" with "lmom-log" shares parameters with "norm" fit by "lmom".
 fit_dst("lnorm", x = 1:10, method = "lmom-log")
 fit_dst("norm", x = log(1:10), method = "lmom")
+}
+\references{
+Hosking, J. R. M. (1990). L-moments: Analysis and estimation of distributions
+using linear combinations of order statistics. \emph{Journal of the Royal
+Statistical Society: Series B (Methodological)}, 52(1), 105–124.
+
+Feller, W. (1971). \emph{An Introduction to Probability Theory and Its
+Applications} (Vol. 2, 2nd ed.). Wiley.
 }
 \seealso{
 \verb{fit_dst_*()} helpers such as \code{\link[=fit_dst_norm]{fit_dst_norm()}}.
