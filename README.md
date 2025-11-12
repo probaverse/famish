@@ -91,214 +91,55 @@ Additional features will be added as development continues. We
 appreciate your patience and welcome contributions! Please see the
 [contributing guide](.github/CONTRIBUTING.md) to get started.
 
-## Example: Fitting Distributions to Streamflow Data
+## Example: Quick Streamflow Fit
 
-In practice, you will most likely just load the whole probaverse with
-`library(probaverse)`; but in this minimal example, we’ll only load
-`famish`, and the core probaverse package, `distionary`.
+For a complete walkthrough, including comparisons between multiple
+fitted families and tail-focused diagnostics, see the [fitting
+vignette](articles/fitting.html). The snippet below shows the minimal
+workflow.
 
 ``` r
 library(distionary)
 library(famish)
 ```
 
-To demonstrate, suppose we have 12 years of streamflow data for a small
-stream, whose annual maxima (in cubic meters per second) are as follows:
+Sample dataset: annual streamflow maxima (cms) for 12 years.
 
 ``` r
 x <- c(4.0, 2.7, 3.5, 3.2, 7.1, 3.1, 2.5, 5.0, 2.3, 4.5, 3.0, 3.8)
 ```
 
-A common practice in hydrology is to fit a distribution to these data,
-and to calculate upper quantiles.
-
-Using the `fit_dst_gev()` function, fit a Generalised Extreme Value
-(GEV) distribution, keeping the default fitting method (maximum
-likelihood).
+Fit a Generalised Extreme Value distribution via maximum likelihood.
 
 ``` r
-# Fit a GEV distribution using the default fitting method.
-gev <- fit_dst_gev(x)
+d <- fit_dst_gev(x)
 #> Loading required namespace: testthat
-# Inspect:
-gev
+d
 #> Generalised Extreme Value distribution (continuous) 
 #> --Parameters--
 #>  location     scale     shape 
 #> 3.0658476 0.7426435 0.2699160
 ```
 
-The fitted distribution is from the `distionary` package, which is the
-core of the probaverse suite of packages. In fact, almost all
-distribution families provided by `distionary` can be fit by `famish`;
-to be sure, note that the `fit_dst_*()` wrappers are the definitive
-source indicating which families and methods are supported.
-
-Next, try fitting a Log Pearson Type III (LP3) distribution using the
-method of L-moments, but on the log scale. This time, we’ll demonstrate
-the use of the main `fit_dst()` function instead of the `fit_dst_lp3()`
-wrapper.
+Distributions are objects understood by the `distionary` package, so you
+can use all the familiar methods to inspect and work with them. For
+example, calculate its mean:
 
 ``` r
-# Fit a Log Pearson Type III distribution using "lmom-log" method.
-lp3 <- fit_dst("lp3", x, method = "lmom-log")
-# Inspect:
-lp3
-#> Log Pearson Type III distribution (continuous) 
+mean(d)
+#> [1] 3.761526
+```
+
+The `fit_dst()` function is the main fitting function in `famish`. Here
+is an example, this time fitting a Normal distribution by L-moments.
+
+``` r
+fit_dst("norm", x = x, method = "lmom")
+#> Normal distribution (continuous) 
 #> --Parameters--
-#>   meanlog     sdlog      skew 
-#> 1.2652738 0.3382651 1.0430967
+#>     mean       sd 
+#> 3.725000 1.279658
 ```
-
-As a first pass at inspecting how well the models fit the data, we can
-compare density plots to a data histogram.
-
-``` r
-# Plot a histogram of the data.
-hist(x, freq = FALSE, ylim = c(0, 0.5), main = NULL, xlab = "Flow (cms)")
-# Overlay the fitted densities.
-plot(gev, "density", add = TRUE, n = 400, lty = 2, lwd = 2, col = "blue4")
-plot(lp3, "density", add = TRUE, n = 400, lty = 3, lwd = 2, col = "orange4")
-# Create a legend.
-legend(
-  "topright",
-  legend = c("Data histogram", "Fitted GEV density", "Fitted LP3 density"),
-  fill = c("gray", NA, NA),
-  lty = c(NA, 2, 3),
-  lwd = 2,
-  border = c("black", NA, NA),
-  col = c(NA, "blue4", "orange4")
-)
-```
-
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
-
-Upper quantiles are useful for estimating the magnitude of rare events.
-These can be calculated using the `distionary::enframe_return()`
-function. In this case, we’ll calculate the 2-, 5-, 10-, 20-, 50-, 100-
-and 200-year return levels for each fitted distribution.
-
-``` r
-# Calculate return levels for each model.
-quantiles <- enframe_return(
-  gev, lp3,
-  at = c(2, 5, 10, 20, 50, 100, 200),
-  arg_name = "return_period",
-  fn_prefix = "flow"
-)
-# Inspect:
-quantiles
-#> # A tibble: 7 × 3
-#>   return_period flow_gev flow_lp3
-#>           <dbl>    <dbl>    <dbl>
-#> 1             2     3.35     3.35
-#> 2             5     4.44     4.57
-#> 3            10     5.37     5.58
-#> 4            20     6.45     6.70
-#> 5            50     8.20     8.43
-#> 6           100     9.84     9.95
-#> 7           200    11.8     11.7
-```
-
-We can also calculate empirical return periods associated with the
-observed data with the `rpscore()` function. In this case, use the
-Weibull plotting position, and compare the empirical return periods to
-the data.
-
-``` r
-# Calculate empirical return periods.
-x_return_periods <- rpscore(x, pos = "Weibull")
-# Inspect in a data frame along with the data.
-data.frame(
-  return_period = sort(x_return_periods),
-  flow_empirical = sort(x)
-)
-#>    return_period flow_empirical
-#> 1       1.083333            2.3
-#> 2       1.181818            2.5
-#> 3       1.300000            2.7
-#> 4       1.444444            3.0
-#> 5       1.625000            3.1
-#> 6       1.857143            3.2
-#> 7       2.166667            3.5
-#> 8       2.600000            3.8
-#> 9       3.250000            4.0
-#> 10      4.333333            4.5
-#> 11      6.500000            5.0
-#> 12     13.000000            7.1
-```
-
-These three sets of return levels can be plotted together to visually
-assess the fit of the two distributions’ upper tails, as an alternative
-to the histogram view.
-
-``` r
-# Plot the empirical frequency-magnitude plot.
-plot(
-  x_return_periods, x, 
-  # log = "x",
-  xlab = "Return period (years)",
-  ylab = "Flow (cms)",
-  pch = 16, col = "black"
-)
-# Plot the fitted distributions' frequency-magnitude plots.
-lines(
-  quantiles$return_period, quantiles$flow_gev,
-  col = "blue4",
-  lty = 2,
-  lwd = 2
-)
-lines(
-  quantiles$return_period, quantiles$flow_lp3,
-  col = "orange4",
-  lty = 3,
-  lwd = 2
-)
-# Add a legend
-legend(
-  "topleft",
-  legend = c(
-    "Empirical",
-    "Fitted GEV",
-    "Fitted LP3"
-  ),
-  col = c("black", "blue4", "orange4"),
-  pch = c(16, NA, NA),
-  lty = c(NA, 2, 3),
-  lwd = 2
-)
-```
-
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
-
-The ‘famish’ package also provides support for calculating the quantile
-score. Now calculate the mean quantile score for the 100-year event,
-recalling that the quantile level (non-exceedance probability of the
-event) is `tau = 1 - 1 / return_period`.
-
-``` r
-## First get the 100-year quantiles for each model.
-gev_100y <- quantiles$flow_gev[quantiles$return_period == 100]
-lp3_100y <- quantiles$flow_lp3[quantiles$return_period == 100]
-## Calculate the mean quantile score for the 100-year event, GEV model.
-qs_gev <- quantile_score(x, gev_100y, tau = 1 - 1 / 100)
-## Inspect
-mean(qs_gev)
-#> [1] 0.06112929
-```
-
-``` r
-## Calculate the mean quantile score for the 100-year event, LP3 model.
-qs_lp3 <- quantile_score(x, lp3_100y, tau = 1 - 1 / 100)
-## Inspect
-mean(qs_lp3)
-#> [1] 0.06220155
-```
-
-Lower quantile scores suggest a better fit, meaning that the GEV may be
-better. For a mroe robust decision based on the quantile score, consider
-using bootstrap to estimate the uncertainty associated with this
-measurement.
 
 ## Correctness and Reliability
 
