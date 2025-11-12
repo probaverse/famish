@@ -2,4 +2,5 @@
 
 ### All vignettes
 
-- [fitting](https://famish.netlify.app/articles/fitting.md):
+- [Fitting Distribution Families with
+  famish](https://famish.netlify.app/articles/fitting.md):

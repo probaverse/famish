@@ -370,4 +370,5 @@ contributing to this project, you agree to abide by its terms.
 
 ### All vignettes
 
-- [fitting](https://famish.netlify.app/articles/fitting.md):
+- [Fitting Distribution Families with
+  famish](https://famish.netlify.app/articles/fitting.md):

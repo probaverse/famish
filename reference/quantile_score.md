@@ -32,3 +32,8 @@ The evaluated quantile score for each entry in the input vector(s).
 The quantile score is based on a loss function that goes by many names –
 the "asymmetric absolute deviation function", the "stick function", the
 "check function", or the "pinball loss".
+
+## References
+
+Gneiting, T. (2011). Making and evaluating point forecasts. Journal of
+the American Statistical Association, 106(494), 746-762.
