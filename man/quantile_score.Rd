@@ -2,31 +2,48 @@
 % Please edit documentation in R/quantile_score.R
 \name{quantile_score}
 \alias{quantile_score}
-\title{Quantile score function}
+\title{Quantile score (pinball loss)}
 \usage{
 quantile_score(x, xhat, tau)
 }
 \arguments{
-\item{x}{Vector of observed data values.}
+\item{x}{Numeric vector of observed values.}
 
-\item{xhat}{Vector of estimated quantiles.}
+\item{xhat}{Numeric vector of estimated quantiles.}
 
-\item{tau}{Quantile level (non-exceedance probability).}
+\item{tau}{Numeric vector of quantile levels in \verb{(0, 1)}.}
 }
 \value{
-The evaluated quantile score for each entry in the input vector(s).
+Numeric vector of quantile scores corresponding to each element of
+the recycled inputs.
 }
 \description{
-Evaluates the quantile score for a given observation against a quantile
-estimate.
+Computes the asymmetric absolute loss commonly used to assess quantile
+forecasts. Lower scores indicate a better match between the estimated
+quantile and the observed value at level \code{tau}.
 }
-\note{
-The quantile score is based on a loss function that goes by many
-names -- the "asymmetric absolute
-deviation function", the "stick function", the "check function",
-or the "pinball loss".
+\details{
+The score minimises to zero when the observation equals the estimated
+quantile, so that smaller scores indicate a better fitting model.
+Positive residuals are penalised by a factor of \code{tau}, and negative
+residuals by \code{tau - 1}. This loss is also known as the stick function, check
+loss, asymmetric absolute deviation, or pinball loss.
+
+For observation \code{x}, estimate \code{x_hat}, and level \code{tau}, the score
+(c.f. Gneiting, 2011) is
+
+\deqn{
+S_\tau(x, \hat{x}) =
+\begin{cases}
+  \tau |x - \hat{x})|, & x \ge \hat{x}, \\
+  (1 - \tau)|x - \hat{x}|, & x < \hat{x}.
+\end{cases}
+}
+
+Vector recycling of all three arguments follows the rules in
+\code{vctrs::vec_recycle_common()}.
 }
 \references{
-Gneiting, T. (2011). Making and evaluating point forecasts.
-Journal of the American Statistical Association, 106(494), 746-762.
+Gneiting, T. (2011). Making and evaluating point forecasts. \emph{Journal of the
+American Statistical Association}, 106(494), 746–762.
 }

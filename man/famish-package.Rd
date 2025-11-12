@@ -4,11 +4,11 @@
 \name{famish-package}
 \alias{famish}
 \alias{famish-package}
-\title{famish: Flexibly Tune Probability Distributions}
+\title{famish: Flexibly Tune Families of Probability Distributions}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Delivers the estimation layer for the 'probaverse' suite of R packages by connecting fitting routines with 'probaverse' distribution objects. Supports multiple estimation methods, such as maximum likelihood and L-moments, and produces distribution objects ready for downstream manipulation and diagnostics-based evaluation.
+Fits probability distributions to data and plugs into the 'probaverse' suite of R packages so distribution objects are ready for further manipulation and evaluation. Supports methods such as maximum likelihood and L-moments, and provides diagnostics including empirical ranking and quantile score.
 }
 \section{Overview}{
 

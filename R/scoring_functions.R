@@ -24,6 +24,20 @@
 #' - Gringorten (1963) proposed `a = -0.44`.
 #' - Hazen (1914) proposed `a = -0.5`.
 #'
+#' @references
+#' Beard, L. R. (1943). Statistical analysis in hydrology. *Transactions of the
+#' American Society of Civil Engineers*, 108, 1110–1160.
+#'
+#' Gringorten, I. I. (1963). A plotting rule for extreme probability paper.
+#' *Journal of Geophysical Research*, 68(3), 813–814.
+#'
+#' Hazen, A. (1914). Storage to be provided in impounding reservoirs for
+#' municipal water supply. *Transactions of the American Society of Civil
+#' Engineers*, 77, 1539–1640.
+#'
+#' Weibull, W. (1939). A statistical theory of the strength of materials.
+#' *IVB-Handl.*, 151.
+#'
 #' @return Vector of uniform scores.
 #' @author Thanks to Dr. Harry Joe for providing a starting framework for
 #' the `uscore()` function.

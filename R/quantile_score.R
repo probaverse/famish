@@ -1,19 +1,40 @@
-#' Quantile score function
+#' Quantile score (pinball loss)
 #'
-#' Evaluates the quantile score for a given observation against a quantile
-#' estimate.
+#' Computes the asymmetric absolute loss commonly used to assess quantile
+#' forecasts. Lower scores indicate a better match between the estimated
+#' quantile and the observed value at level `tau`.
 #'
-#' @param x Vector of observed data values.
-#' @param xhat Vector of estimated quantiles.
-#' @param tau Quantile level (non-exceedance probability).
-#' @return The evaluated quantile score for each entry in the input vector(s).
-#' @note The quantile score is based on a loss function that goes by many
-#' names -- the "asymmetric absolute
-#' deviation function", the "stick function", the "check function",
-#' or the "pinball loss".
-#' @references 
-#' Gneiting, T. (2011). Making and evaluating point forecasts. 
-#' Journal of the American Statistical Association, 106(494), 746-762.
+#' @param x Numeric vector of observed values.
+#' @param xhat Numeric vector of estimated quantiles.
+#' @param tau Numeric vector of quantile levels in `(0, 1)`.
+#'
+#' @return Numeric vector of quantile scores corresponding to each element of
+#'   the recycled inputs.
+#'
+#' @details
+#' The score minimises to zero when the observation equals the estimated
+#' quantile, so that smaller scores indicate a better fitting model.
+#' Positive residuals are penalised by a factor of `tau`, and negative
+#' residuals by `tau - 1`. This loss is also known as the stick function, check
+#' loss, asymmetric absolute deviation, or pinball loss.
+#'
+#' For observation `x`, estimate `x_hat`, and level `tau`, the score
+#' (c.f. Gneiting, 2011) is
+#'
+#' \deqn{
+#' S_\tau(x, \hat{x}) =
+#' \begin{cases}
+#'   \tau |x - \hat{x})|, & x \ge \hat{x}, \\
+#'   (1 - \tau)|x - \hat{x}|, & x < \hat{x}.
+#' \end{cases}
+#' }
+#' 
+#' Vector recycling of all three arguments follows the rules in
+#' `vctrs::vec_recycle_common()`.
+#'
+#' @references
+#' Gneiting, T. (2011). Making and evaluating point forecasts. *Journal of the
+#' American Statistical Association*, 106(494), 746–762.
 #' @export
 quantile_score <- function(x, xhat, tau) {
   z <- vctrs::vec_recycle_common(x, xhat, tau)
