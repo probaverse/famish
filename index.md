@@ -157,6 +157,8 @@ package version 0.2.0, <https://github.com/probaverse/famish>,
 
 ## Code of Conduct
 
-Please note that the `famish` project is released with a [Code of
-Conduct](https://distplyr.probaverse.com/CODE_OF_CONDUCT.html). By
-contributing to this project, you agree to abide by its terms.
+## Code of Conduct
+
+Please note that the famish project is released with a [Code of
+Conduct](https://famish.netlify.app/CODE_OF_CONDUCT.md). By contributing
+to this project, you agree to abide by its terms.

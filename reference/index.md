@@ -1,9 +1,14 @@
 # Package index
 
-## All functions
+## Distribution Fitting
+
+### Main Function
 
 - [`fit_dst()`](https://famish.netlify.app/reference/fit_dst.md) : Fit a
   distribution
+
+### Distribution Wrappers
+
 - [`fit_dst_bern()`](https://famish.netlify.app/reference/fit_dst_family_wrappers.md)
   [`fit_dst_beta()`](https://famish.netlify.app/reference/fit_dst_family_wrappers.md)
   [`fit_dst_cauchy()`](https://famish.netlify.app/reference/fit_dst_family_wrappers.md)
@@ -29,11 +34,17 @@
   [`fit_dst_unif()`](https://famish.netlify.app/reference/fit_dst_family_wrappers.md)
   [`fit_dst_weibull()`](https://famish.netlify.app/reference/fit_dst_family_wrappers.md)
   : Fit Distributions by Family
-- [`quantile_score()`](https://famish.netlify.app/reference/quantile_score.md)
-  : Quantile score (pinball loss)
+
+## Diagnostics
+
+### Empirical Rank Statistics
+
 - [`uscore()`](https://famish.netlify.app/reference/scores.md)
   [`nscore()`](https://famish.netlify.app/reference/scores.md)
   [`rpscore()`](https://famish.netlify.app/reference/scores.md) :
   Rank-based Scores
-- [`stick_function()`](https://famish.netlify.app/reference/stick_function.md)
-  : Quantile loss function
+
+### Scoring Metrics
+
+- [`quantile_score()`](https://famish.netlify.app/reference/quantile_score.md)
+  : Quantile score (pinball loss)
