@@ -1,17 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-<style>
-p.comment {
-background-color: #FEF8C3;
-padding: 10px;
-border: 1px solid black;
-margin-left: 25px;
-border-radius: 5px;
-font-style: italic;
-}
-&#10;</style>
-
 # famish <img src="man/figures/logo.png" align="right" height="134" alt="" />
 
 <!-- badges: start -->
@@ -173,8 +162,6 @@ To cite package `famish` in publications use:
 Coia V (2025). *famish: Flexibly Tune Probability Distributions*. R
 package version 0.2.0, <https://github.com/probaverse/famish>,
 <https://famish.probaverse.com/>.
-
-## Code of Conduct
 
 ## Code of Conduct
 

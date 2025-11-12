@@ -13,18 +13,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-<style>
-p.comment {
-background-color: #FEF8C3;
-padding: 10px;
-border: 1px solid black;
-margin-left: 25px;
-border-radius: 5px;
-font-style: italic;
-}
-
-</style>
-
 
 # famish <img src="man/figures/logo.png" align="right" height="134" alt="" />
 
@@ -126,8 +114,6 @@ To cite package `famish` in publications use:
   R package version 0.2.0,
   https://github.com/probaverse/famish,
   <https://famish.probaverse.com/>.
-
-## Code of Conduct
 
 ## Code of Conduct
 
