@@ -11,6 +11,9 @@
 #' names -- the "asymmetric absolute
 #' deviation function", the "stick function", the "check function",
 #' or the "pinball loss".
+#' @references 
+#' Gneiting, T. (2011). Making and evaluating point forecasts. 
+#' Journal of the American Statistical Association, 106(494), 746-762.
 #' @export
 quantile_score <- function(x, xhat, tau) {
   z <- vctrs::vec_recycle_common(x, xhat, tau)
