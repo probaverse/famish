@@ -8,7 +8,7 @@
 #' @param xhat Numeric vector of estimated quantiles.
 #' @param tau Numeric vector of quantile levels in `(0, 1)`.
 #'
-#' @return Numeric vector of quantile scores corresponding to each element of
+#' @returns Numeric vector of quantile scores corresponding to each element of
 #'   the recycled inputs.
 #'
 #' @details
@@ -35,6 +35,9 @@
 #' @references
 #' Gneiting, T. (2011). Making and evaluating point forecasts. *Journal of the
 #' American Statistical Association*, 106(494), 746–762.
+#' @examples
+#' quantile_score(c(5, 15, 10), xhat = 7, tau = 0.8)
+#' quantile_score(c(5, 15, 10), xhat = c(6, 19, 12), tau = c(0.2, 0.9, 0.5))
 #' @export
 quantile_score <- function(x, xhat, tau) {
   z <- vctrs::vec_recycle_common(x, xhat, tau)

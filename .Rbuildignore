@@ -11,3 +11,4 @@
 ^Meta$
 ^CODE_OF_CONDUCT\.md$
 ^codemeta\.json$
+^cran-comments\.md$

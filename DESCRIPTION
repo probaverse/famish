@@ -30,6 +30,6 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-URL: https://famish.probaverse.com/
+URL: https://famish.probaverse.com/, https://github.com/probaverse/famish/
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)

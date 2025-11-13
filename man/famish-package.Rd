@@ -69,6 +69,7 @@ enframe_return(fitted_gamma, at = c(2, 5, 10))
 Useful links:
 \itemize{
   \item \url{https://famish.probaverse.com/}
+  \item \url{https://github.com/probaverse/famish/}
 }
 
 }

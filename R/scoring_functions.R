@@ -38,7 +38,7 @@
 #' Weibull, W. (1939). A statistical theory of the strength of materials.
 #' *IVB-Handl.*, 151.
 #'
-#' @return Vector of uniform scores.
+#' @returns Vector of uniform scores corresponding to values in `x`.
 #' @author Thanks to Dr. Harry Joe for providing a starting framework for
 #' the `uscore()` function.
 #' @examples

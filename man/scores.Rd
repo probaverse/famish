@@ -24,7 +24,7 @@ proponents behind a choice of the numeric: "Weibull", "Beard",
 removed from the output.}
 }
 \value{
-Vector of uniform scores.
+Vector of uniform scores corresponding to values in \code{x}.
 }
 \description{
 Converts a numeric vector to its rank-based scores. For \code{uscore()}

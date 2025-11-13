@@ -43,6 +43,10 @@ S_\tau(x, \hat{x}) =
 Vector recycling of all three arguments follows the rules in
 \code{vctrs::vec_recycle_common()}.
 }
+\examples{
+quantile_score(c(5, 15, 10), xhat = 7, tau = 0.8)
+quantile_score(c(5, 15, 10), xhat = c(6, 19, 12), tau = c(0.2, 0.9, 0.5))
+}
 \references{
 Gneiting, T. (2011). Making and evaluating point forecasts. \emph{Journal of the
 American Statistical Association}, 106(494), 746–762.

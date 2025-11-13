@@ -101,7 +101,7 @@
 #'
 #' Feller, W. (1971). *An Introduction to Probability Theory and Its
 #' Applications* (Vol. 2, 2nd ed.). Wiley.
-#' @return A distribution object of class "dst" encapsulating the fitted
+#' @returns A distribution object of class "dst" encapsulating the fitted
 #' distribution.
 #'
 #' @seealso `fit_dst_*()` helpers such as [`fit_dst_norm()`].
