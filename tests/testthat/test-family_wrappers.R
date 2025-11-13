@@ -48,10 +48,6 @@ test_that("fit_dst family wrappers invoke fit_dst() properly.", {
     fit_dst("exp", x)
   )
   expect_equal(
-    fit_dst_f(x),
-    fit_dst("f", x)
-  )
-  expect_equal(
     fit_dst_finite(x),
     fit_dst("finite", x)
   )
@@ -99,11 +95,15 @@ test_that("fit_dst family wrappers invoke fit_dst() properly.", {
     fit_dst_weibull(x),
     fit_dst("weibull", x)
   )
-  # Pearson3 is a little picky about what data it succeeds on.
+  # Pearson3 and f are a little picky about what data they succeed on.
   set.seed(1)
   x <- stats::rexp(20)
   expect_equal(
     fit_dst_pearson3(x),
     fit_dst("pearson3", x)
+  )
+  expect_equal(
+    fit_dst_f(x),
+    fit_dst("f", x)
   )
 })

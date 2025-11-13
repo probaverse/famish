@@ -84,13 +84,35 @@ wrapper_fitdistrplus <- function(family, x, method) {
       c(size = size, prob = size / (size + mu))
     }
   )
-  fit <- suppressWarnings(fitdistrplus::fitdist(
-    data = x,
-    distr = family,
-    method = method,
-    start = start,
-    lower = lower
-  ))
+  fit <- suppressWarnings({
+    # fitdist() is very verbose upon failure such that `suppress*()` functions
+    # cannot silence it. Take a more aggressive `sink()` approach to
+    # divert all output to null.
+    message_con <- NULL
+    on.exit({
+      sink(type = "message")
+      if (!is.null(message_con)) {
+        close(message_con)
+      }
+      sink()
+    }, add = TRUE)
+
+    sink(nullfile())
+    if (sink.number(type = "message") > 0) {
+      message_con <- textConnection("famish_sink", open = "w", local = TRUE)
+      sink(message_con, type = "message")
+    } else {
+      sink(nullfile(), type = "message")
+    }
+    # Main call to fitdistrplus
+    fitdistrplus::fitdist(
+      data = x,
+      distr = family,
+      method = method,
+      start = start,
+      lower = lower
+    )
+  })
   params <- fit$estimate
   if (anyNA(params)) {
     stop("Fitting resulted in NA parameters, and therefore failed to fit.")
