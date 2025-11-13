@@ -36,7 +36,7 @@ rpscore(x, pos = "Hazen", na.rm = FALSE)
 
 ## Value
 
-Vector of uniform scores.
+Vector of uniform scores corresponding to values in `x`.
 
 ## Details
 

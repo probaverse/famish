@@ -53,6 +53,8 @@ Useful links:
 
 - <https://famish.probaverse.com/>
 
+- <https://github.com/probaverse/famish/>
+
 ## Author
 
 **Maintainer**: Vincenzo Coia <vincenzo.coia@gmail.com> \[copyright

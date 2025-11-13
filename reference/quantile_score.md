@@ -50,3 +50,12 @@ Vector recycling of all three arguments follows the rules in
 
 Gneiting, T. (2011). Making and evaluating point forecasts. *Journal of
 the American Statistical Association*, 106(494), 746–762.
+
+## Examples
+
+``` r
+quantile_score(c(5, 15, 10), xhat = 7, tau = 0.8)
+#> [1] 0.4 6.4 2.4
+quantile_score(c(5, 15, 10), xhat = c(6, 19, 12), tau = c(0.2, 0.9, 0.5))
+#> [1] 0.8 0.4 1.0
+```

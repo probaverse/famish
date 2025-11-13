@@ -43,12 +43,10 @@ probabilistic models rely on dependable estimation tools.
 
 ## Installation
 
-You can install the development version of famish from
-[GitHub](https://github.com/) with:
+Install `famish` from CRAN:
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("probaverse/famish")
+install.packages("famish")
 ```
 
 ## Future Goals
