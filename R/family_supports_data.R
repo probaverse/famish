@@ -2,8 +2,6 @@
 # the potential support of the given distribution family.
 # Returns TRUE if so, FALSE if not.
 # `x` is not allowed to contain NA.
-# See also `distribution_supports_data()` for a harder check based on a 
-# distribution rather than a broader distribution family.
 # Returns NULL if the family is not recognized/supported.
 family_supports_data <- function(x, family) {
   checkmate::assert_numeric(x, any.missing = FALSE)
