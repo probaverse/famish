@@ -6,6 +6,7 @@ on:
   pull_request:
     branches: [main, master]
 
+
 name: test-coverage.yaml
 
 permissions: read-all
@@ -27,6 +28,12 @@ jobs:
         with:
           extra-packages: any::covr, any::xml2
           needs: coverage
+      
+      - name: Print numerical environment
+        run: |
+          Rscript -e 'print(extSoftVersion())'
+          Rscript -e 'sessionInfo()'
+          Rscript -e 'Sys.info()'
 
       - name: Test coverage
         run: |

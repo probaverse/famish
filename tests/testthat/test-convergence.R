@@ -1,5 +1,8 @@
 library(distionary)
 
+cat("BLAS version:\n")
+print(extSoftVersion()["BLAS"])
+
 test_that("Estimated parameters converge to true parameters.", {
   verbose <- TRUE
   tol <- 0.5
@@ -194,6 +197,9 @@ test_that("Estimated parameters converge to true parameters.", {
           cat("- - - - - - - - - - - - - - - - -\n")
         }
         expect_lt(num_nulls, 4)
+        if (num_nulls >= 4 && verbose) {
+          cat("FAILURE FOR FAMILY:", fam, "METHOD:", method, "\n")
+        }
       }
     }
   }
