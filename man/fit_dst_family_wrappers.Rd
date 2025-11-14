@@ -50,15 +50,15 @@ fit_dst_gamma(x, method = c("mle", "mge", "mme", "lmom"), ...)
 
 fit_dst_geom(x, method = c("mle", "mme", "lmom"), ...)
 
-fit_dst_gev(x, method = c("mle", "mge", "lmom"), ...)
+fit_dst_gev(x, method = c("mle", "lmom"), ...)
 
-fit_dst_gp(x, method = c("mle", "mge", "lmom"), ...)
+fit_dst_gp(x, method = c("mle", "lmom"), ...)
 
 fit_dst_gumbel(x, method = c("mle", "lmom"), ...)
 
 fit_dst_lnorm(x, method = c("mle", "mge", "mme", "lmom", "lmom-log"), ...)
 
-fit_dst_lp3(x, method = c("mle", "mge", "lmom-log"), ...)
+fit_dst_lp3(x, method = "lmom-log", ...)
 
 fit_dst_nbinom(x, method = c("mle", "mme"), ...)
 
@@ -66,7 +66,7 @@ fit_dst_norm(x, method = c("mle", "mge", "mme", "lmom"), ...)
 
 fit_dst_null(x, ...)
 
-fit_dst_pearson3(x, method = c("mle", "mge", "lmom"), ...)
+fit_dst_pearson3(x, method = "lmom", ...)
 
 fit_dst_pois(x, method = c("mle", "mme", "lmom"), ...)
 
@@ -98,6 +98,31 @@ value indicated by the function suffix.
 Some families do not have a unique fitting method where it is not applicable.
 These are the 'finite' ones (including 'degenerate' and 'empirical'), and
 the 'Null' distribution.
+\subsection{Missing Combinations}{
+
+Some combinations of families and methods are not supported,
+when one might think that they should be. These combinations are:
+\itemize{
+\item 'gp' fit by 'mge'
+\item 'lp3' fit by 'mle' and 'mge'
+\item 'pearson3' fit by 'mle' and 'mge'
+\item 'gev' fit by 'mge'
+}
+
+They are not included because of how the \code{fitdistrplus::fitdist()} function
+looks for those distributional representations (i.e., \code{plp3()}, \code{dlp3()},
+etc.): since we cannot guarantee that it will find the correct ones, these
+combinations are omitted for safety.
+
+To elaborate, the current version of the wrapped \code{fitdistrplus::fitdist()}
+function looks for these representations starting from the
+\code{namespace:fitdistrplus} environment. \code{famish} cannot control what's
+found in that search path
+until the global environment, but that's too late because that's where
+behaviour becomes conditional on the user's actions. This is not a problem
+for other distributions because these are found in the \code{namespace:base}
+environment before the global environment is reached.
+}
 }
 \examples{
 # Calls can be quite simple.

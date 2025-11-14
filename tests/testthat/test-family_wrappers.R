@@ -73,7 +73,7 @@ test_that("fit_dst family wrappers invoke fit_dst() properly.", {
   )
   expect_equal(
     fit_dst_lp3(x),
-    fit_dst("lp3", x)
+    fit_dst("lp3", x, method = "lmom-log")
   )
   expect_equal(
     fit_dst_norm(x),
@@ -100,7 +100,7 @@ test_that("fit_dst family wrappers invoke fit_dst() properly.", {
   x <- stats::rexp(20)
   expect_equal(
     fit_dst_pearson3(x),
-    fit_dst("pearson3", x)
+    fit_dst("pearson3", x, method = "lmom")
   )
   expect_equal(
     fit_dst_f(x),

@@ -9,7 +9,9 @@
 #'   `"gev"`, `"pois"`. See details. Character vector of length 1.
 #' @param x Numeric vector containing the observations to fit.
 #' @param method Estimation method to use. Valid choices include `"mle"`,
-#'   `"mge"`, `"mme"`, `"lmom"`, and `"lmom-log"`. The default is `"mle"`.
+#'   `"mge"`, `"mme"`, `"lmom"`, and `"lmom-log"`. The default is `"mle"`,
+#'   although beware that not all families support the `"mle"` method yet
+#'   (pearson3 and lp3).
 #' @param na_action Strategy for dealing with `NA` values in `x`.
 #'   `"null"` returns a Null distribution (`distionary::dst_null()`);
 #'   `"drop"` silently removes missing observations before fitting; and
@@ -59,16 +61,16 @@
 #'     is estimated as the mean of the 0-1 data; for 'degenerate', the
 #'     unique data value.
 #'   \item For `method = "mme"` and `"lmom"`, the 'cauchy' family fails to fit
-#'     because Cauchy distributions have no finite moments (Feller, 1971).
+#'     because Cauchy distributions don't have finite moments (Feller, 1971).
 #'   \item For families 'empirical' and 'finite', the empirical distribution
 #'     is fit to the supplied data.
 #'   \item For the 'null' family, a Null distribution is returned.
 #'   \item For any other combination of `family` and `method`, the
 #'     `fitdistrplus::fitdist()` function is called by inserting the data `x`,
 #'     the `family` name, and the `method`. Some distributions require
-#'     starting values for the parameters. For the families 't', 'pearson3',
-#'     'f', and 'chisq', this is done by moment matching ('mme'), and for 'lp3',
-#'     through its log. For 'gev', 'gp', and 'gumbel', the MLE is used as
+#'     starting values for the parameters. For the families 't',
+#'     'f', and 'chisq', this is done by moment matching ('mme'). 
+#'     For 'gev', 'gp', and 'gumbel', the MLE is used as
 #'     starting values (through `method = "mle"`).
 #' }
 #'

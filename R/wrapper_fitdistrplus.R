@@ -5,6 +5,7 @@ wrapper_fitdistrplus <- function(family, x, method) {
   checkmate::assert_character(family, len = 1)
   checkmate::assert_numeric(x, any.missing = FALSE)
   checkmate::assert_character(method, len = 1)
+  
   ## ------- Special cases -------
   if (family == "bern" && method == "mle") {
     # The MLE of Bernoulli is just the mean of the 0-1 data.

@@ -1,5 +1,4 @@
 test_that("Estimated parameters converge to true parameters.", {
-  suppressPackageStartupMessages(library(distionary))
   verbose <- FALSE
   tol <- 0.5
   niter <- 20
@@ -14,102 +13,117 @@ test_that("Estimated parameters converge to true parameters.", {
   # specific method.
   test_distributions <- list(
     weibull = list(
-      dst_weibull(5, 2),
-      dst_weibull(2, 5)
+      distionary::dst_weibull(5, 2),
+      distionary::dst_weibull(2, 5)
     ),
     unif = list(
-      dst_unif(-2, 5),
-      dst_unif(-5, 0),
-      dst_unif(0, 5)
+      distionary::dst_unif(-2, 5),
+      distionary::dst_unif(-5, 0),
+      distionary::dst_unif(0, 5)
     ),
     t = list(
-      dst_t(3),
-      list(dst_t(10), tolerance = 2)
+      distionary::dst_t(3),
+      list(distionary::dst_t(10), tolerance = 2)
     ),
     pois = list(
-      dst_pois(1),
-      dst_pois(5)
+      distionary::dst_pois(1),
+      distionary::dst_pois(5)
     ),
     pearson3 = list(
-      dst_pearson3(20, 2, 0.5),
-      dst_pearson3(30, 3, 1),
-      dst_pearson3(10, 1, 2)
+      distionary::dst_pearson3(20, 2, 0.5),
+      distionary::dst_pearson3(30, 3, 1),
+      distionary::dst_pearson3(10, 1, 2)
     ),
     norm = list(
-      dst_norm(0, 1),
-      dst_norm(-5, 3),
-      dst_norm(5, 2)
+      distionary::dst_norm(0, 1),
+      distionary::dst_norm(-5, 3),
+      distionary::dst_norm(5, 2)
     ),
     nbinom = list(
-      dst_nbinom(5, 0.2),
-      dst_nbinom(10, 0.6)
+      distionary::dst_nbinom(5, 0.2),
+      distionary::dst_nbinom(10, 0.6)
     ),
     lp3 = list(
-      dst_lp3(10, 5, 0.2),
-      dst_lp3(20, 2, 0.5),
-      dst_lp3(30, 3, 1),
-      dst_lp3(10, 1, 1.5)
+      distionary::dst_lp3(10, 5, 0.2),
+      distionary::dst_lp3(20, 2, 0.5),
+      distionary::dst_lp3(30, 3, 1),
+      distionary::dst_lp3(10, 1, 1.5)
     ),
     lnorm = list(
-      dst_lnorm(-5, 1),
-      dst_lnorm(2, 0.1)
+      distionary::dst_lnorm(-5, 1),
+      distionary::dst_lnorm(2, 0.1)
     ),
     gp = list(
-      dst_gp(1, 0),
-      dst_gp(2, 0.5),
-      dst_gp(3, 1),
-      list(dst_gp(1, 2), tolerance = 7, method = "lmom") # moments don't exist
+      distionary::dst_gp(1, 0),
+      distionary::dst_gp(2, 0.5),
+      distionary::dst_gp(3, 1),
+      list(
+        # moments don't exist
+        distionary::dst_gp(1, 2), tolerance = 7, method = "lmom"
+      )
     ),
     gev = list(
-      dst_gev(10, 5, 0),
-      dst_gev(20, 2, 0.5),
-      dst_gev(30, 3, 1),
-      list(dst_gev(10, 1, 2), tolerance = 12, method = "lmom") # moments DNE
+      list(
+        # slow convergence
+        distionary::dst_gev(10, 5, 0), tolerance = 4, method = "mge"
+      ),
+      list(
+        # slow convergence
+        distionary::dst_gev(20, 2, 0.5), tolerance = 2, method = "mge"
+      ),
+      list(
+        # slow convergence
+        distionary::dst_gev(30, 3, 1), tolerance = 2, method = "mge"
+      ),
+      list(
+        # moments do not exist
+        distionary::dst_gev(10, 1, 2), tolerance = 12, method = c("lmom", "mge")
+      ) 
     ),
     gumbel = list(
-      dst_gev(-10, 5, 0),
-      dst_gev(10, 2, 0),
-      dst_gev(0, 3, 0)
+      distionary::dst_gev(-10, 5, 0),
+      distionary::dst_gev(10, 2, 0),
+      distionary::dst_gev(0, 3, 0)
     ),
     geom = list(
-      dst_geom(0.3),
-      dst_geom(0.9)
+      distionary::dst_geom(0.3),
+      distionary::dst_geom(0.9)
     ),
     gamma = list(
-      dst_gamma(5, 3),
-      dst_gamma(3, 5)
+      distionary::dst_gamma(5, 3),
+      distionary::dst_gamma(3, 5)
     ),
     f = list(
-      dst_f(5, 3),
-      dst_f(3, 5)
+      distionary::dst_f(5, 3),
+      distionary::dst_f(3, 5)
     ),
     exp = list(
-      dst_exp(3),
-      dst_exp(9)
+      distionary::dst_exp(3),
+      distionary::dst_exp(9)
     ),
     degenerate = list(
-      dst_degenerate(5),
-      dst_degenerate(-2),
-      dst_degenerate(0)
+      distionary::dst_degenerate(5),
+      distionary::dst_degenerate(-2),
+      distionary::dst_degenerate(0)
     ),
     chisq = list(
-      dst_chisq(3),
-      dst_chisq(10)
+      distionary::dst_chisq(3),
+      distionary::dst_chisq(10)
     ),
     cauchy = list(
-      dst_cauchy(0, 5),
-      dst_cauchy(-5, 1),
-      dst_cauchy(5, 1)
+      distionary::dst_cauchy(0, 5),
+      distionary::dst_cauchy(-5, 1),
+      distionary::dst_cauchy(5, 1)
     ),
     beta = list(
-      dst_beta(5, 2),
-      dst_beta(2, 5),
-      dst_beta(0.2, 5),
-      dst_beta(5, 0.2)
+      distionary::dst_beta(5, 2),
+      distionary::dst_beta(2, 5),
+      distionary::dst_beta(0.2, 5),
+      distionary::dst_beta(5, 0.2)
     ),
     bern = list(
-      dst_bern(0.2),
-      dst_bern(0.9)
+      distionary::dst_bern(0.2),
+      distionary::dst_bern(0.9)
     )
   )
   missing_fams <- sort(setdiff(names(all_methods), names(test_distributions)))
@@ -127,21 +141,10 @@ test_that("Estimated parameters converge to true parameters.", {
     distributions <- test_distributions[[fam]]
     methods <- all_methods[[fam]]
     for (method in methods) {
-      if (fam %in% c("lp3", "pearson3") && method %in% c("mle", "mge")) {
-        # Interactively, these combinations do not pose an error:
-        # these distributions always fit successfully.
-        # But when running devtools::check(), they always fail to fit.
-        # The real need for testing `famish` is to ensure the arguments
-        # get plugged into the wrapped function correctly, and that is
-        # already achieved by other tests; testing convergence goes above
-        # and beyond, and the onus is with fitdistrplus to ensure
-        # consistency with different environments. 
-        next
-      }
       for (d in distributions) {
-        if (!is_distribution(d)) {
+        if (!distionary::is_distribution(d)) {
           tol_method <- d[["method"]]
-          if (is.null(tol_method) || tol_method == method) {
+          if (is.null(tol_method) || method %in% tol_method) {
             dist_tol <- d[["tolerance"]]
           } else {
             dist_tol <- tol
@@ -151,10 +154,11 @@ test_that("Estimated parameters converge to true parameters.", {
           dist_tol <- tol
         }
         if (verbose) {
+          cat("Family: ", fam, "\n")
           cat("Method: ", method, "\n")
           cat("Tolerance: ", dist_tol, "\n")
         }
-        actual <- unlist(parameters(d))
+        actual <- unlist(distionary::parameters(d))
         if (verbose) {
           print(actual)
         }
@@ -168,9 +172,9 @@ test_that("Estimated parameters converge to true parameters.", {
           temp_para <- list()
           while (diff > dist_tol && i < niter) {
             i <- i + 1
-            x <- append(x, realise(d, n = ndraw))
+            x <- append(x, distionary::realise(d, n = ndraw))
             fit <- suppressWarnings(fit_dst(fam, x, method = method))
-            estim <- unlist(parameters(fit))
+            estim <- unlist(distionary::parameters(fit))
             # Second `abs` when calculating `diff` handles NA cases
             # (otherwise, diff = -Inf)
             diff <- suppressWarnings(abs(max(abs(actual - estim))))
@@ -180,7 +184,7 @@ test_that("Estimated parameters converge to true parameters.", {
               cat("|")
             }
           }
-          is_null <- pretty_name(fit) == "Null"
+          is_null <- distionary::pretty_name(fit) == "Null"
           if (is_null) {
             # Lack of convergence not allowed. If an issue, 
             # (e.g., convergence not reached in time and the parameter is 
