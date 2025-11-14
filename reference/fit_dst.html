@@ -81,7 +81,9 @@ the 'ismev' package when fitting the GP/GEV/Gumbel by MLE, and the
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>Estimation method to use. Valid choices include <code>"mle"</code>,
-<code>"mge"</code>, <code>"mme"</code>, <code>"lmom"</code>, and <code>"lmom-log"</code>. The default is <code>"mle"</code>.</p></dd>
+<code>"mge"</code>, <code>"mme"</code>, <code>"lmom"</code>, and <code>"lmom-log"</code>. The default is <code>"mle"</code>,
+although beware that not all families support the <code>"mle"</code> method yet
+(pearson3 and lp3).</p></dd>
 
 
 <dt id="arg-na-action">na_action<a class="anchor" aria-label="anchor" href="#arg-na-action"></a></dt>
@@ -141,16 +143,16 @@ the MLE is calculated manually. For 'bern', the parameter
 is estimated as the mean of the 0-1 data; for 'degenerate', the
 unique data value.</p></li>
 <li><p>For <code>method = "mme"</code> and <code>"lmom"</code>, the 'cauchy' family fails to fit
-because Cauchy distributions have no finite moments (Feller, 1971).</p></li>
+because Cauchy distributions don't have finite moments (Feller, 1971).</p></li>
 <li><p>For families 'empirical' and 'finite', the empirical distribution
 is fit to the supplied data.</p></li>
 <li><p>For the 'null' family, a Null distribution is returned.</p></li>
 <li><p>For any other combination of <code>family</code> and <code>method</code>, the
 <code><a href="https://lbbe-software.github.io/fitdistrplus/reference/fitdist.html" class="external-link">fitdistrplus::fitdist()</a></code> function is called by inserting the data <code>x</code>,
 the <code>family</code> name, and the <code>method</code>. Some distributions require
-starting values for the parameters. For the families 't', 'pearson3',
-'f', and 'chisq', this is done by moment matching ('mme'), and for 'lp3',
-through its log. For 'gev', 'gp', and 'gumbel', the MLE is used as
+starting values for the parameters. For the families 't',
+'f', and 'chisq', this is done by moment matching ('mme').
+For 'gev', 'gp', and 'gumbel', the MLE is used as
 starting values (through <code>method = "mle"</code>).</p></li>
 </ul><p>To understand what the distribution families are, see the documentation
 in the 'distionary' package through the <code>dst_*()</code> functions.

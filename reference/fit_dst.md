@@ -31,7 +31,9 @@ fit_dst(
 - method:
 
   Estimation method to use. Valid choices include `"mle"`, `"mge"`,
-  `"mme"`, `"lmom"`, and `"lmom-log"`. The default is `"mle"`.
+  `"mme"`, `"lmom"`, and `"lmom-log"`. The default is `"mle"`, although
+  beware that not all families support the `"mle"` method yet (pearson3
+  and lp3).
 
 - na_action:
 
@@ -100,7 +102,7 @@ Here is how fitting is implemented.
   as the mean of the 0-1 data; for 'degenerate', the unique data value.
 
 - For `method = "mme"` and `"lmom"`, the 'cauchy' family fails to fit
-  because Cauchy distributions have no finite moments (Feller, 1971).
+  because Cauchy distributions don't have finite moments (Feller, 1971).
 
 - For families 'empirical' and 'finite', the empirical distribution is
   fit to the supplied data.
@@ -111,10 +113,9 @@ Here is how fitting is implemented.
   [`fitdistrplus::fitdist()`](https://lbbe-software.github.io/fitdistrplus/reference/fitdist.html)
   function is called by inserting the data `x`, the `family` name, and
   the `method`. Some distributions require starting values for the
-  parameters. For the families 't', 'pearson3', 'f', and 'chisq', this
-  is done by moment matching ('mme'), and for 'lp3', through its log.
-  For 'gev', 'gp', and 'gumbel', the MLE is used as starting values
-  (through `method = "mle"`).
+  parameters. For the families 't', 'f', and 'chisq', this is done by
+  moment matching ('mme'). For 'gev', 'gp', and 'gumbel', the MLE is
+  used as starting values (through `method = "mle"`).
 
 To understand what the distribution families are, see the documentation
 in the 'distionary' package through the `dst_*()` functions. For
