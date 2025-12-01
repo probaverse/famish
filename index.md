@@ -66,14 +66,14 @@ for the easier creation of distribution families. Some bigger goals for
 
 Additional features will be added as development continues. We
 appreciate your patience and welcome contributions! Please see the
-[contributing guide](https://famish.netlify.app/CONTRIBUTING.md) to get
+[contributing guide](https://famish.probaverse.com/contributing) to get
 started.
 
 ## Example: Quick Streamflow Fit
 
 For a complete walkthrough, including comparisons between multiple
 fitted families and tail-focused diagnostics, see the [fitting
-vignette](https://famish.netlify.app/articles/fitting.md). The snippet
+vignette](https://famish.probaverse.com/articles/fitting). The snippet
 below shows the minimal workflow.
 
 ``` r
@@ -156,5 +156,5 @@ package version 0.2.0, <https://github.com/probaverse/famish>,
 ## Code of Conduct
 
 Please note that the famish project is released with a [Code of
-Conduct](https://famish.netlify.app/CODE_OF_CONDUCT.md). By contributing
+Conduct](https://famish.probaverse.com/code_of_conduct). By contributing
 to this project, you agree to abide by its terms.
