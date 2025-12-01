@@ -54,11 +54,11 @@ While the current version of `famish` is limited in scope, it has big long-term 
 - Fitting a distribution to best match a supplied table of quantiles, or another reference distribution.
 - Providing modern estimation methods that are more appropriate for estimation of risk and hazard analysis.
 
-Additional features will be added as development continues. We appreciate your patience and welcome contributions! Please see the [contributing guide](.github/CONTRIBUTING.md) to get started.
+Additional features will be added as development continues. We appreciate your patience and welcome contributions! Please see the [contributing guide](https://famish.probaverse.com/contributing) to get started.
 
 ## Example: Quick Streamflow Fit
 
-For a complete walkthrough, including comparisons between multiple fitted families and tail-focused diagnostics, see the [fitting vignette](articles/fitting.html). The snippet below shows the minimal workflow.
+For a complete walkthrough, including comparisons between multiple fitted families and tail-focused diagnostics, see the [fitting vignette](https://famish.probaverse.com/articles/fitting). The snippet below shows the minimal workflow.
 
 ```{r}
 library(distionary)
@@ -116,4 +116,4 @@ To cite package `famish` in publications use:
 
 ## Code of Conduct
 
-Please note that the famish project is released with a [Code of Conduct](CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+Please note that the famish project is released with a [Code of Conduct](https://famish.probaverse.com/code_of_conduct). By contributing to this project, you agree to abide by its terms.
