@@ -46,6 +46,7 @@ probabilistic models rely on dependable estimation tools.
 Install `famish` from CRAN:
 
 ``` r
+
 install.packages("famish")
 ```
 
@@ -77,6 +78,7 @@ vignette](https://famish.probaverse.com/articles/fitting). The snippet
 below shows the minimal workflow.
 
 ``` r
+
 library(distionary)
 library(famish)
 ```
@@ -84,12 +86,14 @@ library(famish)
 Sample dataset: annual streamflow maxima (cms) for 12 years.
 
 ``` r
+
 x <- c(4.0, 2.7, 3.5, 3.2, 7.1, 3.1, 2.5, 5.0, 2.3, 4.5, 3.0, 3.8)
 ```
 
 Fit a Generalised Extreme Value distribution via maximum likelihood.
 
 ``` r
+
 d <- fit_dst_gev(x)
 #> Loading required namespace: testthat
 d
@@ -104,6 +108,7 @@ can use all the familiar methods to inspect and work with them. For
 example, calculate its mean:
 
 ``` r
+
 mean(d)
 #> [1] 3.761526
 ```
@@ -113,6 +118,7 @@ function is the main fitting function in `famish`. Here is an example,
 this time fitting a Normal distribution by L-moments.
 
 ``` r
+
 fit_dst("norm", x = x, method = "lmom")
 #> Normal distribution (continuous) 
 #> --Parameters--

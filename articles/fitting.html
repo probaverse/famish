@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Fitting Distribution Families with famish">
 <!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-MCVSE5T8BD"></script><script>
@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">famish</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,7 +106,7 @@ a Null distribution (default) or raise an error.</p>
 </h2>
 <p>Start by loading <code>famish</code> and the core probaverse package,
 <code>distionary</code>. In practice, you will most likely just load the
-whole probaverse with <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library(probaverse)</a></code> instead.</p>
+whole probaverse with <code><a href="https://probaverse.probaverse.com/" class="external-link">library(probaverse)</a></code> instead.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://distionary.probaverse.com/" class="external-link">distionary</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://famish.probaverse.com/" class="external-link">famish</a></span><span class="op">)</span></span></code></pre></div>
@@ -151,7 +151,7 @@ diagnostics:</p>
 <span>  pt.cex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.5</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
 <span>  bty <span class="op">=</span> <span class="st">"n"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="fitting_files/figure-html/density-plot-1.png" class="r-plt" width="576"></p>
+<p><img src="fitting_files/figure-html/density-plot-1.png" class="r-plt" alt="" width="576"></p>
 </div>
 <div class="section level2">
 <h2 id="diagnostics-that-emphasise-extremes">Diagnostics that emphasise extremes<a class="anchor" aria-label="anchor" href="#diagnostics-that-emphasise-extremes"></a>
@@ -201,7 +201,7 @@ behaviour.</p>
 <span>  lwd <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  bty <span class="op">=</span> <span class="st">"n"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="fitting_files/figure-html/freq-mag-1.png" class="r-plt" width="576"></p>
+<p><img src="fitting_files/figure-html/freq-mag-1.png" class="r-plt" alt="" width="576"></p>
 <p>Quantile scores provide a quantitative metric for how well a quantile
 is estimated. Lower scores indicate better calibration at the specified
 quantile level (Gneiting, 2011).</p>

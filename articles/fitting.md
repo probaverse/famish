@@ -3,9 +3,9 @@
 `famish` works with distribution **families**—sets of related
 distributions indexed by parameters—rather than single distributions.
 For example, the Normal family is indexed by its mean and standard
-deviation, while the Beta family is indexed by shape parameters $\alpha$
-and $\beta$. Once parameters are fixed, you have a specific distribution
-inside the family.
+deviation, while the Beta family is indexed by shape parameters
+$`\alpha`$ and $`\beta`$. Once parameters are fixed, you have a specific
+distribution inside the family.
 
 `famish` aims to connects those families to data (or other targets such
 as expert-elicited quantiles) using two ideas:
@@ -26,9 +26,10 @@ distribution (default) or raise an error.
 
 Start by loading `famish` and the core probaverse package, `distionary`.
 In practice, you will most likely just load the whole probaverse with
-[`library(probaverse)`](https://rdrr.io/r/base/library.html) instead.
+[`library(probaverse)`](https://probaverse.probaverse.com/) instead.
 
 ``` r
+
 library(distionary)
 library(famish)
 ```
@@ -37,6 +38,7 @@ Suppose we have annual streamflow maxima (cubic meters per second) for
 12 years. We will fit two distributions from two different families.
 
 ``` r
+
 x <- c(4.0, 2.7, 3.5, 3.2, 7.1, 3.1, 2.5, 5.0, 2.3, 4.5, 3.0, 3.8)
 ```
 
@@ -44,6 +46,7 @@ Fit a Generalised Extreme Value (GEV) distribution with
 maximum-likelihood estimation using its wrapper:
 
 ``` r
+
 gev <- fit_dst_gev(x)
 #> Loading required namespace: testthat
 gev
@@ -59,6 +62,7 @@ to use other combinations. Here we fit a Log Pearson Type III
 distribution using L-moments on the log scale:
 
 ``` r
+
 lp3 <- fit_dst("lp3", x, method = "lmom-log")
 lp3
 #> Log Pearson Type III distribution (continuous) 
@@ -71,6 +75,7 @@ Both fits return `distionary` objects, so any downstream probaverse
 tooling applies. Basic comparisons start with visual diagnostics:
 
 ``` r
+
 hist(x, freq = FALSE, ylim = c(0, 0.5), main = NULL, xlab = "Flow (cms)")
 plot(gev, "density", add = TRUE, n = 400, lty = 2, col = "blue4")
 plot(lp3, "density", add = TRUE, n = 400, lty = 3, col = "orange4")
@@ -96,6 +101,7 @@ Return levels at common periods (2-, 5-, 10-, 20-, 50-, 100-, 200-year)
 provide one view:
 
 ``` r
+
 quantiles <- enframe_return(
   gev, lp3,
   at = c(2, 5, 10, 20, 50, 100, 200),
@@ -119,6 +125,7 @@ Plotting the empirical data against fitted curves highlights tail
 behaviour.
 
 ``` r
+
 x_return_periods <- rpscore(x, pos = "Weibull")
 
 plot(
@@ -147,6 +154,7 @@ estimated. Lower scores indicate better calibration at the specified
 quantile level (Gneiting, 2011).
 
 ``` r
+
 gev_100y <- quantiles$flow_gev[quantiles$return_period == 100]
 lp3_100y <- quantiles$flow_lp3[quantiles$return_period == 100]
 

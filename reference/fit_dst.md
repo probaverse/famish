@@ -87,6 +87,10 @@ Here is how fitting is implemented.
   the distributions via the 'lmom' method on the log scale. That is,
   'norm' and 'pearson3' distributions are fit on the log of the data,
   for which the respective 'lnorm' or 'lp3' distribution is obtained.
+  For 'lp3', the fitted parameters from
+  [`lmom::pelpe3()`](https://rdrr.io/pkg/lmom/man/pel-functions.html)
+  are passed through directly as
+  `distionary::dst_lp3(meanlog = mu, sdlog = sigma, skew = gamma)`.
 
 - For `method = "mle"` and distribution families 'gev', 'gp', or
   'gumbel', the 'ismev' package is used to fit the distribution by
