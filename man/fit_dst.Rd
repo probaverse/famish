@@ -72,7 +72,9 @@ supported, otherwise no distribution will be resolved. The method fits
 the distributions via the 'lmom' method on the log scale. That is,
 'norm' and 'pearson3' distributions are fit on the log of
 the data, for which the respective 'lnorm' or 'lp3' distribution is
-obtained.
+obtained. For 'lp3', the fitted parameters from \code{lmom::pelpe3()} are
+passed through directly as
+\code{distionary::dst_lp3(meanlog = mu, sdlog = sigma, skew = gamma)}.
 \item For \code{method = "mle"} and distribution families 'gev', 'gp', or
 'gumbel', the 'ismev' package is used to fit the distribution by maximum
 likelihood estimation. This is done by invoking the functions

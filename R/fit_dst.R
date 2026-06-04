@@ -50,7 +50,9 @@
 #'     the distributions via the 'lmom' method on the log scale. That is,
 #'     'norm' and 'pearson3' distributions are fit on the log of
 #'     the data, for which the respective 'lnorm' or 'lp3' distribution is
-#'     obtained.
+#'     obtained. For 'lp3', the fitted parameters from `lmom::pelpe3()` are
+#'     passed through directly as
+#'     `distionary::dst_lp3(meanlog = mu, sdlog = sigma, skew = gamma)`.
 #'   \item For `method = "mle"` and distribution families 'gev', 'gp', or
 #'     'gumbel', the 'ismev' package is used to fit the distribution by maximum
 #'     likelihood estimation. This is done by invoking the functions
@@ -203,23 +205,14 @@ fit_dst <- function(family,
   }
   if (method == "lmom-log") {
     if (family == "lp3") {
-      res <- try(wrapper_lmom(family = "pearson3", x = log(x)), silent = TRUE)
-      if (inherits(res, "try-error")) {
+      lmom_params <- try(lmom::pelpe3(lmom::samlmu(log(x))), silent = TRUE)
+      if (inherits(lmom_params, "try-error")) {
         return(unresolved())
       }
-      theta <- distionary::parameters(res)
-      location <- theta[["location"]]
-      scale <- theta[["scale"]]
-      shape <- theta[["shape"]]
-      params <- list(
-        meanlog = location + scale * shape,
-        sdlog = scale * sqrt(shape),
-        skew = 2 / sqrt(shape)
-      )
       return(distionary::dst_lp3(
-        meanlog = params[["meanlog"]],
-        sdlog = params[["sdlog"]],
-        skew = params[["skew"]]
+        meanlog = lmom_params[["mu"]],
+        sdlog = lmom_params[["sigma"]],
+        skew = lmom_params[["gamma"]]
       ))
     }
     if (family == "lnorm") {
