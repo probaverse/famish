@@ -1,7 +1,7 @@
 Package: famish
 Type: Package
 Title: Flexibly Tune Families of Probability Distributions
-Version: 0.2.0
+Version: 0.2.0.9000
 Authors@R: c(
     person("Vincenzo", "Coia", email = "vincenzo.coia@gmail.com", 
            role = c("aut", "cre", "cph"))
