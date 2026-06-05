@@ -1,9 +1,7 @@
-# famish (development version)
+# famish 0.2.1
 
-* Fixed `fit_dst("lp3", ..., method = "lmom-log")` to pass the fitted
-  `lmom::pelpe3()` parameters through directly as
-  `distionary::dst_lp3(meanlog = mu, sdlog = sigma, skew = gamma)`,
-  preserving the sign of the fitted log-skew.
+* Fixed `fit_dst("lp3", ..., method = "lmom-log")` to preserve the sign
+  of the fitted log-skew, allowing a negative skew on the log scale.
 
 # famish 0.2.0
 
