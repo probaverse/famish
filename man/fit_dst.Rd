@@ -7,7 +7,7 @@
 fit_dst(
   family,
   x,
-  method = c("mle", "mge", "mme", "lmom", "lmom-log"),
+  method = "mle",
   na_action = c("null", "drop", "fail"),
   on_unres = c("null", "fail")
 )
@@ -18,10 +18,12 @@ fit_dst(
 
 \item{x}{Numeric vector containing the observations to fit.}
 
-\item{method}{Estimation method to use. Valid choices include \code{"mle"},
-\code{"mge"}, \code{"mme"}, \code{"lmom"}, and \code{"lmom-log"}. The default is \code{"mle"},
-although beware that not all families support the \code{"mle"} method yet
-(pearson3 and lp3).}
+\item{method}{Estimation method to use. Either a string naming a built-in
+method (\code{"mle"}, \code{"mge"}, \code{"mme"}, \code{"lmom"}, or \code{"lmom-log"}), or a
+composite estimator object from \code{\link[=cqe]{cqe()}} or \code{\link[=cee]{cee()}}. The default is
+\code{"mle"}, although beware that not all families support the \code{"mle"} method
+yet (pearson3 and lp3). The strings \code{"cqe"} and \code{"cee"} are shortcuts for
+\code{cqe()} and \code{cee()} with their defaults.}
 
 \item{na_action}{Strategy for dealing with \code{NA} values in \code{x}.
 \code{"null"} returns a Null distribution (\code{distionary::dst_null()});
@@ -133,7 +135,7 @@ fit_dst("norm", x = log(1:10), method = "lmom")
 \references{
 Hosking, J. R. M. (1990). L-moments: Analysis and estimation of distributions
 using linear combinations of order statistics. \emph{Journal of the Royal
-Statistical Society: Series B (Methodological)}, 52(1), 105–124.
+Statistical Society: Series B (Methodological)}, 52(1), 105<U+2013>124.
 
 Feller, W. (1971). \emph{An Introduction to Probability Theory and Its
 Applications} (Vol. 2, 2nd ed.). Wiley.

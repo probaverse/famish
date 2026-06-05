@@ -79,8 +79,11 @@ fit_dst_weibull(x, method = c("mle", "mge", "lmom"), ...)
 \arguments{
 \item{x}{Numeric vector of observations to fit.}
 
-\item{method}{Estimation method to use. Available options depend on the
-distribution family and are enforced via \code{rlang::arg_match()}.}
+\item{method}{Estimation method to use. Available built-in options depend on
+the distribution family and are enforced via \code{rlang::arg_match()}. A
+composite estimator object from \code{\link[=cqe]{cqe()}} or \code{\link[=cee]{cee()}} (or the string
+shortcuts \code{"cqe"} / \code{"cee"}) may also be supplied, and is passed through to
+\code{\link[=fit_dst]{fit_dst()}}.}
 
 \item{...}{Additional arguments passed on to \code{fit_dst()}.}
 }

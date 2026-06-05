@@ -8,10 +8,12 @@
 #' @param family Name of the target distribution family, such as `"norm"`,
 #'   `"gev"`, `"pois"`. See details. Character vector of length 1.
 #' @param x Numeric vector containing the observations to fit.
-#' @param method Estimation method to use. Valid choices include `"mle"`,
-#'   `"mge"`, `"mme"`, `"lmom"`, and `"lmom-log"`. The default is `"mle"`,
-#'   although beware that not all families support the `"mle"` method yet
-#'   (pearson3 and lp3).
+#' @param method Estimation method to use. Either a string naming a built-in
+#'   method (`"mle"`, `"mge"`, `"mme"`, `"lmom"`, or `"lmom-log"`), or a
+#'   composite estimator object from [cqe()] or [cee()]. The default is
+#'   `"mle"`, although beware that not all families support the `"mle"` method
+#'   yet (pearson3 and lp3). The strings `"cqe"` and `"cee"` are shortcuts for
+#'   `cqe()` and `cee()` with their defaults.
 #' @param na_action Strategy for dealing with `NA` values in `x`.
 #'   `"null"` returns a Null distribution (`distionary::dst_null()`);
 #'   `"drop"` silently removes missing observations before fitting; and
@@ -71,7 +73,7 @@
 #'     `fitdistrplus::fitdist()` function is called by inserting the data `x`,
 #'     the `family` name, and the `method`. Some distributions require
 #'     starting values for the parameters. For the families 't',
-#'     'f', and 'chisq', this is done by moment matching ('mme'). 
+#'     'f', and 'chisq', this is done by moment matching ('mme').
 #'     For 'gev', 'gp', and 'gumbel', the MLE is used as
 #'     starting values (through `method = "mle"`).
 #' }
@@ -101,7 +103,7 @@
 #' @references
 #' Hosking, J. R. M. (1990). L-moments: Analysis and estimation of distributions
 #' using linear combinations of order statistics. *Journal of the Royal
-#' Statistical Society: Series B (Methodological)*, 52(1), 105–124.
+#' Statistical Society: Series B (Methodological)*, 52(1), 105<U+2013>124.
 #'
 #' Feller, W. (1971). *An Introduction to Probability Theory and Its
 #' Applications* (Vol. 2, 2nd ed.). Wiley.
@@ -121,15 +123,20 @@
 #' @export
 fit_dst <- function(family,
                     x,
-                    method = c("mle", "mge", "mme", "lmom", "lmom-log"),
+                    method = "mle",
                     na_action = c("null", "drop", "fail"),
                     on_unres = c("null", "fail")) {
   checkmate::assert_character(family, len = 1)
   checkmate::assert_numeric(x)
-  method <- rlang::arg_match(method)
+  estimator <- as_estimator(method)
+  if (is.null(estimator)) {
+    method <- rlang::arg_match0(
+      method, c("mle", "mge", "mme", "lmom", "lmom-log")
+    )
+  }
   na_action <- rlang::arg_match(na_action)
   on_unres <- rlang::arg_match(on_unres)
-  
+
   ## START Failure handling
   ## Step 1: Missing data.
   if (anyNA(x)) {
@@ -141,7 +148,7 @@ fit_dst <- function(family,
     }
     x <- x[!is.na(x)]
   }
-  
+
   ## Step 2: Cannot resolve a single distribution. Define unresolved behaviour.
   if (on_unres == "fail") {
     unresolved <- function() {
@@ -156,18 +163,21 @@ fit_dst <- function(family,
       distionary::dst_null()
     }
   }
-  
-  ## Warn if the method is not supported for the family.
-  supported <- supported_combination(family = family, method = method)
-  if (!supported) {
-    warning(
-      paste0(
-        "The method '", method, "' is not supported for the family '",
-        family, "'. Continuing the fitting attempt regardless."
+
+  ## Warn if a built-in method is not supported for the family. Composite
+  ## estimators (handled below) apply across families, so they are exempt.
+  if (is.null(estimator)) {
+    supported <- supported_combination(family = family, method = method)
+    if (!supported) {
+      warning(
+        paste0(
+          "The method '", method, "' is not supported for the family '",
+          family, "'. Continuing the fitting attempt regardless."
+        )
       )
-    )
+    }
   }
-  
+
   ## BEGIN special dispatching
   if (family == "null") {
     return(distionary::dst_null())
@@ -177,6 +187,17 @@ fit_dst <- function(family,
   }
   if (family %in% c("empirical", "finite")) {
     return(distionary::dst_empirical(x))
+  }
+  ## Composite quantile/expectile estimation, via cqe() / cee().
+  if (!is.null(estimator)) {
+    res <- try(
+      fit_composite(family, x = x, estimator = estimator),
+      silent = TRUE
+    )
+    if (inherits(res, "try-error")) {
+      return(unresolved())
+    }
+    return(res)
   }
   if (family == "degenerate" && method == "mle") {
     x <- unique(x)
