@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">famish</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,8 +42,8 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="famish-development-version">famish (development version)<a class="anchor" aria-label="anchor" href="#famish-development-version"></a></h2>
-<ul><li>Fixed <code>fit_dst("lp3", ..., method = "lmom-log")</code> to pass the fitted <code><a href="https://rdrr.io/pkg/lmom/man/pel-functions.html" class="external-link">lmom::pelpe3()</a></code> parameters through directly as <code>distionary::dst_lp3(meanlog = mu, sdlog = sigma, skew = gamma)</code>, preserving the sign of the fitted log-skew.</li>
+<h2 class="pkg-version" data-toc-text="0.2.1" id="famish-021">famish 0.2.1<a class="anchor" aria-label="anchor" href="#famish-021"></a></h2>
+<ul><li>Fixed <code>fit_dst("lp3", ..., method = "lmom-log")</code> to preserve the sign of the fitted log-skew, allowing a negative skew on the log scale.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="famish-020">famish 0.2.0<a class="anchor" aria-label="anchor" href="#famish-020"></a></h2><p class="text-muted">CRAN release: 2025-12-08</p>
