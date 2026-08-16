@@ -6,8 +6,8 @@
 #   technically "supported" because we *know* what do.
 # - Null: always supported because always returns a Null distribution
 supported_combination <- function(family, method) {
-  checkmate::expect_character(family, len = 1)
-  checkmate::expect_character(method, len = 1)
+  checkmate::assert_character(family, len = 1)
+  checkmate::assert_character(method, len = 1)
   if (family %in% c("null", "finite", "empirical")) {
     return(TRUE)
   }
