@@ -4,7 +4,8 @@ Title: Flexibly Tune Families of Probability Distributions
 Version: 0.2.1.9000
 Authors@R: c(
     person("Vincenzo", "Coia", email = "vincenzo.coia@gmail.com", 
-           role = c("aut", "cre", "cph"))
+           role = c("aut", "cre", "cph"),
+           comment = c(ORCID = "0000-0002-2930-0723"))
   )
 Description: Fits probability distributions to data and plugs into the
     'probaverse' suite of R packages so distribution objects are ready for
